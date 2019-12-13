@@ -1,2 +1,33 @@
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/sell?serverTimezone=GMT%2B8&useSSL=false
+      username: root
+      password: 755327
+      initial-size: 1
+      max-active: 20
+  jpa:
+    show-sql: true
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
+#mybatis三剑客配置
+mybatis:
+  type-aliases-package: com.sell.entity
+  mapper-locations: classpath:mappers/*.xml
+mapper:
+  identity: MYSQL
+  not-empty: false
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
 server:
-  port: 8090
+  port: 8088
