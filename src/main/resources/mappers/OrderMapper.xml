@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sell.dao.OrderMapper" >
-  <resultMap id="BaseResultMap" type="com.sell.entity.Order" >
+<mapper namespace="com.sell.modules.store.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.Order" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="order_no" jdbcType="BIGINT" javaType="java.lang.Long" />
@@ -35,7 +35,7 @@
     delete from sell_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.sell.entity.Order" >
+  <insert id="insert" parameterType="com.sell.modules.store.entity.Order" >
     insert into sell_order (id, order_no, user_id, 
       deliveryman_id, shipping_id, payment, 
       payment_type, postage, status, 
@@ -49,7 +49,7 @@
       #{getTime,jdbcType=TIMESTAMP}, #{completeTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.sell.entity.Order" >
+  <insert id="insertSelective" parameterType="com.sell.modules.store.entity.Order" >
     insert into sell_order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -152,7 +152,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sell.entity.Order" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.Order" >
     update sell_order
     <set >
       <if test="orderNo != null" >
@@ -203,7 +203,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.sell.entity.Order" >
+  <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.Order" >
     update sell_order
     set order_no = #{orderNo,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=INTEGER},

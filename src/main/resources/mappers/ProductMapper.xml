@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sell.dao.ProductMapper" >
-  <resultMap id="BaseResultMap" type="com.sell.entity.Product" >
+<mapper namespace="com.sell.modules.store.dao.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.Product" >
     <constructor >
-      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shop_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="category_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="image" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="main_img" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sub_images" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="desc" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="monthly_sales" jdbcType="INTEGER" javaType="java.lang.Integer" />
@@ -17,34 +19,39 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, category_id, name, image, desc, price, monthly_sales, stock, status, create_time, 
-    update_time
+    id, shop_id, category_id, name, main_img, sub_images, desc, price, monthly_sales, 
+    stock, status, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from sell_product
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sell_product
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.sell.entity.Product" >
-    insert into sell_product (id, category_id, name, 
-      image, desc, price, 
-      monthly_sales, stock, status, 
-      create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{image,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{monthlySales,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.sell.modules.store.entity.Product" >
+    insert into sell_product (id, shop_id, category_id, 
+      name, main_img, sub_images, 
+      desc, price, monthly_sales, 
+      stock, status, create_time, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{mainImg,jdbcType=VARCHAR}, #{subImages,jdbcType=VARCHAR}, 
+      #{desc,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{monthlySales,jdbcType=INTEGER}, 
+      #{stock,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, now(),
+      now())
   </insert>
-  <insert id="insertSelective" parameterType="com.sell.entity.Product" >
+  <insert id="insertSelective" parameterType="com.sell.modules.store.entity.Product" >
     insert into sell_product
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
       </if>
       <if test="categoryId != null" >
         category_id,
@@ -52,8 +59,11 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="image != null" >
-        image,
+      <if test="mainImg != null" >
+        main_img,
+      </if>
+      <if test="subImages != null" >
+        sub_images,
       </if>
       <if test="desc != null" >
         desc,
@@ -70,16 +80,15 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="createTime != null" >
         create_time,
-      </if>
-      <if test="updateTime != null" >
         update_time,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
       </if>
       <if test="categoryId != null" >
         #{categoryId,jdbcType=INTEGER},
@@ -87,8 +96,11 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="image != null" >
-        #{image,jdbcType=VARCHAR},
+      <if test="mainImg != null" >
+        #{mainImg,jdbcType=VARCHAR},
+      </if>
+      <if test="subImages != null" >
+        #{subImages,jdbcType=VARCHAR},
       </if>
       <if test="desc != null" >
         #{desc,jdbcType=VARCHAR},
@@ -105,25 +117,27 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        now(),
+        now(),
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sell.entity.Product" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.Product" >
     update sell_product
     <set >
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
       <if test="categoryId != null" >
         category_id = #{categoryId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="image != null" >
-        image = #{image,jdbcType=VARCHAR},
+      <if test="mainImg != null" >
+        main_img = #{mainImg,jdbcType=VARCHAR},
+      </if>
+      <if test="subImages != null" >
+        sub_images = #{subImages,jdbcType=VARCHAR},
       </if>
       <if test="desc != null" >
         desc = #{desc,jdbcType=VARCHAR},
@@ -144,23 +158,44 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.sell.entity.Product" >
+  <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.Product" >
     update sell_product
-    set category_id = #{categoryId,jdbcType=INTEGER},
+    set shop_id = #{shopId,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      image = #{image,jdbcType=VARCHAR},
+      main_img = #{mainImg,jdbcType=VARCHAR},
+      sub_images = #{subImages,jdbcType=VARCHAR},
       desc = #{desc,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       monthly_sales = #{monthlySales,jdbcType=INTEGER},
       stock = #{stock,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+      update_time = now()
+    where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from sell_product
+    order by id
+  </select>
+  <select id="selectByNamAndProductId" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    from sell_product
+    <where>
+      <if test="productName != null" >
+        and name like #{productName}
+      </if>
+      <if test="productId != null" >
+        and id like #{productId}
+      </if>
+    </where>
+  </select>
+
 </mapper>

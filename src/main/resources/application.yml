@@ -7,20 +7,35 @@ spring:
       password: 755327
       initial-size: 1
       max-active: 20
+  servlet:
+    multipart:
+     max-file-size: 10MB
+     max-request-size: 10MB
+     enabled: true
   jpa:
     show-sql: true
-  thymeleaf:
-    prefix: classpath:templates/
-    suffix: .html
-    mode: HTML5
-    encoding: UTF-8
+#  thymeleaf:
+#    prefix: classpath:templates/
+#    suffix: .html
+#    mode: HTML5
+#    encoding: UTF-8
+#    servlet:
+#      content-type: text/html
+#    cache: false
+  mvc:
+    view:
+      prefix: classpath:templates/
+      suffix: .html
     servlet:
-      content-type: text/html
-    cache: false
+      path: /
+      load-on-startup: 1
 #mybatis三剑客配置
 mybatis:
-  type-aliases-package: com.sell.entity
+  type-aliases-package: com.sell.modules.*.entity
   mapper-locations: classpath:mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 mapper:
   identity: MYSQL
   not-empty: false
@@ -31,3 +46,5 @@ pagehelper:
   params: count=countSql
 server:
   port: 8088
+  servlet:
+    context-path: /sell

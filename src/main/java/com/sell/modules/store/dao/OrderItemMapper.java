@@ -1,6 +1,6 @@
-package com.sell.dao;
+package com.sell.modules.store.dao;
 
-import com.sell.entity.OrderItem;
+import com.sell.modules.store.entity.OrderItem;
 
 public interface OrderItemMapper {
     int deleteByPrimaryKey(Integer id);

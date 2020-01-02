@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sell.dao.OrderItemMapper" >
-  <resultMap id="BaseResultMap" type="com.sell.entity.OrderItem" >
+<mapper namespace="com.sell.modules.store.dao.OrderItemMapper" >
+  <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.OrderItem" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
@@ -30,7 +30,7 @@
     delete from sell_order_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.sell.entity.OrderItem" >
+  <insert id="insert" parameterType="com.sell.modules.store.entity.OrderItem" >
     insert into sell_order_item (id, user_id, order_no, 
       product_id, product_name, product_image, 
       current_unit_price, quantity, total_price, 
@@ -40,7 +40,7 @@
       #{currentUnitPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.sell.entity.OrderItem" >
+  <insert id="insertSelective" parameterType="com.sell.modules.store.entity.OrderItem" >
     insert into sell_order_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -113,7 +113,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sell.entity.OrderItem" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.OrderItem" >
     update sell_order_item
     <set >
       <if test="userId != null" >
@@ -149,7 +149,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.sell.entity.OrderItem" >
+  <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.OrderItem" >
     update sell_order_item
     set user_id = #{userId,jdbcType=INTEGER},
       order_no = #{orderNo,jdbcType=BIGINT},

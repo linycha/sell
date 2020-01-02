@@ -1,11 +1,9 @@
-package com.sell.dao;
+package com.sell.modules.store.dao;
 
-import com.sell.entity.Category;
+import com.sell.modules.store.entity.Category;
 
-/**
- * @author linyc
- * @date 2019/12/12 12:43
- */
+import java.util.List;
+
 public interface CategoryMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -18,4 +16,6 @@ public interface CategoryMapper {
     int updateByPrimaryKeySelective(Category record);
 
     int updateByPrimaryKey(Category record);
+
+    List<Category> selectByParentId(Integer parentId);
 }

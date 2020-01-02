@@ -1,4 +1,4 @@
-package com.sell.entity;
+package com.sell.modules.store.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;

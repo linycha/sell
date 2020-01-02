@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sell.dao.CategoryMapper" >
-  <resultMap id="BaseResultMap" type="com.sell.entity.Category" >
+<mapper namespace="com.sell.modules.store.dao.CategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.Category" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="parent_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="status" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="sort_order" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="sort" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, parent_id, name, status, sort_order, create_time, update_time
+    id, parent_id, name, status, sort, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from sell_category
     where id = #{id,jdbcType=INTEGER}
@@ -25,15 +25,15 @@
     delete from sell_category
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.sell.entity.Category" >
+  <insert id="insert" parameterType="com.sell.modules.store.entity.Category" >
     insert into sell_category (id, parent_id, name, 
-      status, sort_order, create_time, 
+      status, sort, create_time, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{status,jdbcType=BIT}, #{sortOrder,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{status,jdbcType=BIT}, #{sort,jdbcType=INTEGER}, now(),
+      now())
   </insert>
-  <insert id="insertSelective" parameterType="com.sell.entity.Category" >
+  <insert id="insertSelective" parameterType="com.sell.modules.store.entity.Category" >
     insert into sell_category
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -48,15 +48,11 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="sortOrder != null" >
-        sort_order,
+      <if test="sort != null" >
+        sort,
       </if>
-      <if test="createTime != null" >
         create_time,
-      </if>
-      <if test="updateTime != null" >
         update_time,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -71,18 +67,14 @@
       <if test="status != null" >
         #{status,jdbcType=BIT},
       </if>
-      <if test="sortOrder != null" >
-        #{sortOrder,jdbcType=INTEGER},
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        now(),
+        now(),
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sell.entity.Category" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.Category" >
     update sell_category
     <set >
       <if test="parentId != null" >
@@ -94,26 +86,31 @@
       <if test="status != null" >
         status = #{status,jdbcType=BIT},
       </if>
-      <if test="sortOrder != null" >
-        sort_order = #{sortOrder,jdbcType=INTEGER},
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.sell.entity.Category" >
+  <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.Category" >
     update sell_category
     set parent_id = #{parentId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       status = #{status,jdbcType=BIT},
-      sort_order = #{sortOrder,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByParentId" parameterType="Integer" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from sell_category
+    where parent_id = #{parentId}
+  </select>
 </mapper>

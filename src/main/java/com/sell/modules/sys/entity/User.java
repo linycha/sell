@@ -1,12 +1,18 @@
-package com.sell.entity;
+package com.sell.modules.sys.entity;
 
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author linyc
  * @date 2019/12/12 12:43
  */
-public class User {
+public class User implements Serializable {
     private String id;
 
     private String openId;
@@ -15,9 +21,11 @@ public class User {
 
     private String password;
 
-    private String email;
+    private String sex;
 
     private String phone;
+
+    private String headImg;
 
     private String question;
 
@@ -29,19 +37,27 @@ public class User {
 
     private Date updateTime;
 
-    public User(String id, String openId, String username, String password, String email, String phone, String question, String answer, Integer role, Date createTime, Date updateTime) {
+    private List<Role> roles = new ArrayList<>();
+    private  String roleListStr;
+
+
+    public User(String id, String openId, String username, String password, String sex, String phone, String headImg, String question, String answer, Integer role, Date createTime, Date updateTime) {
         this.id = id;
         this.openId = openId;
         this.username = username;
         this.password = password;
-        this.email = email;
+        this.sex = sex;
         this.phone = phone;
+        this.headImg = headImg;
         this.question = question;
         this.answer = answer;
         this.role = role;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
+    /*public String getRoleNames() {
+        return Collections3.extractToString(roleList, "name", ",");
+    }*/
 
     public User() {
         super();
@@ -79,12 +95,12 @@ public class User {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getEmail() {
-        return email;
+    public String getSex() {
+        return sex;
     }
 
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
+    public void setSex(String sex) {
+        this.sex = sex == null ? null : sex.trim();
     }
 
     public String getPhone() {
@@ -93,6 +109,14 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg == null ? null : headImg.trim();
     }
 
     public String getQuestion() {
@@ -135,6 +159,27 @@ public class User {
         this.updateTime = updateTime;
     }
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public String getRoleIdListStr(List<Role> roleList1) {
+        List<String> idList= Lists.newArrayList();
+        for (Role role : roleList1) {
+            idList.add(role.getId());
+        }
+
+        if(idList!=null && idList.size()>0){
+            return StringUtils.join(idList,",");
+        }
+        return "";
+
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -142,11 +187,15 @@ public class User {
                 ", openId='" + openId + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
+                ", sex='" + sex + '\'' +
                 ", phone='" + phone + '\'' +
+                ", headImg='" + headImg + '\'' +
                 ", question='" + question + '\'' +
                 ", answer='" + answer + '\'' +
                 ", role=" + role +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", roles=" + roles +
                 '}';
     }
 }

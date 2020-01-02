@@ -1,4 +1,4 @@
-package com.sell.entity;
+package com.sell.modules.store.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -8,13 +8,17 @@ import java.util.Date;
  * @date 2019/12/12 12:43
  */
 public class Product {
-    private Integer id;
+    private String id;
+
+    private String shopId;
 
     private Integer categoryId;
 
     private String name;
 
-    private String image;
+    private String mainImg;
+
+    private String subImages;
 
     private String desc;
 
@@ -30,11 +34,13 @@ public class Product {
 
     private Date updateTime;
 
-    public Product(Integer id, Integer categoryId, String name, String image, String desc, BigDecimal price, Integer monthlySales, Integer stock, Integer status, Date createTime, Date updateTime) {
+    public Product(String id, String shopId, Integer categoryId, String name, String mainImg, String subImages, String desc, BigDecimal price, Integer monthlySales, Integer stock, Integer status, Date createTime, Date updateTime) {
         this.id = id;
+        this.shopId = shopId;
         this.categoryId = categoryId;
         this.name = name;
-        this.image = image;
+        this.mainImg = mainImg;
+        this.subImages = subImages;
         this.desc = desc;
         this.price = price;
         this.monthlySales = monthlySales;
@@ -48,12 +54,20 @@ public class Product {
         super();
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId == null ? null : shopId.trim();
     }
 
     public Integer getCategoryId() {
@@ -72,12 +86,20 @@ public class Product {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getImage() {
-        return image;
+    public String getMainImg() {
+        return mainImg;
     }
 
-    public void setImage(String image) {
-        this.image = image == null ? null : image.trim();
+    public void setMainImg(String mainImg) {
+        this.mainImg = mainImg == null ? null : mainImg.trim();
+    }
+
+    public String getSubImages() {
+        return subImages;
+    }
+
+    public void setSubImages(String subImages) {
+        this.subImages = subImages == null ? null : subImages.trim();
     }
 
     public String getDesc() {
