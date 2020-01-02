@@ -29,7 +29,7 @@ public class TestController {
     }
     @RequestMapping("/unauthc")
     public ServerResponse unAuthor(){
-        return ServerResponse.errorCodeMsg(-3,"没有权限访问该页面");
+        return ServerResponse.errorCodeMsg(-3,"没有权限访问该页面 ");
     }
     @RequestMapping("/list")
     public ServerResponse author(){
