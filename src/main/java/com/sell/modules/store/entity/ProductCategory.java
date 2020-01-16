@@ -2,6 +2,10 @@ package com.sell.modules.store.entity;
 
 import java.util.Date;
 
+/**
+ * @author linyc
+ * @date 2020/01/16 17:47
+ */
 public class ProductCategory {
     private String id;
 
@@ -20,6 +24,11 @@ public class ProductCategory {
     private Date createTime;
 
     private Date updateTime;
+
+    public ProductCategory(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public ProductCategory(String id, String parentId, String shopId, String name, String status, Integer sort, String delFlag, Date createTime, Date updateTime) {
         this.id = id;

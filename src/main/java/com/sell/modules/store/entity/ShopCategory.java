@@ -1,7 +1,10 @@
 package com.sell.modules.store.entity;
 
 import java.util.Date;
-
+/**
+ * @author linyc
+ * @date 2020/01/16 17:47
+ */
 public class ShopCategory {
     private String id;
 
@@ -16,6 +19,11 @@ public class ShopCategory {
     private Date createTime;
 
     private Date updateTime;
+
+    public ShopCategory(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public ShopCategory(String id, String parentId, String name, Integer sort, String delFlag, Date createTime, Date updateTime) {
         this.id = id;

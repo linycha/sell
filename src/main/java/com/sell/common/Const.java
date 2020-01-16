@@ -16,6 +16,9 @@ public class Const {
     public static final String USERNAME = "username";
     public static final String EMAIL = "email";
     public static final String PHONE = "phone";
+    public static final String NOT_DELETE = "0";
+    public static final String DELETED = "1";
+
     public interface ProductListOrderBy{
         Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc","price_asc");
     }
@@ -23,6 +26,7 @@ public class Const {
         int ROLE_CUSTOMER = 0;//普通用户
         int ROLE_ADMIN = 1;//超级管理员
     }
+
     public static boolean isNumber(String num){
         String regex = "^\\d{5}[0-9]$";
         Pattern pattern = Pattern.compile(regex);

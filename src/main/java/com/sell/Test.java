@@ -1,6 +1,8 @@
 package com.sell;
 
+import com.sell.modules.store.dao.ShopCategoryMapper;
 import com.sell.modules.store.dao.TestMapper;
+import com.sell.modules.store.entity.ShopCategory;
 import com.sell.modules.sys.dao.UserMapper;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
@@ -47,6 +49,8 @@ public class Test {
     private UserMapper userMapper;
     @Autowired
     private TestMapper testMapper;
+    @Autowired
+    private ShopCategoryMapper shopCategoryMapper;
     @org.junit.Test
     public void test(){
        Object result = new SimpleHash("md5","123456", null, 2);
@@ -54,10 +58,7 @@ public class Test {
     }
     @org.junit.Test
     public void userTest(){
-        String a = "1";
-        if(false){
-            a = a+1;
-        }
-        System.out.println(a);
+        List<ShopCategory> shopCategoryList = shopCategoryMapper.selectSiblingCategory("0");
+        System.out.println(shopCategoryList);
     }
 }

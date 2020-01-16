@@ -9,12 +9,9 @@ import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
 import com.sell.common.utils.MD5Util;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author linyuc

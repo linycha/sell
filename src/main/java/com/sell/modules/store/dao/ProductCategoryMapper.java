@@ -2,6 +2,8 @@ package com.sell.modules.store.dao;
 
 import com.sell.modules.store.entity.ProductCategory;
 
+import java.util.List;
+
 public interface ProductCategoryMapper {
     int deleteByPrimaryKey(String id);
 
@@ -14,4 +16,6 @@ public interface ProductCategoryMapper {
     int updateByPrimaryKeySelective(ProductCategory record);
 
     int updateByPrimaryKey(ProductCategory record);
+
+    List<ProductCategory> selectCategoryByShopId(String shopId);
 }

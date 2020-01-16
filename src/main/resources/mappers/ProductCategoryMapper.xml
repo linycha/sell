@@ -28,12 +28,12 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.sell.modules.store.entity.ProductCategory" >
-    insert into sell_product_category (id, parent_id, shop_id, 
-      name, status, sort, del_flag, 
+    insert into sell_product_category (id, parent_id, shop_id,
+      name, status, sort, del_flag,
       create_time, update_time)
     values (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{sort,jdbcType=INTEGER}, #{delFlag,jdbcType=CHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.sell.modules.store.entity.ProductCategory" >
     insert into sell_product_category
@@ -59,12 +59,8 @@
       <if test="delFlag != null" >
         del_flag,
       </if>
-      <if test="createTime != null" >
         create_time,
-      </if>
-      <if test="updateTime != null" >
         update_time,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -88,12 +84,8 @@
       <if test="delFlag != null" >
         #{delFlag,jdbcType=CHAR},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        now(),
+        now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.ProductCategory" >
@@ -120,9 +112,7 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        update_time = now(),
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -138,4 +128,9 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectCategoryByShopId" parameterType="String" resultType="com.sell.modules.store.entity.ProductCategory">
+    select id, name from sell_product_category
+    where shop_id=#{shopId}
+  </select>
+
 </mapper>

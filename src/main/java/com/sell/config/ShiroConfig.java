@@ -54,9 +54,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/logout","logout");
         filterChainDefinitionMap.put("/login","anon");
         filterChainDefinitionMap.put("/to_login","anon");
-        filterChainDefinitionMap.put("/loginUser","anon");
         filterChainDefinitionMap.put("/static/**","anon");
         filterChainDefinitionMap.put("/druid/**","anon");
+        filterChainDefinitionMap.put("/category/**","anon");
         filterChainDefinitionMap.put("/list", "authc");
         filterChainDefinitionMap.put("/admin/**","roles[admin]");
         //filterChainDefinitionMap.put("/test","roles[delivery]");
