@@ -62,23 +62,24 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.sell.modules.store.dao" targetProject="./src/main/java">
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.sell.modules.sys.dao" targetProject="./src/main/java">
-            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+        <!--<javaClientGenerator type="XMLMAPPER" targetPackage="com.sell.modules.sys.dao" targetProject="./src/main/java">
+            &lt;!&ndash; enableSubPackages:是否让schema作为包的后缀 &ndash;&gt;
             <property name="enableSubPackages" value="false" />
-        </javaClientGenerator>
+        </javaClientGenerator>-->
 
 
         <!--<table tableName="sell_shipping" domainObjectName="Shipping" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
        <!-- <table tableName="sell_cart" domainObjectName="Cart" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <table tableName="sell_cart_item" domainObjectName="CartItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <!--<table tableName="sell_category" domainObjectName="Category" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table tableName="sell_order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table tableName="sell_shop_category" domainObjectName="ShopCategory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table tableName="sell_product_category" domainObjectName="ProductCategory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <!--<table tableName="sell_order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table tableName="sell_order_item" domainObjectName="OrderItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
         <!--<table tableName="sell_pay_info" domainObjectName="PayInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
-        <table tableName="sell_product" domainObjectName="Product" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        <!--<table tableName="sell_product" domainObjectName="Product" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
             <columnOverride column="des" jdbcType="VARCHAR" />
             <columnOverride column="sub_images" jdbcType="VARCHAR" />
-        </table>
+        </table>-->
         <!--<table tableName="sell_user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
 
 

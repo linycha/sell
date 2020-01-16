@@ -3,6 +3,8 @@ package com.sell.common;
 import com.google.common.collect.Sets;
 
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 一些常量
@@ -20,6 +22,12 @@ public class Const {
     public interface Role{
         int ROLE_CUSTOMER = 0;//普通用户
         int ROLE_ADMIN = 1;//超级管理员
+    }
+    public static boolean isNumber(String num){
+        String regex = "^\\d{5}[0-9]$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(num);
+        return matcher.matches();
     }
     public enum ProductStatusEnum{
         ON_SALE(1,"在售");

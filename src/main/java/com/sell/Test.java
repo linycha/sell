@@ -1,5 +1,6 @@
 package com.sell;
 
+import com.sell.modules.store.dao.TestMapper;
 import com.sell.modules.sys.dao.UserMapper;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
@@ -44,10 +45,19 @@ public class Test {
     }
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private TestMapper testMapper;
     @org.junit.Test
     public void test(){
        Object result = new SimpleHash("md5","123456", null, 2);
-        System.out.println(result);
+        System.out.println(result.toString());
     }
-
+    @org.junit.Test
+    public void userTest(){
+        String a = "1";
+        if(false){
+            a = a+1;
+        }
+        System.out.println(a);
+    }
 }

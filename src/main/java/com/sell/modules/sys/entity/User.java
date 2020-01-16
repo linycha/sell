@@ -23,15 +23,13 @@ public class User implements Serializable {
 
     private String sex;
 
-    private String phone;
+    private String mobile;
 
     private String headImg;
 
     private String question;
 
     private String answer;
-
-    private Integer role;
 
     private Date createTime;
 
@@ -41,17 +39,16 @@ public class User implements Serializable {
     private  String roleListStr;
 
 
-    public User(String id, String openId, String username, String password, String sex, String phone, String headImg, String question, String answer, Integer role, Date createTime, Date updateTime) {
+    public User(String id, String openId, String username, String password, String sex, String mobile, String headImg, String question, String answer, Integer role, Date createTime, Date updateTime) {
         this.id = id;
         this.openId = openId;
         this.username = username;
         this.password = password;
         this.sex = sex;
-        this.phone = phone;
+        this.mobile = mobile;
         this.headImg = headImg;
         this.question = question;
         this.answer = answer;
-        this.role = role;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -103,12 +100,12 @@ public class User implements Serializable {
         this.sex = sex == null ? null : sex.trim();
     }
 
-    public String getPhone() {
-        return phone;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+    public void setMobile(String mobile) {
+        this.mobile = mobile == null ? null : mobile.trim();
     }
 
     public String getHeadImg() {
@@ -133,14 +130,6 @@ public class User implements Serializable {
 
     public void setAnswer(String answer) {
         this.answer = answer == null ? null : answer.trim();
-    }
-
-    public Integer getRole() {
-        return role;
-    }
-
-    public void setRole(Integer role) {
-        this.role = role;
     }
 
     public Date getCreateTime() {
@@ -188,11 +177,10 @@ public class User implements Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", sex='" + sex + '\'' +
-                ", phone='" + phone + '\'' +
+                ", mobile='" + mobile + '\'' +
                 ", headImg='" + headImg + '\'' +
                 ", question='" + question + '\'' +
                 ", answer='" + answer + '\'' +
-                ", role=" + role +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", roles=" + roles +

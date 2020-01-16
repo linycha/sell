@@ -46,5 +46,3 @@ pagehelper:
   params: count=countSql
 server:
   port: 8088
-  servlet:
-    context-path: /sell

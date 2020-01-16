@@ -1,55 +1,50 @@
 package com.sell.modules.store.entity;
 
 import java.util.Date;
-import java.util.Objects;
 
-/**
- * @author linyc
- * @date 2019/12/12 12:43
- */
-public class Category {
-    private Integer id;
+public class ShopCategory {
+    private String id;
 
-    private Integer parentId;
+    private String parentId;
 
     private String name;
 
-    private Boolean status;
-
     private Integer sort;
+
+    private String delFlag;
 
     private Date createTime;
 
     private Date updateTime;
 
-    public Category(Integer id, Integer parentId, String name, Boolean status, Integer sort, Date createTime, Date updateTime) {
+    public ShopCategory(String id, String parentId, String name, Integer sort, String delFlag, Date createTime, Date updateTime) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
-        this.status = status;
         this.sort = sort;
+        this.delFlag = delFlag;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
 
-    public Category() {
+    public ShopCategory() {
         super();
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
-    public Integer getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId == null ? null : parentId.trim();
     }
 
     public String getName() {
@@ -60,20 +55,20 @@ public class Category {
         this.name = name == null ? null : name.trim();
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
     public Integer getSort() {
         return sort;
     }
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag == null ? null : delFlag.trim();
     }
 
     public Date getCreateTime() {
@@ -90,18 +85,5 @@ public class Category {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {return true;}
-        if (o == null || getClass() != o.getClass()) {return false;}
-        Category category = (Category) o;
-        return Objects.equals(id, category.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

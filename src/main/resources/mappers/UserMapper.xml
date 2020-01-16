@@ -8,7 +8,7 @@
       <arg column="username" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="sex" javaType="java.lang.String" jdbcType="CHAR" />
-      <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="mobile" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="head_img" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="question" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="answer" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -16,13 +16,9 @@
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
-    <collection property="roles" ofType="com.sell.modules.sys.entity.Role">
-      <id property="id" jdbcType="VARCHAR" column="id" />
-      <result property="name" jdbcType="VARCHAR" column="name"/>
-    </collection>
   </resultMap>
   <sql id="Base_Column_List">
-    id, open_id, username, password, sex, phone, head_img, question, answer, role, create_time, 
+    id, open_id, username, password, sex, mobile, head_img, question, answer, role, create_time,
     update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -37,12 +33,12 @@
   </delete>
   <insert id="insert" parameterType="com.sell.modules.sys.entity.User">
     insert into sys_user (id, open_id, username,
-      password, sex, phone,
+      password, sex, mobile,
       head_img, question, answer,
       role, create_time, update_time
       )
     values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{mobile,jdbcType=VARCHAR},
       #{headImg,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, 
       #{role,jdbcType=INTEGER}, now(), now()
       )
@@ -65,8 +61,8 @@
       <if test="sex != null">
         sex,
       </if>
-      <if test="phone != null">
-        phone,
+      <if test="mobile != null">
+        mobile,
       </if>
       <if test="headImg != null">
         head_img,
@@ -103,8 +99,8 @@
       <if test="sex != null">
         #{sex,jdbcType=CHAR},
       </if>
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
       </if>
       <if test="headImg != null">
         #{headImg,jdbcType=VARCHAR},
@@ -141,8 +137,8 @@
       <if test="sex != null">
         sex = #{sex,jdbcType=CHAR},
       </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
       </if>
       <if test="headImg != null">
         head_img = #{headImg,jdbcType=VARCHAR},
@@ -171,7 +167,7 @@
       username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=CHAR},
-      phone = #{phone,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
       head_img = #{headImg,jdbcType=VARCHAR},
       question = #{question,jdbcType=VARCHAR},
       answer = #{answer,jdbcType=VARCHAR},
@@ -184,9 +180,9 @@
     select count(1) from sys_user
     where username=#{username}
   </select>
-  <select id="checkPhone" parameterType="String" resultType="int">
+  <select id="checkMobile" parameterType="String" resultType="int">
     select count(1) from sys_user
-    where phone=#{phone}
+    where mobile=#{mobile}
   </select>
   <select id="selectLogin" parameterType="map" resultType="com.sell.modules.sys.entity.User">
     select
@@ -224,6 +220,11 @@
     where username=#{username}
     and s.del_flag = '0'
   </select>
+  <select id="selectUsernameByMobile" parameterType="String" resultType="String">
+    select username from sys_user
+    where mobile=#{mobile}
+  </select>
+
   <select id="selectRoleByUsername" parameterType="String" resultType="com.sell.modules.sys.entity.Role">
     select r.id, r.name
     from sys_user s
@@ -231,13 +232,17 @@
     left join sys_role r on r.id = ur.role_id
     where username=#{username}
   </select>
+  <select id="selectUserList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from sys_user
+  </select>
   <resultMap id="UserRolePermissionMap" type="com.sell.modules.sys.entity.User">
     <id column="id" javaType="java.lang.String" jdbcType="VARCHAR" property="id" />
     <result column="open_id" javaType="java.lang.String" jdbcType="VARCHAR"  />
     <result column="username" javaType="java.lang.String" jdbcType="VARCHAR" property="username" />
     <result column="password" javaType="java.lang.String" jdbcType="VARCHAR" property="password" />
     <result column="sex" javaType="java.lang.String" jdbcType="CHAR" />
-    <result column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+    <result column="mobile" javaType="java.lang.String" jdbcType="VARCHAR" />
     <result column="head_img" javaType="java.lang.String" jdbcType="VARCHAR" />
     <result column="question" javaType="java.lang.String" jdbcType="VARCHAR" />
     <result column="answer" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -254,10 +259,6 @@
       <id column="pid" property="id"/>
       <id column="pname" property="name"/>
       <id column="url" property="url"/>
-      <!--<association property="permissions" javaType="collection">
-        <id column="pname" property="name"/>
-        <id column="url"/>
-      </association>-->
     </collection>
   </resultMap>
 </mapper>

@@ -1,6 +1,7 @@
 package com.sell.common.utils;
 
 import com.sell.common.utils.PropertiesUtil;
+import org.apache.shiro.crypto.hash.SimpleHash;
 
 import java.security.MessageDigest;
 
@@ -8,6 +9,11 @@ import java.security.MessageDigest;
  * Created by geely
  */
 public class MD5Util {
+
+    public static String hashTwo(String password){
+        Object md5Password = new SimpleHash("md5",password, null, 2);
+        return md5Password.toString();
+    }
 
     private static String byteArrayToHexString(byte b[]) {
         StringBuffer resultSb = new StringBuffer();

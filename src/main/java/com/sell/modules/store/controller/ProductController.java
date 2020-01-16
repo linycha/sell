@@ -1,7 +1,7 @@
 package com.sell.modules.store.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.sell.common.ServerResponse;
+import com.sell.common.Res;
 import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    public ServerResponse<Product> detail(String productId){
+    public Res<Product> detail(String productId){
         return productService.getProductDetail(productId);
     }
-    public ServerResponse<PageInfo> list(@RequestParam(required = false)String keyword,
+    public Res<PageInfo> list(@RequestParam(required = false)String keyword,
                                          @RequestParam(required = false)Integer categoryId,
                                          @RequestParam(defaultValue = "1")int pageNum,
                                          @RequestParam(defaultValue = "10")int pageSize){

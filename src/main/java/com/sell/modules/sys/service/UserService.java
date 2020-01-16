@@ -1,6 +1,6 @@
 package com.sell.modules.sys.service;
 
-import com.sell.common.ServerResponse;
+import com.sell.common.Res;
 import com.sell.modules.sys.entity.User;
 
 import java.util.List;
@@ -10,17 +10,25 @@ import java.util.List;
  * @date 2019/12/18 15:15
  */
 public interface UserService {
-    ServerResponse<User> login(String username, String password);
-    ServerResponse<String> register(User user);
-    ServerResponse<String> checkValid(String str, String type);
-    ServerResponse selectQuestion(String username);
-    ServerResponse<String> checkAnswer(String username, String question, String answer);
-    ServerResponse<String> restPassword(String username,String passwordNew,String forgetToken);
-    ServerResponse<String> resetPassword(String passwordOld, String passwordNew, User user);
+    Res<String> register(String phone,String password);
 
-    ServerResponse<User> updateInfo(User user);
-    ServerResponse<User> getInformation(String userId);
+    Res selectById(String id);
+
+    Res<String> updateMobile(User user);
+    Res<String> updatePassword(String newPwd,User user);
+
+
+
+
+
+
+
+    Res<String> checkValid(String str, String type);
+
+    Res<String> restPassword(String username,String passwordNew,String forgetToken);
+
 
     User selectByUsername(String username);
+    String selectUsernameByMobile(String mobile);
 
 }

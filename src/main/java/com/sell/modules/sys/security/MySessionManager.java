@@ -1,5 +1,7 @@
 package com.sell.modules.sys.security;
 
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SessionContext;
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
@@ -27,6 +29,7 @@ public class MySessionManager extends DefaultWebSessionManager {
         //从请求头获取token
         String sessionId = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
         if(sessionId != null){
+            System.out.println("传过来的token值为："+sessionId);
             System.out.println("token准备中");
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, ShiroHttpServletRequest.COOKIE_SESSION_ID_SOURCE);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, sessionId);
@@ -38,5 +41,17 @@ public class MySessionManager extends DefaultWebSessionManager {
             //return super.getSessionId(request,response);
         }
 
+    }
+
+    /**
+     * 去掉没有访问权限时跳转的url上的jSessionId
+     * @param session
+     * @param context
+     */
+    @Override
+    protected void onStart(Session session, SessionContext context) {
+        super.onStart(session, context);
+        ServletRequest request = WebUtils.getRequest(context);
+        request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE,ShiroHttpServletRequest.COOKIE_SESSION_ID_SOURCE);
     }
 }

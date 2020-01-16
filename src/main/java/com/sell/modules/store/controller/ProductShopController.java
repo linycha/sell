@@ -3,7 +3,7 @@ package com.sell.modules.store.controller;
 import com.google.common.collect.Maps;
 import com.sell.common.Const;
 import com.sell.common.ResponseCode;
-import com.sell.common.ServerResponse;
+import com.sell.common.Res;
 import com.sell.common.utils.PropertiesUtil;
 import com.sell.modules.store.entity.Product;
 import com.sell.modules.sys.entity.User;
@@ -32,49 +32,49 @@ public class ProductShopController {
     private FileService fileService;
 
     @RequestMapping("save")
-    public ServerResponse saveProduct(HttpSession session, Product product){
+    public Res saveProduct(HttpSession session, Product product){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
-            ServerResponse.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"店家未登录");
+            Res.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"店家未登录");
         }
         return productService.saveOrUpdateProduct(product);
     }
     @RequestMapping("status")
-    public ServerResponse setStatus(HttpSession session, String productId, Integer status){
+    public Res setStatus(HttpSession session, String productId, Integer status){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
-            ServerResponse.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"店家未登录");
+            Res.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"店家未登录");
         }
         return productService.setStatus(productId,status);
     }
     @RequestMapping("detail")
-    public ServerResponse getDetail(HttpSession session, String productId, Integer status){
+    public Res getDetail(HttpSession session, String productId, Integer status){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
-            ServerResponse.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"店家未登录");
+            Res.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"店家未登录");
         }
         return productService.setStatus(productId,status);
     }
     @RequestMapping("list")
-    public ServerResponse getList(HttpSession session, @RequestParam(defaultValue = "1")Integer pageNum,
+    public Res getList(HttpSession session, @RequestParam(defaultValue = "1")Integer pageNum,
                                   @RequestParam(defaultValue = "1")Integer pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
-            ServerResponse.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"店家未登录");
+            Res.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"店家未登录");
         }
         return productService.getProductList(pageNum,pageSize);
     }
     @RequestMapping("search")
-    public ServerResponse searchProduct(HttpSession session,String productName,Integer productId, @RequestParam(defaultValue = "1")Integer pageNum,
+    public Res searchProduct(HttpSession session,String productName,Integer productId, @RequestParam(defaultValue = "1")Integer pageNum,
                                   @RequestParam(defaultValue = "1")Integer pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
-            ServerResponse.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"店家未登录");
+            Res.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"店家未登录");
         }
         return productService.searchProduct(productName,productId,pageNum,pageSize);
     }
     @RequestMapping("upload")
-    public ServerResponse upload(@RequestParam(defaultValue = "upload_file",required=false) MultipartFile file, HttpServletRequest request){
+    public Res upload(@RequestParam(defaultValue = "upload_file",required=false) MultipartFile file, HttpServletRequest request){
         String path = request.getSession().getServletContext().getRealPath("upload");
         String targetFileName = fileService.upload(file,path);
         String url = PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFileName;
@@ -82,7 +82,7 @@ public class ProductShopController {
         Map fileMap = Maps.newHashMap();
         fileMap.put("uri",targetFileName);
         fileMap.put("url",url);
-        return ServerResponse.success(fileMap);
+        return Res.success(fileMap);
     }
 
 

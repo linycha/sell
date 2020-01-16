@@ -1,5 +1,6 @@
 package com.sell.modules.sys.security;
 
+import com.sell.common.Const;
 import com.sell.modules.sys.entity.Permission;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
@@ -66,11 +67,18 @@ public class AuthRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenToken) throws AuthenticationException {
 
-        System.out.println("认证 doGetAuthenticationInfo");
+        System.out.println("开始认证 doGetAuthenticationInfo");
         //从token中获取用户信息
         UsernamePasswordToken token = (UsernamePasswordToken) authenToken;
         String username = token.getUsername();
+        //判断是手机号登陆还是用户名
+        if(Const.isNumber(username)){
+            username = userService.selectUsernameByMobile(username);
+        }
+
         User user = userService.selectByUsername(username);
+
+
         if(user == null){
             return null;
         }
