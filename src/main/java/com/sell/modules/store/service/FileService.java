@@ -7,5 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
  * @date 2019/12/20 11:49
  */
 public interface FileService {
-    String upload(MultipartFile file, String path);
+    String upload(MultipartFile file, String path,String ftpPath);
 }

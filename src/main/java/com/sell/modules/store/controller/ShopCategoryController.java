@@ -1,5 +1,6 @@
 package com.sell.modules.store.controller;
 
+import com.sell.common.Const;
 import com.sell.common.Res;
 import com.sell.modules.store.entity.ShopCategory;
 import com.sell.modules.store.service.ShopCategoryService;
@@ -23,14 +24,24 @@ public class ShopCategoryController {
     /**
      * 获取同级分类
      */
-    @GetMapping("get_shop")
-    public Res getSiblingCategory(@RequestParam(defaultValue = "0") String id){
-        List<ShopCategory> categoryList = shopCategoryService.getSiblingCategory(id);
+    @GetMapping("shop_top")
+    public Res getTopCategory(@RequestParam(defaultValue = "0") String categoryId){
+        List<ShopCategory> categoryList = shopCategoryService.getSiblingCategory(categoryId);
         if(categoryList == null){
             return Res.errorMsg("查找商铺分类失败");
         }
         return Res.success(categoryList);
     }
+    @GetMapping("shop")
+    public Res getSiblingCategory(@RequestParam(defaultValue = "0") String categoryId){
+        List<ShopCategory> categoryList = shopCategoryService.getSiblingCategory(categoryId);
+        if(categoryList == null){
+            return Res.errorMsg("查找商铺分类失败");
+        }
+        categoryList.add(0,new ShopCategory(categoryId,"全部"));
+        return Res.success(categoryList);
+    }
+
 
 
 }

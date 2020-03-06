@@ -27,16 +27,16 @@ public class MySessionManager extends DefaultWebSessionManager {
     @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response){
         //从请求头获取token
-        String sessionId = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
-        if(sessionId != null){
-            System.out.println("传过来的token值为："+sessionId);
+        String token = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
+        if(token != null){
+            System.out.println("传过来的token值为："+token);
             System.out.println("token准备中");
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, ShiroHttpServletRequest.COOKIE_SESSION_ID_SOURCE);
-            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, sessionId);
+            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, token);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
-            return sessionId;
+            return token;
         }else{
-            System.out.println("sessionId is null");
+            System.out.println("token is null");
             return null;
             //return super.getSessionId(request,response);
         }

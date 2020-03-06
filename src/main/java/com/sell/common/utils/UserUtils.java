@@ -15,4 +15,5 @@ public class UserUtils {
     public static String getUserId() {
         return getUser().getId();
     }
+
 }

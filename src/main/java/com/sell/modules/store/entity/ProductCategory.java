@@ -1,11 +1,14 @@
 package com.sell.modules.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 /**
  * @author linyc
  * @date 2020/01/16 17:47
  */
+@JsonIgnoreProperties({"parentId","shopId","status","sort","delFlag","createTime","updateTime"})
 public class ProductCategory {
     private String id;
 

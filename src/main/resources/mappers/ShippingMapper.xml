@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sell.modules.store.dao.ShippingMapper" >
+  <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.Shipping" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tel" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="province" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="city" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="county" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="del_flag" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, name, tel, province, city, county, address, del_flag, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sell_shipping
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sell_shipping
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sell.modules.store.entity.Shipping" >
+    insert into sell_shipping (id, user_id, name, 
+      tel, province, city,
+      county, address, del_flag, create_time,
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+      #{county,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}, now(),
+      now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.sell.modules.store.entity.Shipping" >
+    insert into sell_shipping
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="county != null" >
+        county,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+        create_time,
+        update_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null" >
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      now(),
+      now(),
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.Shipping" >
+    update sell_shipping
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null" >
+        county = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+        update_time = now(),
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.Shipping" >
+    update sell_shipping
+    set user_id = #{userId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      county = #{county,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      update_time = now()
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectListByUserId" parameterType="String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from sell_shipping
+    where user_id = #{userId} and del_flag = '0'
+  </select>
+  <select id="selectDefaultByUserId" parameterType="String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from sell_shipping
+    where user_id = #{userId} limit 1
+  </select>
+</mapper>

@@ -55,16 +55,23 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/login","anon");
         filterChainDefinitionMap.put("/to_login","anon");
         filterChainDefinitionMap.put("/static/**","anon");
+        filterChainDefinitionMap.put("/wechat/**","anon");
         filterChainDefinitionMap.put("/druid/**","anon");
         filterChainDefinitionMap.put("/category/**","anon");
+        filterChainDefinitionMap.put("/product/**","anon");
+        filterChainDefinitionMap.put("/shop/**","anon");
+        filterChainDefinitionMap.put("/order/**","anon");
         filterChainDefinitionMap.put("/list", "authc");
         filterChainDefinitionMap.put("/admin/**","roles[admin]");
+        filterChainDefinitionMap.put("/test","roles[admin]");
         //filterChainDefinitionMap.put("/test","roles[delivery]");
         filterChainDefinitionMap.put("/testt/**","anon");
         //filterChainDefinitionMap.put("/admin/delete","perms[delete]");
-        filterChainDefinitionMap.put("/user/**","anon");
-        filterChainDefinitionMap.put("/shop/**","roles[shop]");
-        filterChainDefinitionMap.put("/delivery/**","roles[delivery]");
+        filterChainDefinitionMap.put("/user/**","authc");
+        filterChainDefinitionMap.put("/shipping/**","anon");
+        //filterChainDefinitionMap.put("/shop/**","roles[shop]");
+        //filterChainDefinitionMap.put("/delivery/**","roles[delivery]");
+        filterChainDefinitionMap.put("/delivery/**","anon");
 
         filterChainDefinitionMap.put("/**","user");
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);

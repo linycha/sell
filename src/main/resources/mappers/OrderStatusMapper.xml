@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sell.modules.store.dao.OrderStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.OrderStatus" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="order_no" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="status" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="remark" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_no, status, remark, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sell_order_status
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sell_order_status
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sell.modules.store.entity.OrderStatus" >
+    insert into sell_order_status (id, order_no, status, 
+      remark, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=BIGINT}, #{status,jdbcType=CHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sell.modules.store.entity.OrderStatus" >
+    insert into sell_order_status
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      create_time,
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+        now(),
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.OrderStatus" >
+    update sell_order_status
+    <set >
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.OrderStatus" >
+    update sell_order_status
+    set order_no = #{orderNo,jdbcType=BIGINT},
+      status = #{status,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

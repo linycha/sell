@@ -1,19 +1,32 @@
 package com.sell;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import com.sell.common.Const;
+import com.sell.modules.store.dao.OrderMapper;
+import com.sell.modules.store.dao.ProductMapper;
 import com.sell.modules.store.dao.ShopCategoryMapper;
-import com.sell.modules.store.dao.TestMapper;
+import com.sell.modules.store.dao.ShopMapper;
+import com.sell.modules.store.entity.Delivery;
+import com.sell.modules.store.entity.Shop;
 import com.sell.modules.store.entity.ShopCategory;
+import com.sell.modules.store.service.DeliveryService;
+import com.sell.modules.store.service.OrderService;
+import com.sell.modules.store.vo.Cart;
+import com.sell.modules.store.vo.NewOrderVo;
+import com.sell.modules.store.vo.ShopVo;
+import com.sell.modules.store.vo.UserOrderVo;
 import com.sell.modules.sys.dao.UserMapper;
-import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
-import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,17 +61,70 @@ public class Test {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private TestMapper testMapper;
+    private ShopMapper shopMapper;
     @Autowired
     private ShopCategoryMapper shopCategoryMapper;
+    @Autowired
+    private ProductMapper productMapper;
+    @Autowired
+    private OrderMapper orderMapper;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private DeliveryService deliveryService;
+    @org.junit.Test
+    public void test1(){
+        List<String> categoryIds = shopCategoryMapper.selectCategoryList("3");
+        System.out.println(categoryIds.size());
+//        List<UserOrderVo> order = orderMapper.selectUserOrderList("12","");
+//        System.out.println(order);
+        /*String str = "";
+        for(Cart cart : order.getCarts()){
+            str += cart.getName()+ "×" + cart.getNum()+",";
+        }
+        order.setCartStr(str);
+        System.out.println(str);*/
+       //for (NewOrderVo order:orderVoList){
+       //    System.out.println(order.toString());
+       //}
+    }
+    @org.junit.Test
+    public void test2(){
+        Delivery delivery = deliveryService.getBest();
+        System.out.println(delivery);
+    }
     @org.junit.Test
     public void test(){
-       Object result = new SimpleHash("md5","123456", null, 2);
-        System.out.println(result.toString());
+        String categoryId = "3";
+        List<String> categoryIds = new ArrayList<>();
+        if(!StringUtils.isBlank(categoryId)){
+            ShopCategory shopCategory = shopCategoryMapper.selectByPrimaryKey(categoryId);
+            if(shopCategory.getParentId().equals(Const.CATEGORY_PARENT_ID)){
+                categoryIds = shopCategoryMapper.selectCategoryList(categoryId);
+                if(categoryIds.size() == 0){
+                    System.out.println("出错了");
+                    categoryIds = null;
+                }
+            }else{
+                categoryIds.add(categoryId);
+            }
+        }else{
+            categoryIds = null;
+        }
+        System.out.println("categoryIds="+categoryIds);
+        List<ShopVo> shopList = shopMapper.selectShopList("", categoryIds, Const.ShopList.ORDER_BY.get(0));
+        if(shopList.size() == 0){
+            System.out.println("未找到");
+        }else{
+            System.out.println(shopList);
+        }
+
     }
     @org.junit.Test
     public void userTest(){
+
         List<ShopCategory> shopCategoryList = shopCategoryMapper.selectSiblingCategory("0");
         System.out.println(shopCategoryList);
     }
+
 }

@@ -33,6 +33,7 @@ spring:
 mybatis:
   type-aliases-package: com.sell.modules.*.entity
   mapper-locations: classpath:mappers/*.xml
+  #驼峰命名自动转换，打印sql语句
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

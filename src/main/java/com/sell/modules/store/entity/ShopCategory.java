@@ -1,10 +1,13 @@
 package com.sell.modules.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 /**
  * @author linyc
  * @date 2020/01/16 17:47
  */
+@JsonIgnoreProperties({"parentId","sort","delFlag","createTime","updateTime"})
 public class ShopCategory {
     private String id;
 
@@ -19,10 +22,11 @@ public class ShopCategory {
     private Date createTime;
 
     private Date updateTime;
-
-    public ShopCategory(String id, String name) {
+    //返回给前端的
+    private String text;
+    public ShopCategory(String id, String text) {
         this.id = id;
-        this.name = name;
+        this.text = text;
     }
 
     public ShopCategory(String id, String parentId, String name, Integer sort, String delFlag, Date createTime, Date updateTime) {
@@ -37,6 +41,14 @@ public class ShopCategory {
 
     public ShopCategory() {
         super();
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getId() {

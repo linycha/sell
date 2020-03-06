@@ -4,7 +4,6 @@ import com.sell.common.Const;
 import com.sell.common.IdGenerate;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.dao.ProductCategoryMapper;
-import com.sell.modules.store.dao.ProductMapper;
 import com.sell.modules.store.entity.ProductCategory;
 import com.sell.modules.store.service.ProductCategoryService;
 import org.apache.commons.lang3.StringUtils;

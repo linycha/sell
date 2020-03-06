@@ -2,9 +2,7 @@ package com.sell.modules.store.controller;
 
 import com.sell.common.Res;
 import com.sell.modules.store.entity.ProductCategory;
-import com.sell.modules.store.entity.ShopCategory;
 import com.sell.modules.store.service.ProductCategoryService;
-import com.sell.modules.store.service.ProductService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +21,12 @@ public class ProductCategoryController {
 
     /**
      * 查找某个商家的商品分类
-     * @param shopId
+     * @param id
      * @return
      */
-    @GetMapping("get_product")
-    public Res getCategory(String shopId){
-        List<ProductCategory> categoryList = productCategoryService.getProductCategory(shopId);
+    @GetMapping("product")
+    public Res getCategory(String id){
+        List<ProductCategory> categoryList = productCategoryService.getProductCategory(id);
         if(categoryList == null){
             return Res.errorMsg("查找商铺分类失败");
         }

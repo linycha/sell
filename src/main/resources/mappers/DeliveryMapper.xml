@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sell.modules.store.dao.DeliveryMapper" >
+  <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.Delivery" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="true_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="score" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="punctuality" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="day_task_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="month_task_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="total_task_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="add_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, true_name, mobile, score, punctuality, day_task_num, month_task_num, 
+    total_task_num, status, add_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sell_delivery
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sell_delivery
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sell.modules.store.entity.Delivery" >
+    insert into sell_delivery (id, user_id, true_name, 
+      mobile, score, punctuality, 
+      day_task_num, month_task_num, total_task_num, 
+      status, add_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{score,jdbcType=DECIMAL}, #{punctuality,jdbcType=INTEGER}, 
+      #{dayTaskNum,jdbcType=INTEGER}, #{monthTaskNum,jdbcType=INTEGER}, #{totalTaskNum,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sell.modules.store.entity.Delivery" >
+    insert into sell_delivery
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="trueName != null" >
+        true_name,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="punctuality != null" >
+        punctuality,
+      </if>
+      <if test="dayTaskNum != null" >
+        day_task_num,
+      </if>
+      <if test="monthTaskNum != null" >
+        month_task_num,
+      </if>
+      <if test="totalTaskNum != null" >
+        total_task_num,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null" >
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="punctuality != null" >
+        #{punctuality,jdbcType=INTEGER},
+      </if>
+      <if test="dayTaskNum != null" >
+        #{dayTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="monthTaskNum != null" >
+        #{monthTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalTaskNum != null" >
+        #{totalTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.Delivery" >
+    update sell_delivery
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null" >
+        true_name = #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="punctuality != null" >
+        punctuality = #{punctuality,jdbcType=INTEGER},
+      </if>
+      <if test="dayTaskNum != null" >
+        day_task_num = #{dayTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="monthTaskNum != null" >
+        month_task_num = #{monthTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalTaskNum != null" >
+        total_task_num = #{totalTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.Delivery" >
+    update sell_delivery
+    set user_id = #{userId,jdbcType=VARCHAR},
+      true_name = #{trueName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      score = #{score,jdbcType=DECIMAL},
+      punctuality = #{punctuality,jdbcType=INTEGER},
+      day_task_num = #{dayTaskNum,jdbcType=INTEGER},
+      month_task_num = #{monthTaskNum,jdbcType=INTEGER},
+      total_task_num = #{totalTaskNum,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectCount" resultType="int">
+    select count(id) from sell_delivery
+    where status = '1'
+  </select>
+  <select id="selectBest" parameterType="Integer" resultType="com.sell.modules.store.entity.Delivery">
+    select id,true_name
+    from sell_delivery
+    where status = '1'
+    order by score desc limit #{number},1
+  </select>
+  <select id="selectDeliveryIdByUserId" parameterType="String" resultType="String">
+    select id from sell_delivery
+    where user_id =#{userId}
+  </select>
+  <select id="selectByUserId" parameterType="String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from sell_delivery
+    where user_id = #{userId}
+  </select>
+  <update id="updateTaskNumByUserId" parameterType="String">
+    update sell_delivery set
+    day_task_num = day_task_num+1,
+    month_task_num = month_task_num+1,
+    total_task_num = total_task_num+1
+     where user_id = #{userId}
+  </update>
+</mapper>

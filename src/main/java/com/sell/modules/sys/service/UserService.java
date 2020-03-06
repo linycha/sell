@@ -12,16 +12,10 @@ import java.util.List;
 public interface UserService {
     Res<String> register(String phone,String password);
 
-    Res selectById(String id);
+    User selectById(String id);
 
     Res<String> updateMobile(User user);
     Res<String> updatePassword(String newPwd,User user);
-
-
-
-
-
-
 
     Res<String> checkValid(String str, String type);
 
@@ -30,5 +24,7 @@ public interface UserService {
 
     User selectByUsername(String username);
     String selectUsernameByMobile(String mobile);
+
+    int update(User user);
 
 }

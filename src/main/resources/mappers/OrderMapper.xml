@@ -3,51 +3,59 @@
 <mapper namespace="com.sell.modules.store.dao.OrderMapper" >
   <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.Order" >
     <constructor >
-      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="order_no" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="deliveryman_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="shipping_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="payment" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
-      <arg column="payment_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="postage" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
-      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="desc" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="payment_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="receive_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="get_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shipping_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shop_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shop_logo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shop_mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="deliver_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="deliver_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="deliver_mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="box_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="send_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="total_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="pay_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="pay_type" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="remark" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="complete_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="status" jdbcType="CHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_no, user_id, deliveryman_id, shipping_id, payment, payment_type, postage, 
-    status, desc, payment_time, receive_time, get_time, complete_time, create_time, update_time
+    id, order_no, user_id, shipping_id, shop_id, shop_name, shop_logo, shop_mobile,
+    deliver_id, deliver_name, deliver_mobile, box_cost, send_cost, total_money, pay_money, 
+    pay_type, remark, complete_time, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from sell_order
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sell_order
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.sell.modules.store.entity.Order" >
     insert into sell_order (id, order_no, user_id, 
-      deliveryman_id, shipping_id, payment, 
-      payment_type, postage, status, 
-      desc, payment_time, receive_time, 
-      get_time, complete_time, create_time, 
-      update_time)
-    values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}, 
-      #{deliverymanId,jdbcType=INTEGER}, #{shippingId,jdbcType=INTEGER}, #{payment,jdbcType=DECIMAL}, 
-      #{paymentType,jdbcType=INTEGER}, #{postage,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
-      #{desc,jdbcType=VARCHAR}, #{paymentTime,jdbcType=TIMESTAMP}, #{receiveTime,jdbcType=TIMESTAMP}, 
-      #{getTime,jdbcType=TIMESTAMP}, #{completeTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      shipping_id, shop_id, shop_name, 
+      shop_logo, shop_mobile, deliver_id,
+      deliver_name, deliver_mobile, box_cost, 
+      send_cost, total_money, pay_money, 
+      pay_type, remark, complete_time, 
+      create_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, 
+      #{shippingId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
+      #{shopLogo,jdbcType=VARCHAR}, #{shopMobile,jdbcType=VARCHAR}, #{deliverId,jdbcType=VARCHAR},
+      #{deliverName,jdbcType=VARCHAR}, #{deliverMobile,jdbcType=VARCHAR}, #{boxCost,jdbcType=DECIMAL}, 
+      #{sendCost,jdbcType=DECIMAL}, #{totalMoney,jdbcType=DECIMAL}, #{payMoney,jdbcType=DECIMAL}, 
+      #{payType,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{completeTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.sell.modules.store.entity.Order" >
     insert into sell_order
@@ -61,138 +69,169 @@
       <if test="userId != null" >
         user_id,
       </if>
-      <if test="deliverymanId != null" >
-        deliveryman_id,
-      </if>
       <if test="shippingId != null" >
         shipping_id,
       </if>
-      <if test="payment != null" >
-        payment,
+      <if test="shopId != null" >
+        shop_id,
       </if>
-      <if test="paymentType != null" >
-        payment_type,
+      <if test="shopName != null" >
+        shop_name,
       </if>
-      <if test="postage != null" >
-        postage,
+      <if test="shopLogo != null" >
+        shop_logo,
       </if>
-      <if test="status != null" >
-        status,
+      <if test="shopMobile != null" >
+        shop_mobile,
       </if>
-      <if test="desc != null" >
-        desc,
+      <if test="deliverId != null" >
+        deliver_id,
       </if>
-      <if test="paymentTime != null" >
-        payment_time,
+      <if test="deliverName != null" >
+        deliver_name,
       </if>
-      <if test="receiveTime != null" >
-        receive_time,
+      <if test="deliverMobile != null" >
+        deliver_mobile,
       </if>
-      <if test="getTime != null" >
-        get_time,
+      <if test="boxCost != null" >
+        box_cost,
+      </if>
+      <if test="sendCost != null" >
+        send_cost,
+      </if>
+      <if test="totalMoney != null" >
+        total_money,
+      </if>
+      <if test="payMoney != null" >
+        pay_money,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="completeTime != null" >
         complete_time,
       </if>
-      <if test="createTime != null" >
+      <if test="status != null" >
+        status,
+      </if>
         create_time,
-      </if>
-      <if test="updateTime != null" >
         update_time,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="orderNo != null" >
         #{orderNo,jdbcType=BIGINT},
       </if>
       <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="deliverymanId != null" >
-        #{deliverymanId,jdbcType=INTEGER},
+        #{userId,jdbcType=VARCHAR},
       </if>
       <if test="shippingId != null" >
-        #{shippingId,jdbcType=INTEGER},
+        #{shippingId,jdbcType=VARCHAR},
       </if>
-      <if test="payment != null" >
-        #{payment,jdbcType=DECIMAL},
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
       </if>
-      <if test="paymentType != null" >
-        #{paymentType,jdbcType=INTEGER},
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
       </if>
-      <if test="postage != null" >
-        #{postage,jdbcType=DECIMAL},
+      <if test="shopLogo != null" >
+        #{shopLogo,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
+      <if test="shopMobile != null" >
+        #{shopMobile,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null" >
-        #{desc,jdbcType=VARCHAR},
+      <if test="deliverId != null" >
+        #{deliverId,jdbcType=VARCHAR},
       </if>
-      <if test="paymentTime != null" >
-        #{paymentTime,jdbcType=TIMESTAMP},
+      <if test="deliverName != null" >
+        #{deliverName,jdbcType=VARCHAR},
       </if>
-      <if test="receiveTime != null" >
-        #{receiveTime,jdbcType=TIMESTAMP},
+      <if test="deliverMobile != null" >
+        #{deliverMobile,jdbcType=VARCHAR},
       </if>
-      <if test="getTime != null" >
-        #{getTime,jdbcType=TIMESTAMP},
+      <if test="boxCost != null" >
+        #{boxCost,jdbcType=DECIMAL},
+      </if>
+      <if test="sendCost != null" >
+        #{sendCost,jdbcType=DECIMAL},
+      </if>
+      <if test="totalMoney != null" >
+        #{totalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="payMoney != null" >
+        #{payMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="completeTime != null" >
         #{completeTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
       </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+      now(),
+      now(),
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.Order" >
     update sell_order
     <set >
-      <if test="orderNo != null" >
-        order_no = #{orderNo,jdbcType=BIGINT},
-      </if>
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="deliverymanId != null" >
-        deliveryman_id = #{deliverymanId,jdbcType=INTEGER},
-      </if>
       <if test="shippingId != null" >
-        shipping_id = #{shippingId,jdbcType=INTEGER},
+        shipping_id = #{shippingId,jdbcType=VARCHAR},
       </if>
-      <if test="payment != null" >
-        payment = #{payment,jdbcType=DECIMAL},
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
       </if>
-      <if test="paymentType != null" >
-        payment_type = #{paymentType,jdbcType=INTEGER},
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
       </if>
-      <if test="postage != null" >
-        postage = #{postage,jdbcType=DECIMAL},
+      <if test="shopLogo != null" >
+        shop_logo = #{shopLogo,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+      <if test="shopMobile != null" >
+        shop_mobile = #{shopMobile,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null" >
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="deliverId != null" >
+        deliver_id = #{deliverId,jdbcType=VARCHAR},
       </if>
-      <if test="paymentTime != null" >
-        payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+      <if test="deliverName != null" >
+        deliver_name = #{deliverName,jdbcType=VARCHAR},
       </if>
-      <if test="receiveTime != null" >
-        receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      <if test="deliverMobile != null" >
+        deliver_mobile = #{deliverMobile,jdbcType=VARCHAR},
       </if>
-      <if test="getTime != null" >
-        get_time = #{getTime,jdbcType=TIMESTAMP},
+      <if test="boxCost != null" >
+        box_cost = #{boxCost,jdbcType=DECIMAL},
+      </if>
+      <if test="sendCost != null" >
+        send_cost = #{sendCost,jdbcType=DECIMAL},
+      </if>
+      <if test="totalMoney != null" >
+        total_money = #{totalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="payMoney != null" >
+        pay_money = #{payMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="completeTime != null" >
-        complete_time = #{completeTime,jdbcType=TIMESTAMP},
+      complete_time = #{completeTime,jdbcType=TIMESTAMP},
+    </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -201,25 +240,106 @@
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where order_no = #{orderNo,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.Order" >
     update sell_order
     set order_no = #{orderNo,jdbcType=BIGINT},
-      user_id = #{userId,jdbcType=INTEGER},
-      deliveryman_id = #{deliverymanId,jdbcType=INTEGER},
-      shipping_id = #{shippingId,jdbcType=INTEGER},
-      payment = #{payment,jdbcType=DECIMAL},
-      payment_type = #{paymentType,jdbcType=INTEGER},
-      postage = #{postage,jdbcType=DECIMAL},
-      status = #{status,jdbcType=INTEGER},
-      desc = #{desc,jdbcType=VARCHAR},
-      payment_time = #{paymentTime,jdbcType=TIMESTAMP},
-      receive_time = #{receiveTime,jdbcType=TIMESTAMP},
-      get_time = #{getTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=VARCHAR},
+      shipping_id = #{shippingId,jdbcType=VARCHAR},
+      shop_id = #{shopId,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      shop_logo = #{shopLogo,jdbcType=VARCHAR},
+      shop_mobile = #{shopMobile,jdbcType=VARCHAR},
+      deliver_id = #{deliverId,jdbcType=VARCHAR},
+      deliver_name = #{deliverName,jdbcType=VARCHAR},
+      deliver_mobile = #{deliverMobile,jdbcType=VARCHAR},
+      box_cost = #{boxCost,jdbcType=DECIMAL},
+      send_cost = #{sendCost,jdbcType=DECIMAL},
+      total_money = #{totalMoney,jdbcType=DECIMAL},
+      pay_money = #{payMoney,jdbcType=DECIMAL},
+      pay_type = #{payType,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
       complete_time = #{completeTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectNewOrderList" parameterType="map" resultMap="newOrderMap">
+    select o.id as id,
+    o.order_no,
+    o.remark,
+    u.mobile,
+    o.pay_money,
+    oi.product_name as name,
+    oi.number as num
+    from sell_order o
+    left join sys_user u on o.user_id = u.id
+    left join sell_order_item oi on o.order_no = oi.order_no
+    where o.status = '1'
+    and o.shop_id = #{shopId}
+    <if test="orderNo != null and orderNo != ''">
+      and o.order_no like #{orderNo}
+    </if>
+  </select>
+  <select id="selectUserOrderList" parameterType="map" resultMap="UserOrderMap">
+    select o.id as id,
+    o.order_no,
+    o.shop_id,
+    o.shop_logo,
+    o.shop_name,
+    o.status,
+    o.pay_money,
+    o.create_time,
+    oi.product_name as name,
+    oi.number as num
+    from sell_order o
+    left join sell_order_item oi on o.order_no = oi.order_no
+    where o.user_id = #{userId}
+    <if test="orderNo != null and orderNo != ''">
+      and o.order_no like #{orderNo}
+    </if>
+    order By o.create_time desc
+  </select>
+  <select id="selectDeliveryOrderList" parameterType="map" resultType="com.sell.modules.store.vo.DeliveryOrderVo">
+    select o.order_no as orderNo,
+    s.name as shopName,
+    s.address as shopAddress,
+    si.address as userAddress,
+    si.name as username,
+    si.tel as mobile,
+    s.delivery_time as deliveryTime,
+    s.delivery_cost as deliveryCost
+    from sell_order o
+    left join sell_shop s on s.id = o.shop_id
+    left join sell_shipping si on si.id = o.shipping_id
+    where o.deliver_id = #{deliveryId}
+    and o.status = #{status}
+    /*and o.create_time > NOW()-INTERVAL 10 HOUR*/
+  </select>
+
+  <resultMap id="newOrderMap" type="com.sell.modules.store.vo.NewOrderVo">
+    <id column="id" javaType="java.lang.String" jdbcType="VARCHAR" property="id" />
+    <result column="order_no" javaType="java.lang.Long" jdbcType="BIGINT" property="orderNo" />
+    <result column="mobile" javaType="java.lang.String" jdbcType="VARCHAR" property="userMobile" />
+    <result column="remark" javaType="java.lang.String" jdbcType="VARCHAR" property="remark"/>
+    <result column="pay_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" property="payMoney" />
+    <association property="carts" javaType="com.sell.modules.store.vo.Cart" resultMap="CartMap" column="id"/>
+  </resultMap>
+  <resultMap id="UserOrderMap" type="com.sell.modules.store.vo.UserOrderVo">
+    <id column="id" javaType="java.lang.String" jdbcType="VARCHAR" property="id" />
+    <result column="order_no" javaType="java.lang.Long" jdbcType="BIGINT" property="orderNo" />
+    <result column="shop_id" javaType="java.lang.String" jdbcType="VARCHAR" property="shopId" />
+    <result column="shop_logo" javaType="java.lang.String" jdbcType="VARCHAR" property="shopLogo" />
+    <result column="shop_name" javaType="java.lang.String" jdbcType="VARCHAR" property="shopName" />
+    <result column="status" jdbcType="CHAR" javaType="java.lang.String" property="status" />
+    <result column="pay_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" property="payMoney" />
+    <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="completeTime"  />
+    <association property="carts" javaType="com.sell.modules.store.vo.Cart" resultMap="CartMap" column="id"/>
+  </resultMap>
+  <resultMap id="CartMap" type="com.sell.modules.store.vo.Cart">
+    <result column="name" property="name"/>
+    <result column="num" property="num"/>
+  </resultMap>
+
 </mapper>

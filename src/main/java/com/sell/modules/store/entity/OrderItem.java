@@ -1,67 +1,60 @@
 package com.sell.modules.store.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @author linyc
- * @date 2019/12/12 12:43
+ * @author linyuc
+ * @date 2020/03/01 00:13
  */
-public class OrderItem {
-    private Integer id;
-
-    private Integer userId;
+public class OrderItem implements Serializable {
+    private String id;
 
     private Long orderNo;
 
-    private Integer productId;
+    private String shopId;
+
+    private String productId;
 
     private String productName;
 
-    private String productImage;
+    private String productImg;
 
-    private BigDecimal currentUnitPrice;
+    private BigDecimal originPrice;
 
-    private Integer quantity;
+    private BigDecimal sellPrice;
+
+    private Integer number;
 
     private BigDecimal totalPrice;
 
     private Date createTime;
 
-    private Date updateTime;
-
-    public OrderItem(Integer id, Integer userId, Long orderNo, Integer productId, String productName, String productImage, BigDecimal currentUnitPrice, Integer quantity, BigDecimal totalPrice, Date createTime, Date updateTime) {
+    public OrderItem(String id, Long orderNo, String shopId, String productId, String productName, String productImg, BigDecimal originPrice, BigDecimal sellPrice, Integer number, BigDecimal totalPrice, Date createTime) {
         this.id = id;
-        this.userId = userId;
         this.orderNo = orderNo;
+        this.shopId = shopId;
         this.productId = productId;
         this.productName = productName;
-        this.productImage = productImage;
-        this.currentUnitPrice = currentUnitPrice;
-        this.quantity = quantity;
+        this.productImg = productImg;
+        this.originPrice = originPrice;
+        this.sellPrice = sellPrice;
+        this.number = number;
         this.totalPrice = totalPrice;
         this.createTime = createTime;
-        this.updateTime = updateTime;
     }
 
     public OrderItem() {
         super();
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public Long getOrderNo() {
@@ -72,12 +65,20 @@ public class OrderItem {
         this.orderNo = orderNo;
     }
 
-    public Integer getProductId() {
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId == null ? null : shopId.trim();
+    }
+
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setProductId(String productId) {
+        this.productId = productId == null ? null : productId.trim();
     }
 
     public String getProductName() {
@@ -88,28 +89,36 @@ public class OrderItem {
         this.productName = productName == null ? null : productName.trim();
     }
 
-    public String getProductImage() {
-        return productImage;
+    public String getProductImg() {
+        return productImg;
     }
 
-    public void setProductImage(String productImage) {
-        this.productImage = productImage == null ? null : productImage.trim();
+    public void setProductImg(String productImg) {
+        this.productImg = productImg == null ? null : productImg.trim();
     }
 
-    public BigDecimal getCurrentUnitPrice() {
-        return currentUnitPrice;
+    public BigDecimal getOriginPrice() {
+        return originPrice;
     }
 
-    public void setCurrentUnitPrice(BigDecimal currentUnitPrice) {
-        this.currentUnitPrice = currentUnitPrice;
+    public void setOriginPrice(BigDecimal originPrice) {
+        this.originPrice = originPrice;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public BigDecimal getSellPrice() {
+        return sellPrice;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setSellPrice(BigDecimal sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public BigDecimal getTotalPrice() {
@@ -126,13 +135,5 @@ public class OrderItem {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 }

@@ -39,12 +39,8 @@ public class UserServiceImpl implements UserService {
         return Res.successMsg("注册成功");
     }
     @Override
-    public Res selectById(String id){
-        User user = userMapper.selectByPrimaryKey(id);
-        if(user == null){
-            return Res.errorMsg("找不到当前用户");
-        }
-        return Res.success(user);
+    public User selectById(String id){
+        return userMapper.selectByPrimaryKey(id);
     }
     @Override
     public Res<String> updateMobile(User user){
@@ -130,6 +126,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public String selectUsernameByMobile(String mobile){
         return userMapper.selectUsernameByMobile(mobile);
+    }
+    @Override
+    public int update(User user){
+        return userMapper.updateByPrimaryKeySelective(user);
     }
 
 }

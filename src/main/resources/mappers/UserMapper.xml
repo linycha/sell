@@ -10,20 +10,17 @@
       <arg column="sex" javaType="java.lang.String" jdbcType="CHAR" />
       <arg column="mobile" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="head_img" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="question" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="answer" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="role" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, open_id, username, password, sex, mobile, head_img, question, answer, role, create_time,
+    id, open_id, username, password, sex, mobile, head_img, role, create_time,
     update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="com.sell.modules.sys.entity.User">
+    select id, username, mobile, head_img
     from sys_user
     where id = #{id,jdbcType=VARCHAR}
   </select>
@@ -34,12 +31,12 @@
   <insert id="insert" parameterType="com.sell.modules.sys.entity.User">
     insert into sys_user (id, open_id, username,
       password, sex, mobile,
-      head_img, question, answer,
+      head_img,
       role, create_time, update_time
       )
     values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{mobile,jdbcType=VARCHAR},
-      #{headImg,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, 
+      #{headImg,jdbcType=VARCHAR},
       #{role,jdbcType=INTEGER}, now(), now()
       )
   </insert>
@@ -66,12 +63,6 @@
       </if>
       <if test="headImg != null">
         head_img,
-      </if>
-      <if test="question != null">
-        question,
-      </if>
-      <if test="answer != null">
-        answer,
       </if>
       <if test="role != null">
         role,
@@ -105,12 +96,6 @@
       <if test="headImg != null">
         #{headImg,jdbcType=VARCHAR},
       </if>
-      <if test="question != null">
-        #{question,jdbcType=VARCHAR},
-      </if>
-      <if test="answer != null">
-        #{answer,jdbcType=VARCHAR},
-      </if>
       <if test="role != null">
         #{role,jdbcType=INTEGER},
       </if>
@@ -143,15 +128,6 @@
       <if test="headImg != null">
         head_img = #{headImg,jdbcType=VARCHAR},
       </if>
-      <if test="question != null">
-        question = #{question,jdbcType=VARCHAR},
-      </if>
-      <if test="answer != null">
-        answer = #{answer,jdbcType=VARCHAR},
-      </if>
-      <if test="role != null">
-        role = #{role,jdbcType=INTEGER},
-      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -169,8 +145,6 @@
       sex = #{sex,jdbcType=CHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
       head_img = #{headImg,jdbcType=VARCHAR},
-      question = #{question,jdbcType=VARCHAR},
-      answer = #{answer,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
@@ -244,8 +218,6 @@
     <result column="sex" javaType="java.lang.String" jdbcType="CHAR" />
     <result column="mobile" javaType="java.lang.String" jdbcType="VARCHAR" />
     <result column="head_img" javaType="java.lang.String" jdbcType="VARCHAR" />
-    <result column="question" javaType="java.lang.String" jdbcType="VARCHAR" />
-    <result column="answer" javaType="java.lang.String" jdbcType="VARCHAR" />
     <result column="role" javaType="java.lang.Integer" jdbcType="INTEGER" />
     <result column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     <result column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />

@@ -1,16 +1,15 @@
 package com.sell.modules.sys.controller;
 
 import com.sell.common.Res;
+import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +31,10 @@ public class LoginController {
         try {
             subject.login(token);
             info.put("token",subject.getSession().getId());
+            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            System.out.println(user);
+            System.out.println(user);
+            System.out.println(user.getId());
             return Res.success("登录成功", info);
         }catch(Exception e){
             e.printStackTrace();
@@ -52,7 +55,7 @@ public class LoginController {
 
     @RequestMapping("/to_login")
     public Res<String> toLogin(){
-        return Res.errorCodeMsg(-2,"请先登录账号,或token已过期");
+        return Res.errorCodeMsg(-2,"请先登录账号");
     }
     @RequestMapping("/unauthc")
     public Res<String> unAuthor(){
@@ -63,7 +66,10 @@ public class LoginController {
     public Res<String> logout(){
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-
         return Res.successMsg("退出成功");
+    }
+    @RequestMapping("test")
+    public String a(){
+        return "eeeeeeeeeeeee";
     }
 }

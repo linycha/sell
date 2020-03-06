@@ -1,14 +1,11 @@
 package com.sell.modules.store.dao;
 
 import com.sell.modules.store.entity.Product;
+import com.sell.modules.store.vo.ProductVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * @author linyc
- * @date 2019/12/12 12:43
- */
 public interface ProductMapper {
     int deleteByPrimaryKey(String id);
 
@@ -21,6 +18,9 @@ public interface ProductMapper {
     int updateByPrimaryKeySelective(Product record);
 
     int updateByPrimaryKey(Product record);
-    List<Product> selectList();
-    List<Product> selectByNamAndProductId(@Param("productName")String productName,@Param("productId")Integer productId);
+
+    List<ProductVo> selectProductListByCategory(String categoryId);
+    List<Product> selectProductList(@Param("categoryId") String categoryId, @Param("name")String name,
+                                    @Param("status") String status);
+    Integer checkStockByName(@Param("name")String name,@Param("num")Integer num);
 }

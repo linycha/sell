@@ -5,22 +5,29 @@
     <constructor >
       <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="shop_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="category_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="category_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="main_img" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="sub_images" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="desc" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="logo_img" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sub_img" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="remark" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="origin_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="sell_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="discount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="likes" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="limit_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="total_sales" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="monthly_sales" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="stock" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="status" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="del_flag" jdbcType="CHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, shop_id, category_id, name, main_img, sub_images, desc, price, monthly_sales, 
-    stock, status, create_time, update_time
+    id, shop_id, category_id, name, logo_img, sub_img, remark, origin_price, sell_price,
+    discount, likes, limit_num, total_sales, monthly_sales, stock, status, del_flag, create_time,
+    update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -34,14 +41,18 @@
   </delete>
   <insert id="insert" parameterType="com.sell.modules.store.entity.Product" >
     insert into sell_product (id, shop_id, category_id, 
-      name, main_img, sub_images, 
-      desc, price, monthly_sales, 
-      stock, status, create_time, 
+      name, logo_img, sub_img, 
+      remark, origin_price, sell_price,
+      discount, like, limit_num, 
+      total_sales, monthly_sales, stock, 
+      status, del_flag, create_time, 
       update_time)
-    values (#{id,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{mainImg,jdbcType=VARCHAR}, #{subImages,jdbcType=VARCHAR}, 
-      #{desc,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{monthlySales,jdbcType=INTEGER}, 
-      #{stock,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, now(),
+    values (#{id,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{logoImg,jdbcType=VARCHAR}, #{subImg,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{originPrice,jdbcType=DECIMAL}, #{sellPrice,jdbcType=DECIMAL},
+      #{discount,jdbcType=DECIMAL}, #{likes,jdbcType=INTEGER}, #{limitNum,jdbcType=INTEGER},
+      #{totalSales,jdbcType=INTEGER}, #{monthlySales,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, 
+      #{status,jdbcType=CHAR}, #{delFlag,jdbcType=CHAR}, now(),
       now())
   </insert>
   <insert id="insertSelective" parameterType="com.sell.modules.store.entity.Product" >
@@ -59,17 +70,32 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="mainImg != null" >
-        main_img,
+      <if test="logoImg != null" >
+        logo_img,
       </if>
-      <if test="subImages != null" >
-        sub_images,
+      <if test="subImg != null" >
+        sub_img,
       </if>
-      <if test="desc != null" >
-        desc,
+      <if test="remark != null" >
+        remark,
       </if>
-      <if test="price != null" >
-        price,
+      <if test="originPrice != null" >
+        origin_price,
+      </if>
+      <if test="sellPrice != null" >
+        sell_price,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="likes != null" >
+        likes,
+      </if>
+      <if test="limitNum != null" >
+        limit_num,
+      </if>
+      <if test="totalSales != null" >
+        total_sales,
       </if>
       <if test="monthlySales != null" >
         monthly_sales,
@@ -79,6 +105,9 @@
       </if>
       <if test="status != null" >
         status,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
       </if>
         create_time,
         update_time,
@@ -91,22 +120,37 @@
         #{shopId,jdbcType=VARCHAR},
       </if>
       <if test="categoryId != null" >
-        #{categoryId,jdbcType=INTEGER},
+        #{categoryId,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="mainImg != null" >
-        #{mainImg,jdbcType=VARCHAR},
+      <if test="logoImg != null" >
+        #{logoImg,jdbcType=VARCHAR},
       </if>
-      <if test="subImages != null" >
-        #{subImages,jdbcType=VARCHAR},
+      <if test="subImg != null" >
+        #{subImg,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null" >
-        #{desc,jdbcType=VARCHAR},
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="price != null" >
-        #{price,jdbcType=DECIMAL},
+      <if test="originPrice != null" >
+        #{originPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="sellPrice != null" >
+        #{sellPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="likes != null" >
+        #{likes,jdbcType=INTEGER},
+      </if>
+      <if test="limitNum != null" >
+        #{limitNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalSales != null" >
+        #{totalSales,jdbcType=INTEGER},
       </if>
       <if test="monthlySales != null" >
         #{monthlySales,jdbcType=INTEGER},
@@ -115,10 +159,12 @@
         #{stock,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=INTEGER},
+        #{status,jdbcType=CHAR},
       </if>
-        now(),
-        now(),
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      now(),now(),
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.Product" >
@@ -128,22 +174,37 @@
         shop_id = #{shopId,jdbcType=VARCHAR},
       </if>
       <if test="categoryId != null" >
-        category_id = #{categoryId,jdbcType=INTEGER},
+        category_id = #{categoryId,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="mainImg != null" >
-        main_img = #{mainImg,jdbcType=VARCHAR},
+      <if test="logoImg != null" >
+        logo_img = #{logoImg,jdbcType=VARCHAR},
       </if>
-      <if test="subImages != null" >
-        sub_images = #{subImages,jdbcType=VARCHAR},
+      <if test="subImg != null" >
+        sub_img = #{subImg,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null" >
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=DECIMAL},
+      <if test="originPrice != null" >
+        origin_price = #{originPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="sellPrice != null" >
+        sell_price = #{sellPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="likes != null" >
+        likes = #{likes,jdbcType=INTEGER},
+      </if>
+      <if test="limitNum != null" >
+        limit_num = #{limitNum,jdbcType=INTEGER},
+      </if>
+      <if test="totalSales != null" >
+        total_sales = #{totalSales,jdbcType=INTEGER},
       </if>
       <if test="monthlySales != null" >
         monthly_sales = #{monthlySales,jdbcType=INTEGER},
@@ -152,50 +213,62 @@
         stock = #{stock,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null" >
         update_time = now(),
-      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.Product" >
     update sell_product
     set shop_id = #{shopId,jdbcType=VARCHAR},
-      category_id = #{categoryId,jdbcType=INTEGER},
+      category_id = #{categoryId,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      main_img = #{mainImg,jdbcType=VARCHAR},
-      sub_images = #{subImages,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
+      logo_img = #{logoImg,jdbcType=VARCHAR},
+      sub_img = #{subImg,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      origin_price = #{originPrice,jdbcType=DECIMAL},
+      sell_price = #{sellPrice,jdbcType=DECIMAL},
+      discount = #{discount,jdbcType=DECIMAL},
+      likes = #{likes,jdbcType=INTEGER},
+      limit_num = #{limitNum,jdbcType=INTEGER},
+      total_sales = #{totalSales,jdbcType=INTEGER},
       monthly_sales = #{monthlySales,jdbcType=INTEGER},
       stock = #{stock,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=CHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
       update_time = now()
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectList" resultMap="BaseResultMap">
+  <select id="selectProductListByCategory" parameterType="String" resultType="com.sell.modules.store.vo.ProductVo">
+    select id, name, logo_img, remark, origin_price, sell_price,
+    discount, limit_num, monthly_sales
+    from sell_product
+    where del_flag = '0' and status = '1'
+    and category_id = #{categoryId}
+  </select>
+  <select id="selectProductList" parameterType="map" resultType="com.sell.modules.store.entity.Product">
     select <include refid="Base_Column_List"/>
     from sell_product
-    order by id
+    where del_flag = '0'
+    <if test="name != null and name != ''">
+      and name like "%"#{name}"%"
+    </if>
+    <if test="categoryId != null and categoryId != ''">
+      and category_id = #{categoryId}
+    </if>
+    <if test="status != null and status != ''">
+      and status = #{status}
+    </if>
   </select>
-  <select id="selectByNamAndProductId" resultMap="BaseResultMap" parameterType="map">
-    select
-    <include refid="Base_Column_List"/>
-    from sell_product
-    <where>
-      <if test="productName != null" >
-        and name like #{productName}
-      </if>
-      <if test="productId != null" >
-        and id like #{productId}
-      </if>
-    </where>
+  <select id="checkStockByName" parameterType="map" resultType="Integer">
+    select count(0) from sell_product
+    where name = #{name} and stock >= #{num}
   </select>
-
 </mapper>

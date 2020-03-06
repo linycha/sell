@@ -78,7 +78,6 @@ public class AuthRealm extends AuthorizingRealm {
 
         User user = userService.selectByUsername(username);
 
-
         if(user == null){
             return null;
         }

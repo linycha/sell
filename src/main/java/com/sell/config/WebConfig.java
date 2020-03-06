@@ -23,7 +23,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
                 .allowCredentials(true)
                 .allowedMethods("*")
                 .allowedHeaders("*")
-                .maxAge(36000);
+                .maxAge(36000).allowedHeaders("*");
         logger.info("*********************************跨域过滤器**************************");
     }
 

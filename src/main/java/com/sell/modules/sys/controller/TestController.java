@@ -22,17 +22,17 @@ import java.util.Map;
 public class TestController {
     @Autowired
     private UserService userService;
-    @RequestMapping("/list")
+    @RequestMapping("list")
     public Res<String> author(){
         return Res.successMsg("列表");
     }
-    @RequestMapping("test")
+    @RequestMapping("test1")
     public Res<String> test(){
         return Res.successMsg("test");
     }
-    @RequestMapping("/index")
+    @RequestMapping("index")
     public Object index(){
-        String username = "cloud";
+        String username = "eeeee";
         User user = userService.selectByUsername(username);
         if(user == null){
             return "null";

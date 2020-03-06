@@ -18,4 +18,5 @@ public interface ShopCategoryMapper {
     int updateByPrimaryKey(ShopCategory record);
 
     List<ShopCategory> selectSiblingCategory(String id);
+    List<String> selectCategoryList(String id);
 }

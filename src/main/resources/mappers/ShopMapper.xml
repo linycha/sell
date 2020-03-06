@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sell.modules.store.dao.ShopMapper" >
+  <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.Shop" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="logo_img" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="store_img" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="category_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="opening_hours" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tags" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="notice" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="send_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="delivery_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="box_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="delivery_time" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="score" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="food_score" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="pack_score" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="delivery_score" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="total_sales" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="monthly_sales" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="status" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="del_flag" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, name, mobile, logo_img, store_img, address, category_id, opening_hours, tags,
+    notice, send_cost, delivery_cost, box_cost, delivery_time, score, food_score, pack_score, 
+    delivery_score, total_sales, monthly_sales, status, del_flag, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sell_shop
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sell_shop
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sell.modules.store.entity.Shop" >
+    insert into sell_shop (id, user_id, name, 
+      mobile, logo_img, store_img, 
+      address, category_id, opening_hours, tags,
+      notice, send_cost, delivery_cost, 
+      box_cost, delivery_time, score, 
+      food_score, pack_score, delivery_score, 
+      total_sales, monthly_sales, status, 
+      del_flag, create_time, update_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{logoImg,jdbcType=VARCHAR}, #{storeImg,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, #{openingHours,jdbcType=VARCHAR},
+      #{tags,jdbcType=VARCHAR},
+      #{notice,jdbcType=VARCHAR}, #{sendCost,jdbcType=DECIMAL}, #{deliveryCost,jdbcType=DECIMAL}, 
+      #{boxCost,jdbcType=DECIMAL}, #{deliveryTime,jdbcType=INTEGER}, #{score,jdbcType=DECIMAL}, 
+      #{foodScore,jdbcType=DECIMAL}, #{packScore,jdbcType=DECIMAL}, #{deliveryScore,jdbcType=DECIMAL}, 
+      #{totalSales,jdbcType=INTEGER}, #{monthlySales,jdbcType=INTEGER}, #{status,jdbcType=CHAR},
+      #{delFlag,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sell.modules.store.entity.Shop" >
+    insert into sell_shop
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="logoImg != null" >
+        logo_img,
+      </if>
+      <if test="storeImg != null" >
+        store_img,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="openingHours != null" >
+        opening_hours,
+      </if>
+      <if test="notice != null" >
+        notice,
+      </if>
+      <if test="tags != null" >
+        tags,
+      </if>
+      <if test="sendCost != null" >
+        send_cost,
+      </if>
+      <if test="deliveryCost != null" >
+        delivery_cost,
+      </if>
+      <if test="boxCost != null" >
+        box_cost,
+      </if>
+      <if test="deliveryTime != null" >
+        delivery_time,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="foodScore != null" >
+        food_score,
+      </if>
+      <if test="packScore != null" >
+        pack_score,
+      </if>
+      <if test="deliveryScore != null" >
+        delivery_score,
+      </if>
+      <if test="totalSales != null" >
+        total_sales,
+      </if>
+      <if test="monthlySales != null" >
+        monthly_sales,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="logoImg != null" >
+        #{logoImg,jdbcType=VARCHAR},
+      </if>
+      <if test="storeImg != null" >
+        #{storeImg,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="openingHours != null" >
+        #{openingHours,jdbcType=VARCHAR},
+      </if>
+      <if test="notice != null" >
+        #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="sendCost != null" >
+        #{sendCost,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryCost != null" >
+        #{deliveryCost,jdbcType=DECIMAL},
+      </if>
+      <if test="boxCost != null" >
+        #{boxCost,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryTime != null" >
+        #{deliveryTime,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="foodScore != null" >
+        #{foodScore,jdbcType=DECIMAL},
+      </if>
+      <if test="packScore != null" >
+        #{packScore,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryScore != null" >
+        #{deliveryScore,jdbcType=DECIMAL},
+      </if>
+      <if test="totalSales != null" >
+        #{totalSales,jdbcType=INTEGER},
+      </if>
+      <if test="monthlySales != null" >
+        #{monthlySales,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.Shop" >
+    update sell_shop
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="logoImg != null" >
+        logo_img = #{logoImg,jdbcType=VARCHAR},
+      </if>
+      <if test="storeImg != null" >
+        store_img = #{storeImg,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="openingHours != null" >
+        opening_hours = #{openingHours,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="notice != null" >
+        notice = #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="sendCost != null" >
+        send_cost = #{sendCost,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryCost != null" >
+        delivery_cost = #{deliveryCost,jdbcType=DECIMAL},
+      </if>
+      <if test="boxCost != null" >
+        box_cost = #{boxCost,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryTime != null" >
+        delivery_time = #{deliveryTime,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="foodScore != null" >
+        food_score = #{foodScore,jdbcType=DECIMAL},
+      </if>
+      <if test="packScore != null" >
+        pack_score = #{packScore,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryScore != null" >
+        delivery_score = #{deliveryScore,jdbcType=DECIMAL},
+      </if>
+      <if test="totalSales != null" >
+        total_sales = #{totalSales,jdbcType=INTEGER},
+      </if>
+      <if test="monthlySales != null" >
+        monthly_sales = #{monthlySales,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.Shop" >
+    update sell_shop
+    set user_id = #{userId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      logo_img = #{logoImg,jdbcType=VARCHAR},
+      store_img = #{storeImg,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=VARCHAR},
+      opening_hours = #{openingHours,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
+      notice = #{notice,jdbcType=VARCHAR},
+      send_cost = #{sendCost,jdbcType=DECIMAL},
+      delivery_cost = #{deliveryCost,jdbcType=DECIMAL},
+      box_cost = #{boxCost,jdbcType=DECIMAL},
+      delivery_time = #{deliveryTime,jdbcType=INTEGER},
+      score = #{score,jdbcType=DECIMAL},
+      food_score = #{foodScore,jdbcType=DECIMAL},
+      pack_score = #{packScore,jdbcType=DECIMAL},
+      delivery_score = #{deliveryScore,jdbcType=DECIMAL},
+      total_sales = #{totalSales,jdbcType=INTEGER},
+      monthly_sales = #{monthlySales,jdbcType=INTEGER},
+      status = #{status,jdbcType=CHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectShopList" parameterType="map" resultType="com.sell.modules.store.vo.ShopVo">
+    select id, name, logo_img, address, tags,send_cost, delivery_cost, delivery_time, score, monthly_sales
+    from sell_shop
+    where status = '1'
+      <if test="name != null and name != ''">
+       and name like "%"#{name}"%"
+      </if>
+    <if test="categoryIds != null">
+      and category_id in
+      <foreach item="item" index="index" open="(" separator="," close=")" collection="categoryIds">
+        #{item}
+      </foreach>
+    </if>
+    <if test="sort != null and sort != ''">
+    order by ${sort}
+    </if>
+  </select>
+
+</mapper>

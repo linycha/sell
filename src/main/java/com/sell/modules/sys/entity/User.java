@@ -1,5 +1,6 @@
 package com.sell.modules.sys.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @author linyc
  * @date 2019/12/12 12:43
  */
+@JsonIgnoreProperties({"openId","password","sex","createTime","updateTime"})
 public class User implements Serializable {
     private String id;
 
@@ -27,19 +29,14 @@ public class User implements Serializable {
 
     private String headImg;
 
-    private String question;
-
-    private String answer;
-
     private Date createTime;
 
     private Date updateTime;
 
     private List<Role> roles = new ArrayList<>();
-    private  String roleListStr;
 
 
-    public User(String id, String openId, String username, String password, String sex, String mobile, String headImg, String question, String answer, Integer role, Date createTime, Date updateTime) {
+    public User(String id, String openId, String username, String password, String sex, String mobile, String headImg, Date createTime, Date updateTime) {
         this.id = id;
         this.openId = openId;
         this.username = username;
@@ -47,14 +44,9 @@ public class User implements Serializable {
         this.sex = sex;
         this.mobile = mobile;
         this.headImg = headImg;
-        this.question = question;
-        this.answer = answer;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
-    /*public String getRoleNames() {
-        return Collections3.extractToString(roleList, "name", ",");
-    }*/
 
     public User() {
         super();
@@ -116,22 +108,6 @@ public class User implements Serializable {
         this.headImg = headImg == null ? null : headImg.trim();
     }
 
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question == null ? null : question.trim();
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer == null ? null : answer.trim();
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -156,19 +132,6 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public String getRoleIdListStr(List<Role> roleList1) {
-        List<String> idList= Lists.newArrayList();
-        for (Role role : roleList1) {
-            idList.add(role.getId());
-        }
-
-        if(idList!=null && idList.size()>0){
-            return StringUtils.join(idList,",");
-        }
-        return "";
-
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -179,8 +142,6 @@ public class User implements Serializable {
                 ", sex='" + sex + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", headImg='" + headImg + '\'' +
-                ", question='" + question + '\'' +
-                ", answer='" + answer + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", roles=" + roles +
