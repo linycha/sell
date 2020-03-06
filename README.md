@@ -1,4 +1,3 @@
-sell_learing
 ![骑手端](https://images.gitee.com/uploads/images/2020/0306/171714_d6ed403e_5465839.png "屏幕截图.png")
 ![骑手端](https://images.gitee.com/uploads/images/2020/0306/171747_d333a38b_5465839.png "屏幕截图.png")
 ![商家端](https://images.gitee.com/uploads/images/2020/0306/171814_03e922d5_5465839.png "屏幕截图.png")
