@@ -51,27 +51,30 @@ public class ShiroConfig {
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //过滤是从上而下顺序执行，一般/**放到最下面
         // anon不需要做任何校验,authc只有登录用户才可以访问
-        filterChainDefinitionMap.put("/logout","logout");
+        filterChainDefinitionMap.put("/logout","anon");
         filterChainDefinitionMap.put("/login","anon");
+        filterChainDefinitionMap.put("/business_login","anon");
+        filterChainDefinitionMap.put("/delivery_login","anon");
+        filterChainDefinitionMap.put("/register","anon");
+        filterChainDefinitionMap.put("/websocket/**","anon");
         filterChainDefinitionMap.put("/to_login","anon");
         filterChainDefinitionMap.put("/static/**","anon");
-        filterChainDefinitionMap.put("/wechat/**","anon");
         filterChainDefinitionMap.put("/druid/**","anon");
         filterChainDefinitionMap.put("/category/**","anon");
         filterChainDefinitionMap.put("/product/**","anon");
         filterChainDefinitionMap.put("/shop/**","anon");
-        filterChainDefinitionMap.put("/order/**","anon");
-        filterChainDefinitionMap.put("/list", "authc");
+        //filterChainDefinitionMap.put("/order/**","anon");
+        filterChainDefinitionMap.put("/order/**","roles[customer]");
         filterChainDefinitionMap.put("/admin/**","roles[admin]");
-        filterChainDefinitionMap.put("/test","roles[admin]");
+        filterChainDefinitionMap.put("/test/**","anon");
+        filterChainDefinitionMap.put("/comment/**","roles[customer]");
         //filterChainDefinitionMap.put("/test","roles[delivery]");
-        filterChainDefinitionMap.put("/testt/**","anon");
         //filterChainDefinitionMap.put("/admin/delete","perms[delete]");
         filterChainDefinitionMap.put("/user/**","authc");
-        filterChainDefinitionMap.put("/shipping/**","anon");
+        filterChainDefinitionMap.put("/shipping/**","roles[customer]");
         //filterChainDefinitionMap.put("/shop/**","roles[shop]");
         //filterChainDefinitionMap.put("/delivery/**","roles[delivery]");
-        filterChainDefinitionMap.put("/delivery/**","anon");
+        filterChainDefinitionMap.put("/delivery/**","roles[delivery]");
 
         filterChainDefinitionMap.put("/**","user");
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);

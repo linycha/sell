@@ -15,12 +15,16 @@ public interface ShippingMapper {
 
     int insertSelective(Shipping record);
 
-    Shipping selectByPrimaryKey(String id);
+    Shipping selectByOrderNo(String orderNo);
 
     int updateByPrimaryKeySelective(Shipping record);
 
     int updateByPrimaryKey(Shipping record);
 
     List<Shipping> selectListByUserId(String userId);
+
     Shipping selectDefaultByUserId(String userId);
+
+    void updateDefault(String userId);
+
 }

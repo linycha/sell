@@ -1,6 +1,7 @@
 package com.sell.modules.sys.service;
 
 import com.sell.common.Res;
+import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.sys.entity.User;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @date 2019/12/18 15:15
  */
 public interface UserService {
-    Res<String> register(String phone,String password);
+    Res<String> register(String username,String phone,String password);
 
     User selectById(String id);
 
@@ -26,5 +27,6 @@ public interface UserService {
     String selectUsernameByMobile(String mobile);
 
     int update(User user);
+    int saveFeedback(Feedback feedback);
 
 }

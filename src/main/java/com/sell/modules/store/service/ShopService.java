@@ -14,4 +14,5 @@ public interface ShopService {
     PageInfo<ShopVo> getShopList(String name, String categoryId, Integer sortType,Integer pageNum);
     Shop getShopInfo(String id);
     int updateSelective(Shop shop);
+    String getshopId(String userId);
 }

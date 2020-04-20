@@ -25,4 +25,5 @@ public interface ShopMapper {
 
     List<ShopVo> selectShopList(@Param("name") String name, @Param("categoryIds")List<String> categoryIds,
                                 @Param("sort")String sort);
+    String selectShopIdByUserId(String userId);
 }

@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface ShopCategoryService {
 
-    List<ShopCategory> getSiblingCategory(String id);
+    List<ShopCategory> getSiblingCategory(String categoryid);
 }

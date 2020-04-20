@@ -64,4 +64,9 @@ public class ShopServiceImpl implements ShopService {
     public int updateSelective(Shop shop){
         return shopMapper.updateByPrimaryKeySelective(shop);
     }
+
+    @Override
+    public String getshopId(String userId) {
+        return shopMapper.selectShopIdByUserId(userId);
+    }
 }

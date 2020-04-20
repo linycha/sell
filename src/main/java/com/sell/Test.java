@@ -3,6 +3,8 @@ package com.sell;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.sell.common.Const;
+import com.sell.common.utils.CheckUtil;
+import com.sell.common.utils.RedisUtil;
 import com.sell.modules.store.dao.OrderMapper;
 import com.sell.modules.store.dao.ProductMapper;
 import com.sell.modules.store.dao.ShopCategoryMapper;
@@ -12,13 +14,20 @@ import com.sell.modules.store.entity.Shop;
 import com.sell.modules.store.entity.ShopCategory;
 import com.sell.modules.store.service.DeliveryService;
 import com.sell.modules.store.service.OrderService;
+import com.sell.modules.store.service.RedisService;
+import com.sell.modules.store.service.ShopCategoryService;
 import com.sell.modules.store.vo.Cart;
 import com.sell.modules.store.vo.NewOrderVo;
 import com.sell.modules.store.vo.ShopVo;
 import com.sell.modules.store.vo.UserOrderVo;
 import com.sell.modules.sys.dao.UserMapper;
 import com.sell.modules.sys.entity.User;
+import org.apache.commons.jexl3.JexlBuilder;
+import org.apache.commons.jexl3.JexlEngine;
+import org.apache.commons.jexl3.JexlExpression;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.runner.RunWith;
@@ -35,11 +44,17 @@ import java.util.regex.Pattern;
  * @date 2019/12/12 12:52
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //告诉junit spring配置文件的位置
 public class Test {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        String expressionString = "100*10-(200+300)";
+
+        JexlEngine jexlEngine = new JexlBuilder().create();
+        JexlExpression jexlExpression = jexlEngine.createExpression(expressionString);
+        Object evaluate = jexlExpression.evaluate(null);
+        System.out.println(evaluate);
+        /*Scanner sc = new Scanner(System.in);
         String regex = "^[1-9]\\d{5}(18|19|20)\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$";
         //编译正则表达式
         Pattern pattern= Pattern.compile(regex);
@@ -56,7 +71,7 @@ public class Test {
             }else{
                 System.out.println("身份证号码格式，重新输入：");
             }
-        }
+        }*/
     }
     @Autowired
     private UserMapper userMapper;
@@ -72,26 +87,27 @@ public class Test {
     private OrderService orderService;
     @Autowired
     private DeliveryService deliveryService;
+    @Autowired
+    private ShopCategoryService shopCategoryService;
+    @Autowired
+    private RedisUtil redisUtil;
+    @Autowired
+    private RedisUtil.redisList redisList;
     @org.junit.Test
     public void test1(){
-        List<String> categoryIds = shopCategoryMapper.selectCategoryList("3");
-        System.out.println(categoryIds.size());
-//        List<UserOrderVo> order = orderMapper.selectUserOrderList("12","");
-//        System.out.println(order);
-        /*String str = "";
-        for(Cart cart : order.getCarts()){
-            str += cart.getName()+ "×" + cart.getNum()+",";
-        }
-        order.setCartStr(str);
-        System.out.println(str);*/
-       //for (NewOrderVo order:orderVoList){
-       //    System.out.println(order.toString());
-       //}
+        boolean b = CheckUtil.isMobile("12345678909");
+        boolean a = CheckUtil.isMobile("15280642066");
+        boolean c = CheckUtil.isMobile("55678");
+        System.out.println(b);
+        System.out.println(a);
+        System.out.println(c);
     }
     @org.junit.Test
     public void test2(){
-        Delivery delivery = deliveryService.getBest();
-        System.out.println(delivery);
+        List<ShopCategory> list2 = shopCategoryService.getSiblingCategory("0");
+        redisList.set("shopTopCategoryList", list2,1800);
+        //Object s = new SimpleHash("md5","123456",null,2);
+        //System.out.println(s);
     }
     @org.junit.Test
     public void test(){

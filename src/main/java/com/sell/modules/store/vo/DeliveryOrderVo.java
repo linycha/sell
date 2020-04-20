@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public class DeliveryOrderVo implements Serializable {
     private String id;
     private Long orderNo;
+    private String userId;
     private String shopName;
     private String shopAddress;
     private String userAddress;
@@ -35,6 +36,14 @@ public class DeliveryOrderVo implements Serializable {
 
     public void setOrderNo(Long orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getShopName() {

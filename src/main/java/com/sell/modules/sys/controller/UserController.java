@@ -5,6 +5,7 @@ import com.sell.common.ResponseCode;
 import com.sell.common.Res;
 import com.sell.common.utils.PropertiesUtil;
 import com.sell.common.utils.UserUtils;
+import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.store.service.FileService;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
@@ -23,7 +24,8 @@ import java.util.List;
  * @date 2019/12/18 15:10
  */
 @RestController
-@RequestMapping("/user")
+@CrossOrigin(origins="*",maxAge=3600)
+@RequestMapping("user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -45,9 +47,6 @@ public class UserController {
 
     @PutMapping("update_head")
     public Res<String> updateHead(String id, MultipartFile file, HttpServletRequest request){
-        System.out.println(file.toString());
-        System.out.println(file.toString());
-        System.out.println(file.toString());
         if(file == null){
             return Res.errorMsg("上传头像为空");
         }
@@ -88,5 +87,16 @@ public class UserController {
     @ResponseBody
     public Res<String> restPassword(String username,String passwordNew,String forgetToken){
         return userService.restPassword(username,passwordNew,forgetToken);
+    }
+    @PostMapping("feedback")
+    public Res<String> feedback(String content){
+        Feedback feedback = new Feedback();
+        feedback.setContent(content);
+        feedback.setUserId(UserUtils.getUserId());
+        int result = userService.saveFeedback(feedback);
+        if(result == 0){
+            return Res.errorMsg("意见反馈失败");
+        }
+        return Res.successMsg("意见反馈成功");
     }
 }

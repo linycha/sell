@@ -31,13 +31,13 @@ public class ShippingController {
     }
 
     /**
-     * 获取用户默认地址
+     * 用户生成订单时获取用户默认收货地址
      * @return
      */
     @GetMapping("default")
     public Res<Shipping> defaultShipping(){
-        //String userId = UserUtils.getUserId()
-        Shipping shipping = shippingService.getDefault("12");
+        String userId = UserUtils.getUserId();
+        Shipping shipping = shippingService.getDefault(userId);
         if(shipping == null){
             return Res.errorMsg("请选择收货地址");
         }
@@ -45,9 +45,11 @@ public class ShippingController {
     }
     @PostMapping("save")
     public Res<String> save(Shipping shipping){
-        if(StringUtils.isBlank(shipping.getUserId())){
-            return Res.errorMsg("用户id为空");
+        String userId = UserUtils.getUserId();
+        if("1".equals(shipping.getIsDefault())){
+            shippingService.updateDefault(userId);
         }
+        shipping.setUserId(userId);
         int result = shippingService.save(shipping);
         if(result == 0){
             Res.errorMsg("保存失败");
@@ -57,6 +59,9 @@ public class ShippingController {
     @PutMapping("update")
     public Res<String> update(Shipping shipping){
         System.out.println(shipping);
+        if("1".equals(shipping.getIsDefault())){
+            shippingService.updateDefault(UserUtils.getUserId());
+        }
         int result = shippingService.update(shipping);
         if(result == 0){
             return Res.errorMsg("修改失败");

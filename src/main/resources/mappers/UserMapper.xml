@@ -40,6 +40,12 @@
       #{role,jdbcType=INTEGER}, now(), now()
       )
   </insert>
+  <insert id="insertFeedback" parameterType="com.sell.modules.store.entity.Feedback">
+    insert into sell_feedback (id, user_id, content,
+      type, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+     #{type,jdbcType=CHAR},now())
+  </insert>
   <insert id="insertSelective" parameterType="com.sell.modules.sys.entity.User">
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -64,15 +70,8 @@
       <if test="headImg != null">
         head_img,
       </if>
-      <if test="role != null">
-        role,
-      </if>
-      <if test="createTime != null">
-        now(),
-      </if>
-      <if test="updateTime != null">
-        now(),
-      </if>
+        create_time,
+        update_time,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -96,16 +95,12 @@
       <if test="headImg != null">
         #{headImg,jdbcType=VARCHAR},
       </if>
-      <if test="role != null">
-        #{role,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        now(),
+        now(),
     </trim>
+  </insert>
+  <insert id="insertCustomerRole" parameterType="String">
+    insert into sys_user_role values (#{userId},"1")
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.sys.entity.User">
     update sys_user
@@ -163,14 +158,6 @@
     <include refid="Base_Column_List"/>
     from sys_user where
     username=#{username} and password=#{password}
-  </select>
-  <select id="selectQuestionByUsername" parameterType="String" resultType="String">
-    select question from sys_user
-    where username=#{username}
-  </select>
-  <select id="checkAnswer" parameterType="map" resultType="int">
-    select count(1) from sys_user
-    where username=#{username} and question=#{question} and answer=#{answer}
   </select>
   <update id="updatePasswordByUsername" parameterType="map">
     update sys_user set

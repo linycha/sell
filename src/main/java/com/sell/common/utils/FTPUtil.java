@@ -30,10 +30,9 @@ public class FTPUtil {
         this.pwd = pwd;
     }
     public static boolean uploadFile(List<File> fileList,String ftpPath) throws IOException {
-        FTPUtil ftpUtil = new FTPUtil(ftpIp,21,ftpUser,ftpPass);
         logger.info("开始连接ftp服务器");
+        FTPUtil ftpUtil = new FTPUtil(ftpIp,21,ftpUser,ftpPass);
         boolean result = ftpUtil.uploadFile(ftpPath,fileList);
-        logger.info("开始连接ftp服务器，结束上传，上传结果是：{}");
         return result;
 
     }
@@ -57,8 +56,9 @@ public class FTPUtil {
                     ftpClient.storeFile(file.getName(),fis);
                 }
                 uploaded = true;
+                logger.info("ftp服务器上传文件成功");
             }catch (IOException e){
-                logger.error("上传文件异常",e);
+                logger.error("ftp服务器上传文件异常",e);
                 uploaded = false;
             }finally {
                 fis.close();

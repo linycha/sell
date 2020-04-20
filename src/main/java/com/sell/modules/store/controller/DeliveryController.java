@@ -10,6 +10,7 @@ import com.sell.modules.store.service.DeliveryService;
 import com.sell.modules.store.service.OrderService;
 import com.sell.modules.store.service.OrderStatusService;
 import com.sell.modules.store.vo.DeliveryOrderVo;
+import com.sell.modules.sys.security.WebSocket;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,8 @@ public class DeliveryController {
     private OrderService orderService;
     @Autowired
     private OrderStatusService orderStatusService;
+    @Autowired
+    private WebSocket webSocket;
     @GetMapping("info")
     public Res<Delivery> info(){
         //String userId = UserUtils.getUserId();
@@ -53,50 +56,40 @@ public class DeliveryController {
         }
         boolean b = deliveryService.update(delivery);
         if(!b){
-            return Res.errorMsg("开始接单失败");
+            return Res.errorMsg("切换开工状态失败");
         }
-        return Res.successMsg("开始接单成功");
+        return Res.successMsg("切换开工状态成功");
     }
     @GetMapping("new_list")
     public Res<List<DeliveryOrderVo>> newOrderList(){
         //String userId = UserUtils.getUserId();
         String userId = "32";
-        String deliveryId = deliveryService.getDeliveryId(userId);
-        System.out.println("deliveryId="+deliveryId);
-        if(StringUtils.isBlank(deliveryId)){
-            return Res.errorMsg("请先登录相应的账号");
-        }
-        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(deliveryId,Const.OrderStatus.SHOP_ACCEPT);
+//        String deliveryId = deliveryService.getDeliveryId(userId);
+//        System.out.println("deliveryId="+deliveryId);
+//        if(StringUtils.isBlank(deliveryId)){
+//            return Res.errorMsg("请先登录相应的账号");
+//        }
+        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(userId,Const.OrderStatus.SHOP_ACCEPT);
 
         return Res.success(orderList);
     }
     @GetMapping("accept_list")
     public Res<List<DeliveryOrderVo>> takeOrderList(){
-        //String userId = UserUtils.getUserId();
-        String userId = "32";
-        String deliveryId = deliveryService.getDeliveryId(userId);
-        if(StringUtils.isBlank(deliveryId)){
-            return Res.errorMsg("请先登录相应的账号");
-        }
-        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(deliveryId,Const.OrderStatus.DELIVERY_ACCEPT);
+        String userId = UserUtils.getUserId();
+        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(userId,Const.OrderStatus.DELIVERY_ACCEPT);
 
         return Res.success(orderList);
     }
     @GetMapping("take_list")
     public Res<List<DeliveryOrderVo>> deliveryOrderList(){
-        //String userId = UserUtils.getUserId();
-        String userId = "32";
-        String deliveryId = deliveryService.getDeliveryId(userId);
-        if(StringUtils.isBlank(deliveryId)){
-            return Res.errorMsg("请先登录相应的账号");
-        }
-        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(deliveryId,Const.OrderStatus.DELIVERY_TAKE);
+        String userId = UserUtils.getUserId();
+        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(userId,Const.OrderStatus.DELIVERY_TAKE);
 
         return Res.success(orderList);
     }
 
     @PutMapping("accept")
-    public Res<String> accept(String orderNo){
+    public Res<String> accept(String orderNo,String userId){
         if(StringUtils.isBlank(orderNo)){
             return Res.errorMsg("订单号参数错误");
         }
@@ -104,13 +97,11 @@ public class DeliveryController {
         if(result == 0){
             return Res.errorMsg("确认接单失败");
         }
-        OrderStatus orderStatus = new OrderStatus();
-        orderStatus.setOrderNo(Long.valueOf(orderNo));
-        orderStatus.setStatus(Const.OrderStatus.DELIVERY_ACCEPT);
-        boolean b2 = orderStatusService.saveStatus(orderStatus);
+        boolean b2 = orderStatusService.saveStatus(orderNo,Const.OrderStatus.DELIVERY_ACCEPT);
         if(!b2){
             return Res.errorMsg("确认接单失败");
         }
+        webSocket.sendOneMessage(userId,"您有一条订单已被骑手接单，骑手正在赶往商家");
         return Res.successMsg("确认接单成功");
     }
 
@@ -118,7 +109,7 @@ public class DeliveryController {
      * 骑手取货操作
      */
     @PutMapping("take")
-    public Res<String> take(String orderNo){
+    public Res<String> take(String orderNo,String userId){
         if(StringUtils.isBlank(orderNo)){
             return Res.errorMsg("订单号参数错误");
         }
@@ -126,20 +117,18 @@ public class DeliveryController {
         if(result == 0){
             return Res.errorMsg("确认取货失败");
         }
-        OrderStatus orderStatus = new OrderStatus();
-        orderStatus.setOrderNo(Long.valueOf(orderNo));
-        orderStatus.setStatus(Const.OrderStatus.DELIVERY_TAKE);
-        boolean b2 = orderStatusService.saveStatus(orderStatus);
+        boolean b2 = orderStatusService.saveStatus(orderNo,Const.OrderStatus.DELIVERY_TAKE);
         if(!b2){
             return Res.errorMsg("确认取货失败");
         }
+        webSocket.sendOneMessage(userId,"您有一条订单骑手正在配送中");
         return Res.successMsg("确认取货成功");
     }
     /**
      * 骑手确认送达订单操作
      */
     @PutMapping("accomplish")
-    public Res<String> fulfill(String orderNo){
+    public Res<String> fulfill(String orderNo,String userId){
         if(StringUtils.isBlank(orderNo)){
             return Res.errorMsg("订单号参数错误");
         }
@@ -147,21 +136,18 @@ public class DeliveryController {
         if(result == 0){
             return Res.errorMsg("确认送达失败");
         }
-        OrderStatus orderStatus = new OrderStatus();
-        orderStatus.setOrderNo(Long.valueOf(orderNo));
-        orderStatus.setStatus(Const.OrderStatus.ACCOMPLISH);
-        boolean b2 = orderStatusService.saveStatus(orderStatus);
+        boolean b2 = orderStatusService.saveStatus(orderNo,Const.OrderStatus.ACCOMPLISH);
         if(!b2){
             return Res.errorMsg("确认送达失败");
         }
-        //String userId = UserUtils.getUserId();
-        String userId = "32";
-        Delivery delivery = new Delivery();
-        delivery.setUserId(userId);
-        boolean b3 = deliveryService.updateTaskNum(userId);
+        String deliveryId = UserUtils.getUserId();
+        boolean b3 = deliveryService.updateTaskNum(deliveryId);
         if(!b3){
             return Res.errorMsg("更新骑手配送订单量失败");
         }
+        String shopId = orderService.getShopId(orderNo);
+        webSocket.sendOneMessage(userId,"您有一条订单已送达，祝您用餐愉快");
+        webSocket.sendOneMessage(shopId,"您有一条订单已被骑手送达");
         return Res.successMsg("确认送达成功");
     }
 

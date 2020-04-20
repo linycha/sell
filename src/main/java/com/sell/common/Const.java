@@ -23,6 +23,7 @@ public class Const {
     public static final String FTPPATH_USER = "user";
     public static final String FTPPATH_SHOP = "shop";
     public static final String FTPPATH_PRODUCT = "product";
+    public static final String FTPPATH_COMMENT = "comment";
     public static final String FTPPATH_TEST = "test";
     public static final Integer PAGE_DEFAULT_NUM = 1;
     public static final Integer PAGE_DEFAULT_SIZE = 10;
@@ -35,8 +36,8 @@ public class Const {
     }
 
     /**
-     * 订单状态：0:待支付，1:已支付 , 2:商家已接单 , 3: 骑手已接单, 4: 骑手已到店,
-     *  5骑手已取货，6：订单已送达，70已退款（用户发起）,71已退款（商家发起）
+     * 订单状态：0:已提交，1:已支付 , 2:商家已接单 , 3: 骑手已接单, 4: 骑手已到店,
+     *  5骑手已取货，6：订单已送达，70已退款（用户发起）,71已退款（商家发起），8已评价
      */
 
     public interface  OrderStatus{
@@ -48,17 +49,11 @@ public class Const {
         String ACCOMPLISH = "6";
         String REFUND_USER = "70";
         String REFUND_SHOP = "71";
+        String HAVE_EVALUATION = "8";
 
     }
     public static long generateOrderNo(){
         long currentTime = System.currentTimeMillis();
         return currentTime + currentTime%10;
-    }
-
-    public static boolean isNumber(String num){
-        String regex = "^\\d{5}[0-9]$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher=pattern.matcher(num);
-        return matcher.matches();
     }
 }

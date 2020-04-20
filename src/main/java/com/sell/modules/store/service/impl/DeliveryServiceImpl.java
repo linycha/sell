@@ -1,5 +1,6 @@
 package com.sell.modules.store.service.impl;
 
+import com.sell.common.Const;
 import com.sell.modules.store.dao.DeliveryMapper;
 import com.sell.modules.store.dao.OrderMapper;
 import com.sell.modules.store.entity.Delivery;
@@ -22,7 +23,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     private OrderMapper orderMapper;
 
     /**
-     * 指派订单给骑手
+     * 指派订单给骑手,匹配出相应的骑手，修改order表
      * @param orderNo
      * @return
      */
@@ -32,7 +33,8 @@ public class DeliveryServiceImpl implements DeliveryService {
         Order order = new Order();
         order.setOrderNo(Long.valueOf(orderNo));
         order.setDeliverId(delivery.getId());
-        order.setDeliverName(delivery.getTrueName());
+        order.setDeliveryName(delivery.getTrueName());
+        order.setStatus(Const.OrderStatus.SHOP_ACCEPT);
         int result = orderMapper.updateByPrimaryKeySelective(order);
         if(result >=1){
             return true;

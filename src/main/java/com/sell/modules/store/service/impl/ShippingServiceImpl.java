@@ -1,9 +1,12 @@
 package com.sell.modules.store.service.impl;
 
+import com.sell.common.Const;
 import com.sell.common.IdGenerate;
+import com.sell.common.utils.CheckUtil;
 import com.sell.modules.store.dao.ShippingMapper;
 import com.sell.modules.store.entity.Shipping;
 import com.sell.modules.store.service.ShippingService;
+import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,11 @@ public class ShippingServiceImpl implements ShippingService {
     @Override
     public int save(Shipping shipping) {
         shipping.setId(IdGenerate.uuid());
+        shipping.setDelFlag(Const.NOT_DELETE);
+        boolean b = CheckUtil.isMobile(shipping.getTel());
+        if(!b){
+            return 0;
+        }
         return shippingMapper.insert(shipping);
     }
 
@@ -36,5 +44,18 @@ public class ShippingServiceImpl implements ShippingService {
     @Override
     public Shipping getDefault(String userId) {
         return shippingMapper.selectDefaultByUserId(userId);
+    }
+
+    /**
+     * 改掉原来的默认地址
+     */
+    @Override
+    public void updateDefault(String userId) {
+        shippingMapper.updateDefault(userId);
+    }
+
+    @Override
+    public Shipping getByOrderNo(String orderNo) {
+        return shippingMapper.selectByOrderNo(orderNo);
     }
 }

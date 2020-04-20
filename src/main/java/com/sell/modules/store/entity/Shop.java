@@ -1,5 +1,6 @@
 package com.sell.modules.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
@@ -25,8 +26,10 @@ public class Shop {
     private String address;
 
     private String categoryId;
-
-    private String openingHours;
+    @JsonFormat(pattern = "HH:mm",timezone = "GMT+8")
+    private Date openingTime;
+    @JsonFormat(pattern = "HH:mm",timezone = "GMT+8")
+    private Date closingTime;
 
     private String tags;
 
@@ -59,8 +62,10 @@ public class Shop {
     private Date createTime;
 
     private Date updateTime;
+    private String categoryName;
 
-    public Shop(String id, String userId, String name, String mobile, String logoImg, String storeImg, String address, String categoryId, String openingHours, String tags, String notice, BigDecimal sendCost, BigDecimal deliveryCost, BigDecimal boxCost, Integer deliveryTime, BigDecimal score, BigDecimal foodScore, BigDecimal packScore, BigDecimal deliveryScore, Integer totalSales, Integer monthlySales, String status, String delFlag, Date createTime, Date updateTime) {
+
+    public Shop(String id, String userId, String name, String mobile, String logoImg, String storeImg, String address, String categoryId, Date openingTime,Date closingTime, String tags, String notice, BigDecimal sendCost, BigDecimal deliveryCost, BigDecimal boxCost, Integer deliveryTime, BigDecimal score, BigDecimal foodScore, BigDecimal packScore, BigDecimal deliveryScore, Integer totalSales, Integer monthlySales, String status, String delFlag, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -69,7 +74,8 @@ public class Shop {
         this.storeImg = storeImg;
         this.address = address;
         this.categoryId = categoryId;
-        this.openingHours = openingHours;
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
         this.tags = tags;
         this.notice = notice;
         this.sendCost = sendCost;
@@ -156,12 +162,20 @@ public class Shop {
         this.categoryId = categoryId == null ? null : categoryId.trim();
     }
 
-    public String getOpeningHours() {
-        return openingHours;
+    public Date getOpeningTime() {
+        return openingTime;
     }
 
-    public void setOpeningHours(String openingHours) {
-        this.openingHours = openingHours == null ? null : openingHours.trim();
+    public void setOpeningTime(Date openingTime) {
+        this.openingTime = openingTime;
+    }
+
+    public Date getClosingTime() {
+        return closingTime;
+    }
+
+    public void setClosingTime(Date closingTime) {
+        this.closingTime = closingTime;
     }
 
     public String getNotice() {
@@ -290,5 +304,13 @@ public class Shop {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

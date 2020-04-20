@@ -2,6 +2,8 @@ package com.sell.modules.store.dao;
 
 import com.sell.modules.store.entity.OrderItem;
 
+import java.util.List;
+
 /**
  * @author linyuc
  * @date 2020/03/01 00:13
@@ -18,4 +20,5 @@ public interface OrderItemMapper {
     int updateByPrimaryKeySelective(OrderItem record);
 
     int updateByPrimaryKey(OrderItem record);
+    List<OrderItem> selectListByOrderNo(String orderNo);
 }

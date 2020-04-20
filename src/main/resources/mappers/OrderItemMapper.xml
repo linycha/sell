@@ -156,4 +156,9 @@
       total_price = #{totalPrice,jdbcType=DECIMAL},
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectListByOrderNo" parameterType="String" resultType="com.sell.modules.store.entity.OrderItem">
+    select <include refid="Base_Column_List"/>
+    from sell_order_item
+    where order_no = #{orderNo}
+  </select>
 </mapper>

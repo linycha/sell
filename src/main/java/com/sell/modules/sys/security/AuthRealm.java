@@ -1,6 +1,7 @@
 package com.sell.modules.sys.security;
 
 import com.sell.common.Const;
+import com.sell.common.utils.CheckUtil;
 import com.sell.modules.sys.entity.Permission;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
@@ -72,7 +73,7 @@ public class AuthRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authenToken;
         String username = token.getUsername();
         //判断是手机号登陆还是用户名
-        if(Const.isNumber(username)){
+        if(CheckUtil.isNumber(username)){
             username = userService.selectUsernameByMobile(username);
         }
 

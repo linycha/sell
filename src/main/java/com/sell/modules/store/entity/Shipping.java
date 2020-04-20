@@ -26,13 +26,15 @@ public class Shipping {
 
     private String address;
 
+    private String isDefault;
+
     private String delFlag;
 
     private Date createTime;
 
     private Date updateTime;
 
-    public Shipping(String id, String userId, String name, String tel, String province, String city, String county, String address, String delFlag, Date createTime, Date updateTime) {
+    public Shipping(String id, String userId, String name, String tel, String province, String city, String county, String address,String isDefault, String delFlag, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -41,6 +43,7 @@ public class Shipping {
         this.city = city;
         this.county = county;
         this.address = address;
+        this.isDefault = isDefault;
         this.delFlag = delFlag;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -114,6 +117,14 @@ public class Shipping {
         this.address = address == null ? null : address.trim();
     }
 
+    public String getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(String isDefault) {
+        this.isDefault = isDefault;
+    }
+
     public String getDelFlag() {
         return delFlag;
     }
@@ -149,6 +160,7 @@ public class Shipping {
                 ", city='" + city + '\'' +
                 ", county='" + county + '\'' +
                 ", address='" + address + '\'' +
+                ", isDefault='" + isDefault + '\'' +
                 ", delFlag='" + delFlag + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

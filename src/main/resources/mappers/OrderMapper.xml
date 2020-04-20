@@ -11,9 +11,9 @@
       <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="shop_logo" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="shop_mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="deliver_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="deliver_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="deliver_mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="delivery_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="delivery_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="delivery_mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="box_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="send_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="total_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
@@ -28,8 +28,8 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, order_no, user_id, shipping_id, shop_id, shop_name, shop_logo, shop_mobile,
-    deliver_id, deliver_name, deliver_mobile, box_cost, send_cost, total_money, pay_money, 
-    pay_type, remark, complete_time, create_time, update_time
+    delivery_id, delivery_name, delivery_mobile, box_cost, send_cost, total_money, pay_money,
+    pay_type, remark, complete_time,status, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -44,15 +44,15 @@
   <insert id="insert" parameterType="com.sell.modules.store.entity.Order" >
     insert into sell_order (id, order_no, user_id, 
       shipping_id, shop_id, shop_name, 
-      shop_logo, shop_mobile, deliver_id,
-      deliver_name, deliver_mobile, box_cost, 
+      shop_logo, shop_mobile, delivery_id,
+      delivery_name, delivery_mobile, box_cost,
       send_cost, total_money, pay_money, 
       pay_type, remark, complete_time, 
       create_time, update_time)
     values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, 
       #{shippingId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
-      #{shopLogo,jdbcType=VARCHAR}, #{shopMobile,jdbcType=VARCHAR}, #{deliverId,jdbcType=VARCHAR},
-      #{deliverName,jdbcType=VARCHAR}, #{deliverMobile,jdbcType=VARCHAR}, #{boxCost,jdbcType=DECIMAL}, 
+      #{shopLogo,jdbcType=VARCHAR}, #{shopMobile,jdbcType=VARCHAR}, #{deliveryId,jdbcType=VARCHAR},
+      #{deliveryName,jdbcType=VARCHAR}, #{deliveryMobile,jdbcType=VARCHAR}, #{boxCost,jdbcType=DECIMAL},
       #{sendCost,jdbcType=DECIMAL}, #{totalMoney,jdbcType=DECIMAL}, #{payMoney,jdbcType=DECIMAL}, 
       #{payType,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{completeTime,jdbcType=TIMESTAMP}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
@@ -84,14 +84,14 @@
       <if test="shopMobile != null" >
         shop_mobile,
       </if>
-      <if test="deliverId != null" >
-        deliver_id,
+      <if test="deliveryId != null" >
+        delivery_id,
       </if>
-      <if test="deliverName != null" >
-        deliver_name,
+      <if test="deliveryName != null" >
+        delivery_name,
       </if>
-      <if test="deliverMobile != null" >
-        deliver_mobile,
+      <if test="deliveryMobile != null" >
+        delivery_mobile,
       </if>
       <if test="boxCost != null" >
         box_cost,
@@ -145,14 +145,14 @@
       <if test="shopMobile != null" >
         #{shopMobile,jdbcType=VARCHAR},
       </if>
-      <if test="deliverId != null" >
-        #{deliverId,jdbcType=VARCHAR},
+      <if test="deliveryId != null" >
+        #{deliveryId,jdbcType=VARCHAR},
       </if>
-      <if test="deliverName != null" >
-        #{deliverName,jdbcType=VARCHAR},
+      <if test="deliveryName != null" >
+        #{deliveryName,jdbcType=VARCHAR},
       </if>
-      <if test="deliverMobile != null" >
-        #{deliverMobile,jdbcType=VARCHAR},
+      <if test="deliveryMobile != null" >
+        #{deliveryMobile,jdbcType=VARCHAR},
       </if>
       <if test="boxCost != null" >
         #{boxCost,jdbcType=DECIMAL},
@@ -200,14 +200,14 @@
       <if test="shopMobile != null" >
         shop_mobile = #{shopMobile,jdbcType=VARCHAR},
       </if>
-      <if test="deliverId != null" >
-        deliver_id = #{deliverId,jdbcType=VARCHAR},
+      <if test="deliveryId != null" >
+        delivery_id = #{deliveryId,jdbcType=VARCHAR},
       </if>
-      <if test="deliverName != null" >
-        deliver_name = #{deliverName,jdbcType=VARCHAR},
+      <if test="deliveryName != null" >
+        delivery_name = #{deliveryName,jdbcType=VARCHAR},
       </if>
-      <if test="deliverMobile != null" >
-        deliver_mobile = #{deliverMobile,jdbcType=VARCHAR},
+      <if test="deliveryMobile != null" >
+        delivery_mobile = #{deliveryMobile,jdbcType=VARCHAR},
       </if>
       <if test="boxCost != null" >
         box_cost = #{boxCost,jdbcType=DECIMAL},
@@ -251,9 +251,9 @@
       shop_name = #{shopName,jdbcType=VARCHAR},
       shop_logo = #{shopLogo,jdbcType=VARCHAR},
       shop_mobile = #{shopMobile,jdbcType=VARCHAR},
-      deliver_id = #{deliverId,jdbcType=VARCHAR},
-      deliver_name = #{deliverName,jdbcType=VARCHAR},
-      deliver_mobile = #{deliverMobile,jdbcType=VARCHAR},
+      delivery_id = #{deliveryId,jdbcType=VARCHAR},
+      delivery_name = #{deliveryName,jdbcType=VARCHAR},
+      delivery_mobile = #{deliveryMobile,jdbcType=VARCHAR},
       box_cost = #{boxCost,jdbcType=DECIMAL},
       send_cost = #{sendCost,jdbcType=DECIMAL},
       total_money = #{totalMoney,jdbcType=DECIMAL},
@@ -265,23 +265,55 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectUserMobile" parameterType="String" resultType="String">
+    select u.mobile
+    from sell_order o
+    left join sys_user u on u.id = o.user_id
+    where o.order_no = #{orderNo}
+  </select>
+  <select id="selectDeliveryMobile" parameterType="String" resultType="String">
+    select d.mobile
+    from sell_order o
+    left join sell_delivery d on d.id = o.delivery_id
+    where o.order_no = #{orderNo}
+  </select>
+  <select id="selectUserId" parameterType="String" resultType="String">
+    select user_id from sell_order
+    where order_no = #{orderNo}
+  </select>
+  <select id="selectShopId" parameterType="String" resultType="String">
+    select shop_id from sell_order
+    where order_no = #{orderNo}
+  </select>
+  <select id="selectOrderByOrderNo" parameterType="String" resultType="com.sell.modules.store.entity.Order">
+    select <include refid="Base_Column_List"/>
+    from sell_order
+    where order_no = #{orderNo}
+  </select>
+  <!--  商家端查看订单列表-->
   <select id="selectNewOrderList" parameterType="map" resultMap="newOrderMap">
     select o.id as id,
     o.order_no,
     o.remark,
-    u.mobile,
+    u.username,
+    o.delivery_name,
     o.pay_money,
+    o.status,
     oi.product_name as name,
     oi.number as num
     from sell_order o
     left join sys_user u on o.user_id = u.id
     left join sell_order_item oi on o.order_no = oi.order_no
-    where o.status = '1'
-    and o.shop_id = #{shopId}
+    where o.shop_id = #{shopId}
+    <if test="status != null and status != ''">
+      and o.status = #{status}
+    </if>
     <if test="orderNo != null and orderNo != ''">
       and o.order_no like #{orderNo}
     </if>
   </select>
+<!--  用户端查看订单列表-->
   <select id="selectUserOrderList" parameterType="map" resultMap="UserOrderMap">
     select o.id as id,
     o.order_no,
@@ -301,8 +333,10 @@
     </if>
     order By o.create_time desc
   </select>
+  <!--  骑手端查看订单列表-->
   <select id="selectDeliveryOrderList" parameterType="map" resultType="com.sell.modules.store.vo.DeliveryOrderVo">
     select o.order_no as orderNo,
+    o.user_id as userId,
     s.name as shopName,
     s.address as shopAddress,
     si.address as userAddress,
@@ -313,7 +347,7 @@
     from sell_order o
     left join sell_shop s on s.id = o.shop_id
     left join sell_shipping si on si.id = o.shipping_id
-    where o.deliver_id = #{deliveryId}
+    where o.delivery_id = #{deliveryId}
     and o.status = #{status}
     /*and o.create_time > NOW()-INTERVAL 10 HOUR*/
   </select>
@@ -321,9 +355,11 @@
   <resultMap id="newOrderMap" type="com.sell.modules.store.vo.NewOrderVo">
     <id column="id" javaType="java.lang.String" jdbcType="VARCHAR" property="id" />
     <result column="order_no" javaType="java.lang.Long" jdbcType="BIGINT" property="orderNo" />
-    <result column="mobile" javaType="java.lang.String" jdbcType="VARCHAR" property="userMobile" />
+    <result column="username" javaType="java.lang.String" jdbcType="VARCHAR" property="username" />
+    <result column="delivery_name" javaType="java.lang.String" jdbcType="VARCHAR" property="deliveryName" />
     <result column="remark" javaType="java.lang.String" jdbcType="VARCHAR" property="remark"/>
     <result column="pay_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" property="payMoney" />
+    <result column="status" jdbcType="CHAR" javaType="java.lang.String" property="status" />
     <association property="carts" javaType="com.sell.modules.store.vo.Cart" resultMap="CartMap" column="id"/>
   </resultMap>
   <resultMap id="UserOrderMap" type="com.sell.modules.store.vo.UserOrderVo">

@@ -1,11 +1,15 @@
 package com.sell.modules.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 /**
  * @author linyuc
  * @date 2020/03/01 00:13
  */
+@JsonIgnoreProperties({"id","orderNo","remark"})
 public class OrderStatus {
     private String id;
 
@@ -15,6 +19,7 @@ public class OrderStatus {
 
     private String remark;
 
+    @JsonFormat(pattern = "MM-dd HH:mm",timezone = "GMT+8")
     private Date createTime;
 
     public OrderStatus(String id, Long orderNo, String status, String remark, Date createTime) {

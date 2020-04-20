@@ -89,4 +89,10 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectList" parameterType="Long" resultType="com.sell.modules.store.entity.OrderStatus">
+    select status, create_time
+    from sell_order_status
+    where order_no = #{orderNo}
+    order by create_time
+  </select>
 </mapper>

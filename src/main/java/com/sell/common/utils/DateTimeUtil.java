@@ -17,6 +17,7 @@ public class DateTimeUtil {
     //str->Date
     //Date->str
     public static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String STANDARD_FORMAT_TIME = "HH:mm";
 
 
 
@@ -46,6 +47,13 @@ public class DateTimeUtil {
         }
         DateTime dateTime = new DateTime(date);
         return dateTime.toString(STANDARD_FORMAT);
+    }
+    public static String dateToTimeStr(Date date){
+        if(date == null){
+            return StringUtils.EMPTY;
+        }
+        DateTime dateTime = new DateTime(date);
+        return dateTime.toString(STANDARD_FORMAT_TIME);
     }
 
 

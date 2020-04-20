@@ -39,17 +39,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 获取用户自己的订单列表
+     * 获取商家自己的订单列表
 
      */
     @Override
-    public PageInfo<NewOrderVo> getNewOrderList(String shopId, String orderNo,String pageNum) {
-        int page = Const.PAGE_DEFAULT_NUM;
+    public PageInfo<NewOrderVo> getOrderList(String shopId, String orderNo,String status,String pageNum) {
+        /*int page = Const.PAGE_DEFAULT_NUM;
         if(!StringUtils.isBlank(pageNum)){
             page = Integer.parseInt(pageNum);
         }
-        PageHelper.startPage(page,Const.PAGE_DEFAULT_SIZE);
-        List<NewOrderVo> orderList = orderMapper.selectNewOrderList(shopId,orderNo);
+        PageHelper.startPage(page,Const.PAGE_DEFAULT_SIZE);*/
+        List<NewOrderVo> orderList = orderMapper.selectNewOrderList(shopId,orderNo,status);
         //处理得到的商品信息和数量拼接成String字符串
         for(NewOrderVo order : orderList){
             System.out.println(order.toString());
@@ -110,6 +110,31 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<DeliveryOrderVo> getDeliveryOrderList(String deliveryId, String status) {
         return orderMapper.selectDeliveryOrderList(deliveryId,status);
+    }
+
+    @Override
+    public String getUserMobile(String orderNo) {
+        return orderMapper.selectUserMobile(orderNo);
+    }
+
+    @Override
+    public String getDeliveryMobile(String orderNo) {
+        return orderMapper.selectDeliveryMobile(orderNo);
+    }
+
+    @Override
+    public String getUserId(String orderNo) {
+        return orderMapper.selectUserId(orderNo);
+    }
+
+    @Override
+    public String getShopId(String orderNo) {
+        return orderMapper.selectShopId(orderNo);
+    }
+
+    @Override
+    public Order getOrderDetail(String orderNo) {
+        return orderMapper.selectOrderByOrderNo(orderNo);
     }
 
 }

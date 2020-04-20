@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 新的订单实体类
+/** 商家新的订单实体类
  * @author linyuc
  * @date 2020/3/2 14:08
  */
@@ -16,20 +16,14 @@ public class NewOrderVo implements Serializable {
     private String id;
     private Long orderNo;
     private String remark;
-    private String userMobile;
+    private String username;
+    private String deliveryName;
     private BigDecimal payMoney;
+    private String status;
     private String address;
     private String cartStr;
     //扩展用
     private List<Cart> carts = new ArrayList<>();
-
-    public NewOrderVo(String id, Long orderNo, String remark, String userMobile, BigDecimal payMoney) {
-        this.id = id;
-        this.orderNo = orderNo;
-        this.remark = remark;
-        this.userMobile = userMobile;
-        this.payMoney = payMoney;
-    }
 
     public NewOrderVo() {
     }
@@ -50,12 +44,20 @@ public class NewOrderVo implements Serializable {
         this.orderNo = orderNo;
     }
 
-    public String getUserMobile() {
-        return userMobile;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserMobile(String userMobile) {
-        this.userMobile = userMobile;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getDeliveryName() {
+        return deliveryName;
+    }
+
+    public void setDeliveryName(String deliveryName) {
+        this.deliveryName = deliveryName;
     }
 
     public BigDecimal getPayMoney() {
@@ -64,6 +66,14 @@ public class NewOrderVo implements Serializable {
 
     public void setPayMoney(BigDecimal payMoney) {
         this.payMoney = payMoney;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getCartStr() {
@@ -104,7 +114,8 @@ public class NewOrderVo implements Serializable {
         return "NewOrderVo{" +
                 "id='" + id + '\'' +
                 ", orderNo=" + orderNo +
-                ", userMobile='" + userMobile + '\'' +
+                ", username='" + username + '\'' +
+                ", deliveryName='" + deliveryName + '\'' +
                 ", payMoney=" + payMoney +
                 ", remark='" + remark + '\'' +
                 ", address='" + address + '\'' +

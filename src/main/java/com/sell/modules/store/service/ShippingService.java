@@ -13,4 +13,6 @@ public interface ShippingService {
     int save(Shipping shipping);
     int update(Shipping shipping);
     Shipping getDefault(String userId);
+    void updateDefault(String userId);
+    Shipping getByOrderNo(String orderNo);
 }

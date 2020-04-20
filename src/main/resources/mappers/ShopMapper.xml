@@ -11,7 +11,8 @@
       <arg column="store_img" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="category_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="opening_hours" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="opening_time" jdbcType="TIME" javaType="java.util.Date" />
+      <arg column="closing_time" jdbcType="TIME" javaType="java.util.Date" />
       <arg column="tags" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="notice" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="send_cost" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
@@ -31,15 +32,22 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, name, mobile, logo_img, store_img, address, category_id, opening_hours, tags,
+    id, user_id, name, mobile, logo_img, store_img, address, category_id, opening_time,closing_time, tags,
     notice, send_cost, delivery_cost, box_cost, delivery_time, score, food_score, pack_score, 
     delivery_score, total_sales, monthly_sales, status, del_flag, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from sell_shop
-    where id = #{id,jdbcType=VARCHAR}
+  <select id="selectByPrimaryKey" resultType="com.sell.modules.store.entity.Shop" parameterType="java.lang.String" >
+    select
+    s.id, s.user_id, s.name, s.mobile, s.logo_img, s.store_img, s.address, s.category_id, s.opening_time,s.closing_time,
+    s.tags,s.notice, s.send_cost, s.delivery_cost, s.box_cost, s.delivery_time, s.score, s.food_score, s.pack_score,
+    s.delivery_score, s.total_sales, s.monthly_sales,
+    s.status = (select count(id) from sell_shop where id = #{id}
+     and now() between opening_time and closing_time) as status
+    ,s.del_flag,
+    s.create_time, s.update_time,c.name as categoryName
+    from sell_shop s
+    left join sell_shop_category c on c.id = s.category_id
+    where s.id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sell_shop
@@ -48,7 +56,7 @@
   <insert id="insert" parameterType="com.sell.modules.store.entity.Shop" >
     insert into sell_shop (id, user_id, name, 
       mobile, logo_img, store_img, 
-      address, category_id, opening_hours, tags,
+      address, category_id, opening_time,closing_time, tags,
       notice, send_cost, delivery_cost, 
       box_cost, delivery_time, score, 
       food_score, pack_score, delivery_score, 
@@ -57,8 +65,8 @@
       )
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{logoImg,jdbcType=VARCHAR}, #{storeImg,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, #{openingHours,jdbcType=VARCHAR},
-      #{tags,jdbcType=VARCHAR},
+      #{address,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, #{openingTime,jdbcType=TIME},
+      #{closingTime,jdbcType=TIME},#{tags,jdbcType=VARCHAR},
       #{notice,jdbcType=VARCHAR}, #{sendCost,jdbcType=DECIMAL}, #{deliveryCost,jdbcType=DECIMAL}, 
       #{boxCost,jdbcType=DECIMAL}, #{deliveryTime,jdbcType=INTEGER}, #{score,jdbcType=DECIMAL}, 
       #{foodScore,jdbcType=DECIMAL}, #{packScore,jdbcType=DECIMAL}, #{deliveryScore,jdbcType=DECIMAL}, 
@@ -93,8 +101,11 @@
       <if test="categoryId != null" >
         category_id,
       </if>
-      <if test="openingHours != null" >
-        opening_hours,
+      <if test="openingTime != null" >
+        opening_time,
+      </if>
+      <if test="closingTime != null" >
+        closing_time,
       </if>
       <if test="notice != null" >
         notice,
@@ -170,8 +181,11 @@
       <if test="categoryId != null" >
         #{categoryId,jdbcType=VARCHAR},
       </if>
-      <if test="openingHours != null" >
-        #{openingHours,jdbcType=VARCHAR},
+      <if test="openingTime != null" >
+        #{openingTime,jdbcType=TIME},
+      </if>
+      <if test="closingTime != null" >
+        #{closingTime,jdbcType=TIME},
       </if>
       <if test="notice != null" >
         #{notice,jdbcType=VARCHAR},
@@ -247,8 +261,11 @@
       <if test="categoryId != null" >
         category_id = #{categoryId,jdbcType=VARCHAR},
       </if>
-      <if test="openingHours != null" >
-        opening_hours = #{openingHours,jdbcType=VARCHAR},
+      <if test="openingTime != null" >
+        opening_time = #{openingTime,jdbcType=TIME},
+      </if>
+      <if test="openingTime != null" >
+        closing_time = #{closingTime,jdbcType=TIME},
       </if>
       <if test="tags != null" >
         tags = #{tags,jdbcType=VARCHAR},
@@ -292,12 +309,7 @@
       <if test="delFlag != null" >
         del_flag = #{delFlag,jdbcType=CHAR},
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        update_time = now(),
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -310,7 +322,8 @@
       store_img = #{storeImg,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       category_id = #{categoryId,jdbcType=VARCHAR},
-      opening_hours = #{openingHours,jdbcType=VARCHAR},
+      opening_time = #{openingTime,jdbcType=TIME},
+      closing_time = #{closingTime,jdbcType=TIME},
       tags = #{tags,jdbcType=VARCHAR},
       notice = #{notice,jdbcType=VARCHAR},
       send_cost = #{sendCost,jdbcType=DECIMAL},
@@ -342,9 +355,15 @@
         #{item}
       </foreach>
     </if>
+    /*and now() between opening_time and closing_time*/
     <if test="sort != null and sort != ''">
     order by ${sort}
     </if>
+
+  </select>
+  <select id="selectShopIdByUserId" parameterType="String" resultType="String">
+    select id from sell_shop
+    where user_id = #{userId}
   </select>
 
 </mapper>

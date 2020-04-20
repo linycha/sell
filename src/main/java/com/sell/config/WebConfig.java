@@ -14,18 +14,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 @Configuration
 public class WebConfig extends WebMvcConfigurationSupport {
-    protected final static Logger logger = LoggerFactory.getLogger(WebConfig.class);
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowCredentials(true)
-                .allowedMethods("*")
-                .allowedHeaders("*")
-                .maxAge(36000).allowedHeaders("*");
-        logger.info("*********************************跨域过滤器**************************");
-    }
+//    protected final static Logger logger = LoggerFactory.getLogger(WebConfig.class);
+//
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("*")
+//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                .allowCredentials(true)
+//                .allowedMethods("*")
+//                .allowedHeaders("*")
+//                .maxAge(36000).allowedHeaders("*");
+//        logger.info("*********************************跨域过滤器**************************");
+//    }
 
 }
 

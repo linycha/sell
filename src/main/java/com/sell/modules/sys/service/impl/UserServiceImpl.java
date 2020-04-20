@@ -4,6 +4,8 @@ import com.sell.common.Const;
 import com.sell.common.IdGenerate;
 import com.sell.common.Res;
 import com.sell.common.TokenCache;
+import com.sell.common.utils.CheckUtil;
+import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.sys.dao.UserMapper;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
@@ -22,20 +24,32 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Override
-    public Res<String> register(String mobile,String password){
+    public Res<String> register(String username,String mobile,String password){
         User user = new User();
+        int i = userMapper.checkUsername(username);
+        if(i == 1){
+            return Res.errorMsg("该用户名已存在");
+        }
+        boolean b = CheckUtil.isMobile(mobile);
+        if(!b){
+            return Res.errorMsg("手机号格式错误");
+        }
         int resultCount = userMapper.checkMobile(mobile);
-        if(resultCount != 1){
-            return Res.errorMsg("手机号已存在");
+        if(resultCount == 1){
+            return Res.errorMsg("该手机号已被注册");
         }
         //保存加密完的密码
         String md5Password = MD5Util.hashTwo(password);
+        user.setUsername(username);
+        user.setMobile(mobile);
         user.setPassword(md5Password);
         user.setId(IdGenerate.uuid());
-        int result = userMapper.insert(user);
+        int result = userMapper.insertSelective(user);
         if(result == 0) {
             return Res.errorMsg("注册失败");
         }
+        //添加普通用户的权限
+        userMapper.insertCustomerRole(user.getId());
         return Res.successMsg("注册成功");
     }
     @Override
@@ -130,6 +144,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public int update(User user){
         return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public int saveFeedback(Feedback feedback) {
+        feedback.setId(IdGenerate.uuid());
+        return userMapper.insertFeedback(feedback);
     }
 
 }

@@ -2,6 +2,8 @@ package com.sell.modules.store.controller;
 
 import com.sell.common.Const;
 import com.sell.common.Res;
+import com.sell.common.cache.IBaseCache;
+import com.sell.common.cache.RedisCache;
 import com.sell.modules.store.entity.ShopCategory;
 import com.sell.modules.store.service.ShopCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +22,24 @@ import java.util.List;
 @RequestMapping("category")
 public class ShopCategoryController {
     @Autowired
+    private IBaseCache iBaseCache;
+    @Autowired
     private ShopCategoryService shopCategoryService;
     /**
-     * 获取同级分类
+     * 获取顶级分类
      */
     @GetMapping("shop_top")
     public Res getTopCategory(@RequestParam(defaultValue = "0") String categoryId){
-        List<ShopCategory> categoryList = shopCategoryService.getSiblingCategory(categoryId);
+        List<ShopCategory> categoryList = iBaseCache.getShopTopCategoryList(categoryId);
         if(categoryList == null){
             return Res.errorMsg("查找商铺分类失败");
         }
         return Res.success(categoryList);
+    }
+    @RequestMapping("del")
+    public String del(){
+        iBaseCache.del();
+        return "删除";
     }
     @GetMapping("shop")
     public Res getSiblingCategory(@RequestParam(defaultValue = "0") String categoryId){

@@ -20,7 +20,8 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
-    List<NewOrderVo> selectNewOrderList(@Param("shopId")String shopId, @Param("orderNo")String orderNo);
+    List<NewOrderVo> selectNewOrderList(@Param("shopId")String shopId, @Param("orderNo")String orderNo,
+                                        @Param("status")String status);
 
     List<UserOrderVo> selectUserOrderList(@Param("userId")String userId, @Param("orderNo")String orderNo);
 
@@ -29,4 +30,10 @@ public interface OrderMapper {
      */
     List<DeliveryOrderVo> selectDeliveryOrderList(@Param("deliveryId")String deliveryId,
                                                   @Param("status")String status);
+    String selectUserMobile(String orderNo);
+    String selectDeliveryMobile(String orderNo);
+    String selectUserId(String orderNo);
+    String selectShopId(String orderNo);
+
+    Order selectOrderByOrderNo(String orderNo);
 }

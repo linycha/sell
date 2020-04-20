@@ -15,10 +15,15 @@ import java.util.List;
  */
 public interface OrderService {
     boolean save(Order order);
-    PageInfo<NewOrderVo> getNewOrderList(String shopId, String orderNo, String pageNum);
+    PageInfo<NewOrderVo> getOrderList(String shopId, String orderNo, String status,String pageNum);
     int updateStatusByOrderNo(String orderNo,String status);
     int update(Order order);
     PageInfo<UserOrderVo> getUserOrderList(String userId, String orderNo,String pageNum );
     List<DeliveryOrderVo> getDeliveryOrderList(String deliveryId,String status);
 
+    String getUserMobile(String orderNo);
+    String getDeliveryMobile(String orderNo);
+    String getUserId(String orderNo);
+    String getShopId(String orderNo);
+    Order getOrderDetail(String orderNo);
 }

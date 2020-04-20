@@ -1,6 +1,8 @@
 package com.sell.modules.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sell.modules.sys.entity.Permission;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -29,11 +31,11 @@ public class Order implements Serializable {
 
     private String shopMobile;
 
-    private String deliverId;
+    private String deliveryId;
 
-    private String deliverName;
+    private String deliveryName;
 
-    private String deliverMobile;
+    private String deliveryMobile;
 
     private BigDecimal boxCost;
 
@@ -50,22 +52,26 @@ public class Order implements Serializable {
     private Date completeTime;
 
     private String status;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date createTime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date updateTime;
 
-    //扩展用
+    //以下都是扩展用
     private String productName;
     private String number;
-    //商品信息json字符串
+    //用来接收前端传来商品信息json字符串
     private String cartStr;
+    //用来传给前端的商品列表
+    private List<OrderItem> orderItemList;
+    private String shippingAddress;
+    private String shippingName;
     //用来接收前端传来的
     private String bCost;
     private String sCost;
     private String money;
 
-    public Order(String id, Long orderNo, String userId, String shippingId, String shopId, String shopName, String shopLogo, String shopMobile, String deliverId, String deliverName, String deliverMobile, BigDecimal boxCost, BigDecimal sendCost, BigDecimal totalMoney, BigDecimal payMoney, String payType, String remark, String status,Date completeTime, Date createTime, Date updateTime) {
+    public Order(String id, Long orderNo, String userId, String shippingId, String shopId, String shopName, String shopLogo, String shopMobile, String deliveryId, String deliveryName, String deliveryMobile, BigDecimal boxCost, BigDecimal sendCost, BigDecimal totalMoney, BigDecimal payMoney, String payType, String remark, String status,Date completeTime, Date createTime, Date updateTime) {
         this.id = id;
         this.orderNo = orderNo;
         this.userId = userId;
@@ -74,9 +80,9 @@ public class Order implements Serializable {
         this.shopName = shopName;
         this.shopLogo = shopLogo;
         this.shopMobile = shopMobile;
-        this.deliverId = deliverId;
-        this.deliverName = deliverName;
-        this.deliverMobile = deliverMobile;
+        this.deliveryId = deliveryId;
+        this.deliveryName = deliveryName;
+        this.deliveryMobile = deliveryMobile;
         this.boxCost = boxCost;
         this.sendCost = sendCost;
         this.totalMoney = totalMoney;
@@ -157,28 +163,28 @@ public class Order implements Serializable {
         this.shopMobile = shopMobile == null ? null : shopMobile.trim();
     }
 
-    public String getDeliverId() {
-        return deliverId;
+    public String getDeliveryId() {
+        return deliveryId;
     }
 
-    public void setDeliverId(String deliverId) {
-        this.deliverId = deliverId == null ? null : deliverId.trim();
+    public void setDeliverId(String deliveryId) {
+        this.deliveryId = deliveryId == null ? null : deliveryId.trim();
     }
 
-    public String getDeliverName() {
-        return deliverName;
+    public String getDeliveryName() {
+        return deliveryName;
     }
 
-    public void setDeliverName(String deliverName) {
-        this.deliverName = deliverName == null ? null : deliverName.trim();
+    public void setDeliveryName(String deliveryName) {
+        this.deliveryName = deliveryName == null ? null : deliveryName.trim();
     }
 
-    public String getDeliverMobile() {
-        return deliverMobile;
+    public String getDeliveryMobile() {
+        return deliveryMobile;
     }
 
-    public void setDeliverMobile(String deliverMobile) {
-        this.deliverMobile = deliverMobile == null ? null : deliverMobile.trim();
+    public void setDeliveryMobile(String deliveryMobile) {
+        this.deliveryMobile = deliveryMobile == null ? null : deliveryMobile.trim();
     }
 
     public BigDecimal getBoxCost() {
@@ -308,6 +314,30 @@ public class Order implements Serializable {
         this.number = number;
     }
 
+    public List<OrderItem> getOrderItemList() {
+        return orderItemList;
+    }
+
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public String getShippingName() {
+        return shippingName;
+    }
+
+    public void setShippingName(String shippingName) {
+        this.shippingName = shippingName;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -319,9 +349,9 @@ public class Order implements Serializable {
                 ", shopName='" + shopName + '\'' +
                 ", shopLogo='" + shopLogo + '\'' +
                 ", shopMobile='" + shopMobile + '\'' +
-                ", deliverId='" + deliverId + '\'' +
-                ", deliverName='" + deliverName + '\'' +
-                ", deliverMobile='" + deliverMobile + '\'' +
+                ", deliveryId='" + deliveryId + '\'' +
+                ", deliveryName='" + deliveryName + '\'' +
+                ", deliveryMobile='" + deliveryMobile + '\'' +
                 ", boxCost=" + boxCost +
                 ", sendCost=" + sendCost +
                 ", totalMoney=" + totalMoney +
