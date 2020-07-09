@@ -6,8 +6,9 @@
 项目部署上采用Doker虚拟化部署在自己的阿里云上，结合了Nginx、Haproxy和keepalived,
 从数据库到后端前端均采用多节点负载均衡策略部署。
 
-用户端地址http://47.99.71.179:8091/#/user
+移动端用户端地址http://47.99.71.179:8091/#/user
 本人毕设项目，还请多多指教！ :fa-check: 
+互相学习联系qq:1058298031
 
 ![骑手端](https://images.gitee.com/uploads/images/2020/0306/171714_d6ed403e_5465839.png "屏幕截图.png")
 ![骑手端](https://images.gitee.com/uploads/images/2020/0306/171747_d333a38b_5465839.png "屏幕截图.png")
