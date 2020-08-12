@@ -1,16 +1,22 @@
 package com.sell.modules.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
+/**
+ * @author linyuc
+ * @date 2020/03/01 00:35
+ */
 public class OrderComment {
     private String id;
 
     private String orderId;
 
     private String userId;
+    private String shopId;
+    private String parentId;
 
     private String content;
 
@@ -19,7 +25,9 @@ public class OrderComment {
     private BigDecimal score;
 
     private String status;
-
+    private String reply;
+    private String isAnonymity;
+    @JsonFormat(pattern = "yy-MM-dd HH:mm",timezone = "GMT+8")
     private Date createTime;
 
     //用于接收前端传过来的值
@@ -29,14 +37,18 @@ public class OrderComment {
 
     private String orderNo;
 
-    public OrderComment(String id, String orderId, String userId, String content, String images, BigDecimal score, String status, Date createTime) {
+    public OrderComment(String id, String orderId, String userId, String shopId, String parentId, String content, String images, BigDecimal score, String status, String reply, String isAnonymity, Date createTime) {
         this.id = id;
         this.orderId = orderId;
         this.userId = userId;
+        this.shopId = shopId;
+        this.parentId = parentId;
         this.content = content;
         this.images = images;
         this.score = score;
         this.status = status;
+        this.reply = reply;
+        this.isAnonymity = isAnonymity;
         this.createTime = createTime;
     }
 
@@ -130,5 +142,37 @@ public class OrderComment {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
+
+    public String getIsAnonymity() {
+        return isAnonymity;
+    }
+
+    public void setIsAnonymity(String isAnonymity) {
+        this.isAnonymity = isAnonymity;
     }
 }

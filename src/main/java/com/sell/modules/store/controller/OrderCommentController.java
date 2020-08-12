@@ -1,5 +1,6 @@
 package com.sell.modules.store.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
 import com.sell.common.Res;
 import com.sell.common.utils.PropertiesUtil;
@@ -9,7 +10,9 @@ import com.sell.modules.store.service.FileService;
 import com.sell.modules.store.service.OrderCommentService;
 import com.sell.modules.store.service.OrderService;
 import com.sell.modules.store.service.OrderStatusService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,4 +65,33 @@ public class OrderCommentController {
         return Res.successMsg("评价成功");
     }
 
+    /**
+     * 商家发起查询自己的订单列表
+     * @param shopId
+     * @param scoreType
+     * @param isAnonymity
+     * @param status
+     * @param pageNum
+     * @return Res
+     */
+    @GetMapping("list")
+    public Res<PageInfo<OrderComment>> list(String shopId, String scoreType, String isAnonymity, String status, String pageNum){
+        System.out.println("scoreType:"+scoreType+",isAnonymity:"+isAnonymity+",pageNum:"+pageNum+",status:"+status);
+        PageInfo<OrderComment> commentList = orderCommentService.list(shopId,scoreType,isAnonymity,status,pageNum);
+        if(commentList.getList().size() == 0){
+            return Res.errorMsg("未找到相应的评价信息");
+        }
+        return Res.success(commentList);
+    }
+    @PostMapping("reply")
+    public Res<String> reply(String orderId,String reply){
+        if(StringUtils.isBlank(reply)){
+            return Res.errorMsg("回复内容为空");
+        }
+        int result = orderCommentService.update(orderId,reply);
+        if(result == 1){
+            return Res.successMsg("回复成功");
+        }
+        return Res.errorMsg("回复失败");
+    }
 }

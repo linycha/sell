@@ -28,8 +28,14 @@ public class Const {
     public static final Integer PAGE_DEFAULT_NUM = 1;
     public static final Integer PAGE_DEFAULT_SIZE = 10;
     public static final Integer PAGE_DEFAULT_SIZE2 = 5;
+    public static final Integer PAGE_DEFAULT_SIZE_TEN = 10;
+    public static final Integer PAGE_DEFAULT_SIZE_FIVE = 5;
     public static final String CATEGORY_PARENT_ID = "0";
     public static final String UPLOADING_IMG_URL = "";
+    //评价等级  0:好评，1：一般，2：差评
+    public static final Integer COMMENT_GOOD = 0;
+    public static final Integer COMMENT_GENERAL = 1;
+    public static final Integer COMMENT_BAD = 2;
 
     public interface ShopList{
         List<String> ORDER_BY = Lists.newArrayList("monthly_sales desc","monthly_sales desc","score desc","delivery_time");
