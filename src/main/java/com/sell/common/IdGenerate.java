@@ -49,7 +49,7 @@ public class IdGenerate {
 	}
 	
 	/**
-	 * 获取新代码编号
+	 * 获取新代码编号 
 	 * 先注释掉
 	 */
 	public static String nextCode(String code){

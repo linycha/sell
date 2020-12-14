@@ -19,7 +19,7 @@ public interface UserMapper {
 
     int updateByPrimaryKeySelective(User record);
 
-    User selectByUsername(String username);
+    User selectByUsernameOrUserId(@Param("username") String username,@Param("userId") String userId);
     List<Role> selectRoleByUsername(String username);
     List<User> selectUserList();
 

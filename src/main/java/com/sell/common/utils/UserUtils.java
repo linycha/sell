@@ -2,6 +2,7 @@ package com.sell.common.utils;
 
 import com.sell.modules.sys.entity.User;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.BeanUtils;
 
 /**
  * @author linyuc
@@ -9,11 +10,15 @@ import org.apache.shiro.SecurityUtils;
  */
 public class UserUtils {
     public static User getUser() {
-        return (User) SecurityUtils.getSubject().getPrincipal();
+        Object o = SecurityUtils.getSubject().getPrincipal();
+        User user = new User();
+        BeanUtils.copyProperties(o,user);
+        return user;
     }
 
     public static String getUserId() {
-        return getUser().getId();
+        Object o = SecurityUtils.getSubject().getPrincipal();
+        return o.toString();
     }
 
 }

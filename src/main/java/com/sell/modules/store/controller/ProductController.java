@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.lly835.bestpay.rest.type.Delete;
 import com.sell.common.Const;
 import com.sell.common.Res;
+import com.sell.common.utils.FTPUtil;
 import com.sell.common.utils.PropertiesUtil;
 import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.entity.ProductCategory;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,8 @@ public class ProductController {
     private FileService fileService;
     @Autowired
     private ProductCategoryService productCategoryService;
+    @Autowired
+    private FTPUtil ftpUtil;
 
     @GetMapping("list")
     public Res<List<List<ProductVo>>> list(String shopId){
@@ -111,11 +115,12 @@ public class ProductController {
         return Res.successMsg("修改商品信息成功");
     }
     @RequestMapping("upload")
-    public Res<String> upload(MultipartFile file, HttpServletRequest request){
-        String path = request.getSession().getServletContext().getRealPath("upload");
-        String targetFileName = fileService.upload(file,path, Const.FTPPATH_TEST);
-
-        if(targetFileName == null){
+    public Res<String> upload(MultipartFile file)throws IOException {
+        Long start = System.currentTimeMillis();
+        boolean b = ftpUtil.uploadDailyFile(file.getOriginalFilename(),file.getInputStream(),Const.FTPPATH_DAILY);
+        Long end = System.currentTimeMillis();
+        System.out.println(end - start);
+        if(!b){
             return Res.errorMsg("上传失败");
         }
         return Res.successMsg("上传成功");

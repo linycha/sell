@@ -176,4 +176,14 @@
     where user_id = #{userId}
     and is_default = '1'
   </update>
+  <insert id="insertAll" parameterType="java.util.List">
+    INSERT INTO sell_shipping(id,name)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+        #{item.id},
+        #{item.name}
+      )
+    </foreach>
+  </insert>
 </mapper>

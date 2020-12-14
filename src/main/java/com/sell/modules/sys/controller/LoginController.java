@@ -6,11 +6,16 @@ import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,9 +38,9 @@ public class LoginController {
         Map<String,Object> info = new HashMap<>();
         try {
             subject.login(token);
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            Object o = SecurityUtils.getSubject().getPrincipal();
             info.put("token",subject.getSession().getId());
-            info.put("userId",user.getId());
+            info.put("userId",o.toString());
             return Res.success("登录成功", info);
         }catch(Exception e){
             e.printStackTrace();

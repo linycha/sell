@@ -29,16 +29,15 @@ public class MySessionManager extends DefaultWebSessionManager {
         //从请求头获取token
         String token = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
         if(token != null){
-            System.out.println("传过来的token值为："+token);
-            System.out.println("token准备中");
+            System.out.println("token准备中,传过来的token值为："+token);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, ShiroHttpServletRequest.COOKIE_SESSION_ID_SOURCE);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, token);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
             return token;
         }else{
-            System.out.println("token is null");
-            return null;
-            //return super.getSessionId(request,response);
+            System.out.println("token from request header is null");
+            //return null;
+            return super.getSessionId(request,response);
         }
 
     }

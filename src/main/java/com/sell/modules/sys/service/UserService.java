@@ -23,7 +23,7 @@ public interface UserService {
     Res<String> restPassword(String username,String passwordNew,String forgetToken);
 
 
-    User selectByUsername(String username);
+    User selectByUsername(String username, String userId);
     String selectUsernameByMobile(String mobile);
 
     int update(User user);

@@ -10,6 +10,7 @@ import com.sell.modules.store.service.FileService;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,12 @@ public class UserController {
     @Autowired
     private FileService fileService;
 
+    @GetMapping("aaa")
+    public Res<String> aaa(){
+        Object object = SecurityUtils.getSubject().getPrincipal();
+        System.out.println(object.toString());
+        return Res.success("aaaacl");
+    }
     /**
      * 获取用户个人信息
      */

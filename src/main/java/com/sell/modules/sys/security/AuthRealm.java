@@ -1,20 +1,16 @@
 package com.sell.modules.sys.security;
 
-import com.sell.common.Const;
 import com.sell.common.utils.CheckUtil;
 import com.sell.modules.sys.entity.Permission;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.InvalidSessionException;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
@@ -37,9 +33,12 @@ public class AuthRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         System.out.println("授权 doGetAuthorizationInfo");
         //从session里拿user,查找该用户有哪些角色、权限
-        User user = (User) principals.fromRealm(this.getClass().getName()).iterator().next();
-
-        /*//视频里的方法
+        Object o = principals.fromRealm(this.getClass().getName()).iterator().next();
+        //User user = new User();
+        //BeanUtils.copyProperties(o,user);
+        System.out.println("-------o.toString"+o.toString());
+        User user = userService.selectByUsername(null,o.toString());
+        /*视频里的方法
         User u = (User)principals.getPrimaryPrincipal();
         User user = userService.selectByUsername(u.getUsername());*/
 
@@ -47,12 +46,18 @@ public class AuthRealm extends AuthorizingRealm {
         List<Role> roleList = user.getRoles();
         List<String> roleNameList = new ArrayList<>();
         if(!CollectionUtils.isEmpty(roleList)){
-            for(Role role : roleList){
+            for(int i = 0;i<roleList.size();i++){
+                Object o1 = roleList.get(i);
+                Role role = new Role();
+                BeanUtils.copyProperties(o1,role);
                 roleNameList.add(role.getName());
                 List<Permission> permissions = role.getPermissions();
                 if(!CollectionUtils.isEmpty(permissions)){
-                    for(Permission permission : permissions){
-                        permissionList.add(permission.getName());
+                    for(int j = 0;j<permissions.size();j++){
+                        Object o2 = permissions.get(i);
+                        Permission p = new Permission();
+                        BeanUtils.copyProperties(o2,p);
+                        permissionList.add(p.getName());
                     }
                 }
             }
@@ -77,11 +82,12 @@ public class AuthRealm extends AuthorizingRealm {
             username = userService.selectUsernameByMobile(username);
         }
 
-        User user = userService.selectByUsername(username);
+        User user = userService.selectByUsername(username,null);
 
         if(user == null){
             return null;
         }
-        return new SimpleAuthenticationInfo(user, user.getPassword(), this.getClass().getName());
+        //改成值存入userId，不然结合redis实现分布式时会报错
+        return new SimpleAuthenticationInfo(user.getId(), user.getPassword(), this.getClass().getName());
     }
 }

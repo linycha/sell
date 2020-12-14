@@ -169,7 +169,7 @@
     where password = #{password}
     and id = #{userId}
   </select>
-  <select id="selectByUsername" parameterType="String" resultMap="UserRolePermissionMap">
+  <select id="selectByUsernameOrUserId" parameterType="String" resultMap="UserRolePermissionMap">
     select s.*,
     r.id as rid, r.name as rname,
     p.name as pname, p.url as url
@@ -178,7 +178,13 @@
     left join sys_role r on r.id = ur.role_id
     left join sys_role_permission rp on rp.role_id = r.id
     left join sys_permission p on p.id = rp.per_id
-    where username=#{username}
+    where 1=1
+    <if test="username != null and username != ''">
+      and s.username=#{username}
+    </if>
+    <if test="userId != null and userId != ''">
+      and s.id = #{userId}
+    </if>
     and s.del_flag = '0'
   </select>
   <select id="selectUsernameByMobile" parameterType="String" resultType="String">

@@ -7,7 +7,8 @@
     <!--导入属性配置-->
     <!--<properties resource=""/>-->
     <!--指定特定数据库的jdbc驱动jar包的位置-->
-    <classPathEntry location="E:\tools\jar\mysql-connector-java-8.0.11.jar"/>
+    <!--<classPathEntry location="E:\tools\jar\mysql-connector-java-8.0.11.jar"/>-->
+    <classPathEntry location="E:\tools\jar\ojdbc6-12.1.0.2.jar"/>
 
     <context id="default" targetRuntime="MyBatis3">
 
@@ -18,11 +19,19 @@
         </commentGenerator>
 
         <!--jdbc的数据库连接 -->
-        <jdbcConnection
+        <!--<jdbcConnection
                 driverClass="com.mysql.cj.jdbc.Driver"
-                connectionURL="jdbc:mysql://localhost:3306/sell?serverTimezone=GMT%2B8&amp;useSSL=false"
+                connectionURL="jdbc:mysql://47.99.71.179:4006/sell?serverTimezone=GMT%2B8&amp;useSSL=false&amp;nullCatalogMeansCurrent=true
+"
                 userId="root"
-                password="755327">
+                password="123456">
+        </jdbcConnection>-->
+        <jdbcConnection driverClass="oracle.jdbc.OracleDriver"
+                        connectionURL="jdbc:oracle:thin:@10.16.0.55:1521:qzsy"
+                        userId="sbsi"
+                        password="password">
+            <!-- oracle 字段注解 -->
+            <property name="remarksReporting" value="true"/>
         </jdbcConnection>
 
         <!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制-->
@@ -34,11 +43,11 @@
             targetPackage     指定生成的model生成所在的包名
             targetProject     指定在该项目下所在的路径
         -->
-        <javaModelGenerator targetPackage="com.sell.modules.store.entity" targetProject="./src/main/java">
+        <javaModelGenerator targetPackage="com.sell.modules.sys.entity" targetProject="./src/main/java">
             <!-- 是否允许子包，即targetPackage.schemaName.tableName -->
             <property name="enableSubPackages" value="false"/>
             <!-- 是否对model添加 构造函数 -->
-            <property name="constructorBased" value="true"/>
+<!--            <property name="constructorBased" value="true"/>-->
             <!-- 是否对类CHAR类型的列的数据进行trim操作 -->
             <property name="trimStrings" value="true"/>
             <!-- 建立的Model对象是否 不可改变  即生成的Model对象不会有 setter方法，只有构造方法 -->
@@ -59,7 +68,7 @@
 
         <!-- targetPackage：mapper接口dao生成的位置 -->
         <!--<javaClientGenerator type="XMLMAPPER" targetPackage="com.sell.modules.store.controller.dao" targetProject=".\src\main\java">-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.sell.modules.store.dao" targetProject="./src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.sell.modules.sys.dao" targetProject="./src/main/java">
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
 <!--        <javaClientGenerator type="XMLMAPPER" targetPackage="com.sell.modules.sys.dao" targetProject="./src/main/java">-->
@@ -73,7 +82,11 @@
         <table tableName="sell_cart_item" domainObjectName="CartItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
         <!--<table tableName="sell_shop_category" domainObjectName="ShopCategory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table tableName="sell_product_category" domainObjectName="ProductCategory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
-        <table tableName="sell_order_comment" domainObjectName="OrderComment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table tableName="dip_base_diag_code" domainObjectName="DiaggCodeDO" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table tableName="dip_base_surg_code" domainObjectName="SurgCodeDO" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table tableName="dip_base_nation_diag_code" domainObjectName="NationDiagCodeDO" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table tableName="dip_base_nation_surg_code" domainObjectName="NationSurgCodeDO" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table tableName="dip_base_org_code" domainObjectName="OrgCodeDO" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <!--<table tableName="sell_order_item" domainObjectName="OrderItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table tableName="sell_order_status" domainObjectName="OrderStatus" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table tableName="sell_pay_info" domainObjectName="PayInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->

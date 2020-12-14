@@ -27,4 +27,6 @@ public interface ShippingMapper {
 
     void updateDefault(String userId);
 
+    int insertAll(List<Shipping> list);
+
 }

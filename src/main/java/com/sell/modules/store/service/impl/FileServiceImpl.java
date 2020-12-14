@@ -42,7 +42,7 @@ public class FileServiceImpl implements FileService {
         File targetFile = new File(path,uploadFileName);
         boolean b;
         try{
-            //上传到tomcat服务器下的target下
+            //先上传到tomcat服务器下的target下,再把target目录下的文件上传到ftp
             file.transferTo(targetFile);
             //todo 将文件上传到我们的FTP服务器上
             b = FTPUtil.uploadFile(Lists.newArrayList(targetFile),ftpPath);

@@ -4,12 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.sell.common.Const;
 import com.sell.common.utils.CheckUtil;
+import com.sell.common.utils.FTPUtil;
 import com.sell.common.utils.RedisUtil;
-import com.sell.modules.store.dao.OrderMapper;
-import com.sell.modules.store.dao.ProductMapper;
-import com.sell.modules.store.dao.ShopCategoryMapper;
-import com.sell.modules.store.dao.ShopMapper;
+import com.sell.modules.store.dao.*;
 import com.sell.modules.store.entity.Delivery;
+import com.sell.modules.store.entity.Shipping;
 import com.sell.modules.store.entity.Shop;
 import com.sell.modules.store.entity.ShopCategory;
 import com.sell.modules.store.service.DeliveryService;
@@ -22,10 +21,12 @@ import com.sell.modules.store.vo.ShopVo;
 import com.sell.modules.store.vo.UserOrderVo;
 import com.sell.modules.sys.dao.UserMapper;
 import com.sell.modules.sys.entity.User;
+import com.sun.media.sound.SoftTuning;
 import org.apache.commons.jexl3.JexlBuilder;
 import org.apache.commons.jexl3.JexlEngine;
 import org.apache.commons.jexl3.JexlExpression;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.net.ftp.FTPFile;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.json.JSONArray;
@@ -35,6 +36,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,34 +51,34 @@ import java.util.regex.Pattern;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//å‘Šè¯‰junit springé…ç½®æ–‡ä»¶çš„ä½ç½®
+//¸æËßjunit springÅäÖÃÎÄ¼şµÄÎ»ÖÃ
 public class Test {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         String expressionString = "100*10-(200+300)";
 
         JexlEngine jexlEngine = new JexlBuilder().create();
         JexlExpression jexlExpression = jexlEngine.createExpression(expressionString);
         Object evaluate = jexlExpression.evaluate(null);
         System.out.println(evaluate);
-        /*Scanner sc = new Scanner(System.in);
+        *//*Scanner sc = new Scanner(System.in);
         String regex = "^[1-9]\\d{5}(18|19|20)\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$";
-        //ç¼–è¯‘æ­£åˆ™è¡¨è¾¾å¼
+        //±àÒëÕıÔò±í´ïÊ½
         Pattern pattern= Pattern.compile(regex);
-        System.out.println("è¯·è¾“å…¥èº«ä»½è¯å·ç ï¼š");
+        System.out.println("ÇëÊäÈëÉí·İÖ¤ºÅÂë£º");
         while(true){
             String id = sc.next();
-            //ä¸æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…
+            //ÓëÕıÔò±í´ïÊ½Æ¥Åä
             Matcher matcher=pattern.matcher(id);
             if(matcher.matches()){
                 int year = Integer.parseInt(id.substring(6,10));
                 int age = 2019 - year;
-                System.out.println("æ ¼å¼æ­£ç¡®ï¼Œå¹´é¾„æ˜¯ï¼š"+age);
+                System.out.println("¸ñÊ½ÕıÈ·£¬ÄêÁäÊÇ£º"+age);
                 break;
             }else{
-                System.out.println("èº«ä»½è¯å·ç æ ¼å¼ï¼Œé‡æ–°è¾“å…¥ï¼š");
+                System.out.println("Éí·İÖ¤ºÅÂë¸ñÊ½£¬ÖØĞÂÊäÈë£º");
             }
-        }*/
-    }
+        }*//*
+    }*/
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -93,19 +99,61 @@ public class Test {
     private RedisUtil redisUtil;
     @Autowired
     private RedisUtil.redisList redisList;
+    @Autowired
+    private RedisUtil.redisString redisString;
+    @Autowired
+    private FTPUtil ftpUtil;
+    @Autowired
+    private ShippingMapper shippingMapper;
     @org.junit.Test
-    public void test1(){
-        boolean b = CheckUtil.isMobile("12345678909");
-        boolean a = CheckUtil.isMobile("15280642066");
-        boolean c = CheckUtil.isMobile("55678");
-        System.out.println(b);
-        System.out.println(a);
-        System.out.println(c);
+    public void test1()throws Exception{
+        /*User user = new User();
+        user.setId("aaaacl");
+        user.setUsername("ÀîËÄ");
+        getUser(user);
+        System.out.println(user.toString());*/
+        String srcString = "ÎÒÃÇÊÇÖĞ¹úÈË";
+        System.out.println(srcString);
+        //String utf2GbkString = new String(srcString.getBytes("UTF-8"),"GBK");
+        String utf2GbkString = new String(srcString.getBytes("GBK"),"UTF-8");
+        System.out.println("UTF-8×ª»»³ÉGBK£º"+utf2GbkString);
+        //String utf2Gbk2UtfString = new String(utf2GbkString.getBytes("GBK"),"UTF-8");
+        //System.out.println("UTF-8×ª»»³ÉGBKÔÙ×ª³ÉUTF-8£º"+utf2Gbk2UtfString);
+        //printByReader();
+    }
+    public User getUser(User user){
+        user.setUsername("ÕÅÈı");
+        return user;
+    }
+
+    public static void main(String[] args)throws Exception {
+        String s = "Ä½¿ÎABC";
+        byte[] bytes1 = s.getBytes("gbk");//×ª»»³É×Ö½ÚĞòÁĞÓÃµÄÊÇGBKµÄ±àÂë
+        //gbk±àÂëÖĞÎÄÕ¼ÓÃ2¸ö×Ö½Ú£¬Ó¢ÎÄÕ¼ÓÃ1¸ö×Ö½Ú
+        for(byte b : bytes1){
+            //°Ñ×Ö½Ú£¨×ª»»³ÉÁËint£©ÒÔ16½øÖÆµÄ·½Ê½ÏÔÊ¾,0xff°ÑÇ°ÃæµÄ24¸ö0È¥µô
+            System.out.println(Integer.toHexString(b & 0xff)+" ");
+        }
+    }
+    static void printByReader()throws IOException {
+        File file = new File("E:\\javaio\\22.txt");
+        FileInputStream in = new FileInputStream(file);
+        InputStreamReader isr = new InputStreamReader(in, "gbk");
+        char[] buf = new char[8 * 1024];
+        int c = 0;
+        while((c = isr.read(buf,0,buf.length)) != -1){
+            String s = new String(buf,0,c);
+            System.out.println(s);
+        }
     }
     @org.junit.Test
     public void test2(){
-        List<ShopCategory> list2 = shopCategoryService.getSiblingCategory("0");
-        redisList.set("shopTopCategoryList", list2,1800);
+        //List<ShopCategory> list2 = shopCategoryService.getSiblingCategory("0");
+        redisString.set("aaa", "2345",1800);
+        String value = (String)redisString.get("aaa");
+        String value2 = (String)redisString.get("aaaacl");
+        System.out.println(value);
+        System.out.println(value2);
         //Object s = new SimpleHash("md5","123456",null,2);
         //System.out.println(s);
     }
@@ -118,7 +166,7 @@ public class Test {
             if(shopCategory.getParentId().equals(Const.CATEGORY_PARENT_ID)){
                 categoryIds = shopCategoryMapper.selectCategoryList(categoryId);
                 if(categoryIds.size() == 0){
-                    System.out.println("å‡ºé”™äº†");
+                    System.out.println("³ö´íÁË");
                     categoryIds = null;
                 }
             }else{
@@ -130,7 +178,7 @@ public class Test {
         System.out.println("categoryIds="+categoryIds);
         List<ShopVo> shopList = shopMapper.selectShopList("", categoryIds, Const.ShopList.ORDER_BY.get(0));
         if(shopList.size() == 0){
-            System.out.println("æœªæ‰¾åˆ°");
+            System.out.println("Î´ÕÒµ½");
         }else{
             System.out.println(shopList);
         }

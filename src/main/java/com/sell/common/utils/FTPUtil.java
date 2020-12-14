@@ -2,13 +2,16 @@ package com.sell.common.utils;
 
 
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
 import sun.net.ftp.FtpClient;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,6 +19,7 @@ import java.util.List;
  * @author linyuc
  * @date 2019/12/20 13:45
  */
+@Configuration
 public class FTPUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(FTPUtil.class);
@@ -29,7 +33,11 @@ public class FTPUtil {
         this.user = user;
         this.pwd = pwd;
     }
-    public static boolean uploadFile(List<File> fileList,String ftpPath) throws IOException {
+
+    public FTPUtil() {
+    }
+
+    public static boolean uploadFile(List<File> fileList, String ftpPath) throws IOException {
         logger.info("开始连接ftp服务器");
         FTPUtil ftpUtil = new FTPUtil(ftpIp,21,ftpUser,ftpPass);
         boolean result = ftpUtil.uploadFile(ftpPath,fileList);
@@ -37,10 +45,10 @@ public class FTPUtil {
 
     }
     private boolean uploadFile(String remotePath,List<File> fileList) throws IOException {
-        boolean uploaded = false;
+        boolean isUpload = false;
         FileInputStream fis = null;
         //连接FTP服务器
-        if(connectServer(this.ip,this.port,this.user,this.pwd)){
+        if(open()){
             try{
                 logger.info(remotePath);
                 //是否需要切换文件夹，remote为空就不需要切换
@@ -55,31 +63,83 @@ public class FTPUtil {
                     fis = new FileInputStream(file);
                     ftpClient.storeFile(file.getName(),fis);
                 }
-                uploaded = true;
+                isUpload = true;
                 logger.info("ftp服务器上传文件成功");
             }catch (IOException e){
                 logger.error("ftp服务器上传文件异常",e);
-                uploaded = false;
+                isUpload = false;
             }finally {
                 fis.close();
                 ftpClient.disconnect();
             }
         }
-        return uploaded;
+        return isUpload;
     }
-    private boolean connectServer(String ip,int port,String user,String pwd){
+    //上传日常文件，返回是否成功
+    public boolean uploadDailyFile(String fileName, InputStream is, String path)throws IOException{
+        boolean isUpload = false;
+        //连接FTP服务器
+        if(open()){
+            try{
+                logger.info("ftp服务器连接成功，开始上传："+fileName);
+                //是否需要切换文件夹，remote为空就不需要切换
+                ftpClient.changeWorkingDirectory(path);
+                ftpClient.setBufferSize(1024);
+                ftpClient.setControlEncoding("UTF-8");
+                //二进制
+                ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+                //开启被动模式
+                ftpClient.enterLocalPassiveMode();
+                //上传文件
+                ftpClient.storeFile(fileName,is);
+                isUpload = true;
+                logger.info("ftp服务器上传文件成功");
+            }catch (IOException e){
+                logger.error("ftp服务器上传文件异常",e);
+                isUpload = false;
+            }finally {
+                is.close();
+                ftpClient.disconnect();
+            }
+        }
+        return isUpload;
+    }
+    private boolean open(){
+        String ftpIp = PropertiesUtil.getProperty("ftp.serverIp");
+        String ftpUser = PropertiesUtil.getProperty("ftp.user");
+        String ftpPass = PropertiesUtil.getProperty("ftp.pass");
         ftpClient = new FTPClient();
         boolean isSuccess;
         try{
-            ftpClient.connect(ip);
-            isSuccess = ftpClient.login(user,pwd);
+            ftpClient.connect(ftpIp);
+            isSuccess = ftpClient.login(ftpUser,ftpPass);
         }catch (IOException e){
             logger.error("连接ftp服务器异常",e);
             isSuccess = false;
         }
         return isSuccess;
     }
-
+    public List<FTPFile> getFileList(String path){
+        //FTPUtil ftpUtil = new FTPUtil(ftpIp,21,ftpUser,ftpPass);
+        if(open()){
+            try{
+                //String[] list = (ftpClient.listNames(path));
+                FTPFile[] fileList = ftpClient.listFiles(path);
+                for(FTPFile file : fileList){
+                    long size = file.getSize()/1024;
+                    String date = DateTimeUtil.dateToStr(file.getTimestamp().getTime());
+                    System.out.println("名字"+file.getName()+"大小："+size+"时间"+date+"类型："+file.getType());
+                }
+                return Arrays.asList(fileList);
+            }catch (IOException e){
+                logger.error("ftp获取"+path+"路径下文件失败");
+                return null;
+            }
+        }else{
+            logger.error("连接ftp服务器失败");
+            return null;
+        }
+    }
 
     private String ip;
     private int port;

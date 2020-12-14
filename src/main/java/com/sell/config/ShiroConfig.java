@@ -26,7 +26,8 @@ import java.util.Map;
 
 /**
  * shiro主要配置类
- * @author linyc
+ * @author linyuc
+ * @date 2020/1/2 13:41
  */
 @Configuration
 public class ShiroConfig {
@@ -36,7 +37,7 @@ public class ShiroConfig {
         System.out.println("执行 ShiroFilterFactoryBean.shiroFilter");
 
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
-        bean.setSecurityManager(manager);
+        bean.setSecurityManager(securityManager());
         //没有登录时跳转的url
         bean.setLoginUrl("/to_login");
         //bean.setSuccessUrl("/login");
@@ -63,10 +64,12 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/category/**","anon");
         filterChainDefinitionMap.put("/product/**","anon");
         filterChainDefinitionMap.put("/shop/**","anon");
+        filterChainDefinitionMap.put("/location/**","anon");
         //filterChainDefinitionMap.put("/order/**","anon");
         filterChainDefinitionMap.put("/order/**","roles[customer]");
         filterChainDefinitionMap.put("/admin/**","roles[admin]");
         filterChainDefinitionMap.put("/test/**","anon");
+        filterChainDefinitionMap.put("/file/**","anon");
         filterChainDefinitionMap.put("/comment/**","roles[customer]");
         //filterChainDefinitionMap.put("/test","roles[delivery]");
         //filterChainDefinitionMap.put("/admin/delete","perms[delete]");
@@ -87,7 +90,7 @@ public class ShiroConfig {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
         //前后端分离设置sessionManager
         manager.setSessionManager(sessionManager());
-        //manager.setCacheManager(cacheManager());
+        manager.setCacheManager(cacheManager());
         manager.setRealm(authRealm());
         return manager;
     }
@@ -106,12 +109,12 @@ public class ShiroConfig {
     @Bean
     public MySessionManager sessionManager(){
         MySessionManager sessionManager = new MySessionManager();
-        //会话超时时间，单位毫秒，2000秒时
-        sessionManager.setGlobalSessionTimeout(2000000);
+        //会话超时时间，单位毫秒，30分钟
+        sessionManager.setGlobalSessionTimeout(30*60*1000);
         //去掉url上的jSessionId
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         //session持久化
-        //sessionManager.setSessionDAO(redisSessionDAO());
+        sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
     }
     @Bean
@@ -128,7 +131,7 @@ public class ShiroConfig {
      */
     public RedisManager getRedisManager(){
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost("localhost");
+        redisManager.setHost("47.99.71.179");
         redisManager.setPort(6379);
         return redisManager;
     }
@@ -136,7 +139,7 @@ public class ShiroConfig {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(getRedisManager());
         //设置过期时间，单位s
-        redisCacheManager.setExpire(20);
+        redisCacheManager.setExpire(120);
         return  redisCacheManager;
     }
 

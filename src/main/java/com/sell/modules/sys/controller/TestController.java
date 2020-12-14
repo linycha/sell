@@ -1,19 +1,14 @@
 package com.sell.modules.sys.controller;
 
 import com.sell.common.Res;
+import com.sell.modules.store.dao.ShopMapper;
+import com.sell.modules.store.service.ShopService;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.security.WebSocket;
 import com.sell.modules.sys.service.UserService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author linyuc
@@ -26,6 +21,15 @@ public class TestController {
     private UserService userService;
     @Autowired
     private WebSocket webSocket;
+    @Autowired
+    private ShopService shopService ;
+    @Autowired
+    private ShopMapper shopMapper ;
+    @RequestMapping("drool")
+    public void param (){
+    }
+
+
     @RequestMapping("test")
     public Res<String> test2() {
         return Res.successMsg("1111111");
@@ -52,7 +56,7 @@ public class TestController {
     @RequestMapping("index")
     public Object index(){
         String username = "eeeee";
-        User user = userService.selectByUsername(username);
+        User user = userService.selectByUsername(username,null);
         if(user == null){
             return "null";
         }

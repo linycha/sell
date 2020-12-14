@@ -49,6 +49,11 @@ public class Shipping {
         this.updateTime = updateTime;
     }
 
+    public Shipping(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Shipping() {
         super();
     }

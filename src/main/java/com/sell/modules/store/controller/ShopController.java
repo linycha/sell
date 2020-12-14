@@ -16,7 +16,12 @@ import com.sell.modules.store.vo.ShopVo;
 import com.sell.modules.sys.security.WebSocket;
 import javassist.tools.web.Webserver;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -24,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
@@ -47,6 +53,24 @@ public class ShopController {
     @Autowired
     private WebSocket webSocket;
 
+    @GetMapping("login1")
+    public Res login1(){
+        DefaultWebSecurityManager securityManager = (DefaultWebSecurityManager) SecurityUtils.getSecurityManager();
+        DefaultWebSessionManager sessionManager = (DefaultWebSessionManager)securityManager.getSessionManager();
+        Collection<Session> sessions = sessionManager.getSessionDAO().getActiveSessions();
+        //获取当前已登录的用户session列表
+        for(Session session:sessions){
+            System.out.println("---------------");
+            System.out.println("session: "+session);
+            String str = String.valueOf(session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY));
+            System.out.println(str);
+            //清除该用户以前登录时保存的session
+            //if(userName.equals(String.valueOf(session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY)))) {
+            //    sessionManager.getSessionDAO().delete(session);
+            //}
+        }
+        return Res.success("aaaacl");
+    }
     /**
      * 商家搜索列表
      */

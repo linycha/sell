@@ -25,6 +25,7 @@ public class Const {
     public static final String FTPPATH_PRODUCT = "product";
     public static final String FTPPATH_COMMENT = "comment";
     public static final String FTPPATH_TEST = "test";
+    public static final String FTPPATH_DAILY = "daily";
     public static final Integer PAGE_DEFAULT_NUM = 1;
     public static final Integer PAGE_DEFAULT_SIZE = 10;
     public static final Integer PAGE_DEFAULT_SIZE2 = 5;
@@ -36,6 +37,8 @@ public class Const {
     public static final Integer COMMENT_GOOD = 0;
     public static final Integer COMMENT_GENERAL = 1;
     public static final Integer COMMENT_BAD = 2;
+
+    public static final String UPLOAD_CHECK = "980424";
 
     public interface ShopList{
         List<String> ORDER_BY = Lists.newArrayList("monthly_sales desc","monthly_sales desc","score desc","delivery_time");

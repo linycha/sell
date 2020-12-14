@@ -106,4 +106,20 @@ public class ShopVo {
     public void setMonthlySales(Integer monthlySales) {
         this.monthlySales = monthlySales;
     }
+
+    @Override
+    public String toString() {
+        return "ShopVo{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", logoImg='" + logoImg + '\'' +
+                ", address='" + address + '\'' +
+                ", tags='" + tags + '\'' +
+                ", sendCost=" + sendCost +
+                ", deliveryCost=" + deliveryCost +
+                ", deliveryTime=" + deliveryTime +
+                ", score=" + score +
+                ", monthlySales=" + monthlySales +
+                '}';
+    }
 }
