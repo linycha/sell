@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+![骑手端](https://images.gitee.com/uploads/images/2020/0306/171714_d6ed403e_5465839.png "屏幕截图.png")
+![骑手端](https://images.gitee.com/uploads/images/2020/0306/171747_d333a38b_5465839.png "屏幕截图.png")
+![商家端](https://images.gitee.com/uploads/images/2020/0306/171814_03e922d5_5465839.png "屏幕截图.png")
+![商家端](https://images.gitee.com/uploads/images/2020/0306/171846_605cfba4_5465839.png "屏幕截图.png")
+![用户端](https://images.gitee.com/uploads/images/2020/0306/171908_0bdd2177_5465839.png "屏幕截图.png")
+![用户端](https://images.gitee.com/uploads/images/2020/0306/171925_a7ceb550_5465839.png "屏幕截图.png")
+![用户端](https://images.gitee.com/uploads/images/2020/0306/172026_8fdb4e68_5465839.png "屏幕截图.png")
+=======
 # sell
 
 #### 介绍
@@ -35,3 +44,4 @@
 4.  [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
 5.  码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
 6.  码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+>>>>>>> 638a8229d562c3c130d8db4c58dbf65bc5197d0c
