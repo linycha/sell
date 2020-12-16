@@ -90,7 +90,7 @@ public class ShiroConfig {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
         //前后端分离设置sessionManager
         manager.setSessionManager(sessionManager());
-        manager.setCacheManager(cacheManager());
+        //manager.setCacheManager(cacheManager());
         manager.setRealm(authRealm());
         return manager;
     }
@@ -114,7 +114,7 @@ public class ShiroConfig {
         //去掉url上的jSessionId
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         //session持久化
-        sessionManager.setSessionDAO(redisSessionDAO());
+        //sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
     }
     @Bean
