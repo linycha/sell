@@ -232,8 +232,8 @@ public class ShopController {
         }
         return Res.success(mobile);
     }
-    @PutMapping("hour")
-    public Res hour(Date[] time){
-        return null;
+    @RequestMapping("hour")
+    public Res<String> hour(){
+        return Res.successMsg("this is new version!!!");
     }
 }
