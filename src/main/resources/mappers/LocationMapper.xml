@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sell.modules.sys.dao.LocationMapper" >
+  <resultMap id="BaseResultMap" type="com.sell.modules.sys.entity.Location" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="accuracy" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="location_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="lat" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="lng" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="info" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="message" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, accuracy, location_type, address, lat, lng, info, message, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sell_location
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sell_location
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sell.modules.sys.entity.Location" >
+    insert into sell_location (id, accuracy, location_type, 
+      address, lat, lng, 
+      info, message, create_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{accuracy,jdbcType=INTEGER}, #{locationType,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{lat,jdbcType=DECIMAL}, #{lng,jdbcType=DECIMAL}, 
+      #{info,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, now()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sell.modules.sys.entity.Location" >
+    insert into sell_location
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="accuracy != null" >
+        accuracy,
+      </if>
+      <if test="locationType != null" >
+        location_type,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="lat != null" >
+        lat,
+      </if>
+      <if test="lng != null" >
+        lng,
+      </if>
+      <if test="info != null" >
+        info,
+      </if>
+      <if test="message != null" >
+        message,
+      </if>
+        create_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="accuracy != null" >
+        #{accuracy,jdbcType=INTEGER},
+      </if>
+      <if test="locationType != null" >
+        #{locationType,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        #{lat,jdbcType=DECIMAL},
+      </if>
+      <if test="lng != null" >
+        #{lng,jdbcType=DECIMAL},
+      </if>
+      <if test="info != null" >
+        #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
+      </if>
+        now(),
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.sys.entity.Location" >
+    update sell_location
+    <set >
+      <if test="accuracy != null" >
+        accuracy = #{accuracy,jdbcType=INTEGER},
+      </if>
+      <if test="locationType != null" >
+        location_type = #{locationType,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=DECIMAL},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=DECIMAL},
+      </if>
+      <if test="info != null" >
+        info = #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null" >
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sell.modules.sys.entity.Location" >
+    update sell_location
+    set accuracy = #{accuracy,jdbcType=INTEGER},
+      location_type = #{locationType,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=DECIMAL},
+      lng = #{lng,jdbcType=DECIMAL},
+      info = #{info,jdbcType=VARCHAR},
+      message = #{message,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectLocationList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from sell_location order by create_time desc
+  </select>
+</mapper>
