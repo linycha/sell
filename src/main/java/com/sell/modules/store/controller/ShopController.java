@@ -234,6 +234,6 @@ public class ShopController {
     }
     @RequestMapping("hour")
     public Res<String> hour(){
-        return Res.successMsg("this is new version!!!");
+        return Res.successMsg("this is new version 2.0 !!!");
     }
 }
