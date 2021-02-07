@@ -12,14 +12,17 @@
 移动端用户端地址http://47.99.71.179:8091/#/user
 本人毕设项目，还请多多指教！ :fa-check: 
 互相学习联系qq:1058298031
-  **移动用户端主要界面：**
+
+**移动用户端主要界面：**
 ![用户端](https://images.gitee.com/uploads/images/2020/0306/171925_a7ceb550_5465839.png "屏幕截图.png")
 ![用户端](https://images.gitee.com/uploads/images/2020/0306/172026_8fdb4e68_5465839.png "屏幕截图.png")
 ![用户端](https://images.gitee.com/uploads/images/2020/0306/171908_0bdd2177_5465839.png "屏幕截图.png")
-  **移动骑手端主要界面：**
+
+**移动骑手端主要界面：**
 ![骑手端](https://images.gitee.com/uploads/images/2020/0306/171714_d6ed403e_5465839.png "屏幕截图.png")
 ![骑手端](https://images.gitee.com/uploads/images/2020/0306/171747_d333a38b_5465839.png "屏幕截图.png")
-  **pc商家管理端主要界面：**
+
+**pc商家管理端主要界面：**
 ![商家端](https://images.gitee.com/uploads/images/2020/0306/171814_03e922d5_5465839.png "屏幕截图.png")
 ![商家端](https://images.gitee.com/uploads/images/2020/0306/171846_605cfba4_5465839.png "屏幕截图.png")
 
