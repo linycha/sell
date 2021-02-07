@@ -9,7 +9,9 @@ import java.security.MessageDigest;
  * Created by geely
  */
 public class MD5Util {
-
+    public static void main(String[] args) {
+        System.out.println(hashTwo("123456"));
+    }
     public static String hashTwo(String password){
         Object md5Password = new SimpleHash("md5",password, null, 2);
         return md5Password.toString();
