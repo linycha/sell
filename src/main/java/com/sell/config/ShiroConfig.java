@@ -90,7 +90,7 @@ public class ShiroConfig {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
         //前后端分离设置sessionManager
         manager.setSessionManager(sessionManager());
-        manager.setCacheManager(cacheManager());
+        //manager.setCacheManager(cacheManager());
         manager.setRealm(authRealm());
         return manager;
     }
@@ -114,7 +114,7 @@ public class ShiroConfig {
         //去掉url上的jSessionId
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         //session持久化
-        sessionManager.setSessionDAO(redisSessionDAO());
+        //sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
     }
     @Bean
@@ -129,7 +129,7 @@ public class ShiroConfig {
     /**
      * 配置redisManager
      */
-    public RedisManager getRedisManager(){
+/*    public RedisManager getRedisManager(){
         RedisManager redisManager = new RedisManager();
         redisManager.setHost("47.99.71.179");
         redisManager.setPort(6379);
@@ -143,15 +143,15 @@ public class ShiroConfig {
         return  redisCacheManager;
     }
 
-    /**
+    *//**
      * 自定义session持久化
      * @return
-     */
+     *//*
     public RedisSessionDAO redisSessionDAO(){
         RedisSessionDAO sessionDAO = new RedisSessionDAO();
         sessionDAO.setRedisManager(getRedisManager());
         return sessionDAO;
-    }
+    }*/
 
     /**
      * 配置shiro与spring的关联，开启AOP注解

@@ -21,7 +21,6 @@ import com.sell.modules.store.vo.ShopVo;
 import com.sell.modules.store.vo.UserOrderVo;
 import com.sell.modules.sys.dao.UserMapper;
 import com.sell.modules.sys.entity.User;
-import com.sun.media.sound.SoftTuning;
 import org.apache.commons.jexl3.JexlBuilder;
 import org.apache.commons.jexl3.JexlEngine;
 import org.apache.commons.jexl3.JexlExpression;
@@ -35,8 +34,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.nio.cs.ext.GBK;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
