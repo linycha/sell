@@ -169,8 +169,8 @@
     where password = #{password}
     and id = #{userId}
   </select>
-  <select id="selectByUsernameOrUserId" parameterType="String" resultMap="UserRolePermissionMap">
-    select s.*,
+  <select id="selectByUsernameOrUserId" parameterType="map" resultMap="UserRolePermissionMap">
+    select s.id,s.username,s.password,s.status as status,
     r.id as rid, r.name as rname,
     p.name as pname, p.url as url
     from sys_user s
@@ -192,12 +192,12 @@
     where mobile=#{mobile}
   </select>
 
-  <select id="selectRoleByUsername" parameterType="String" resultType="com.sell.modules.sys.entity.Role">
+  <select id="selectRoleByUserId" parameterType="String" resultType="com.sell.modules.sys.entity.Role">
     select r.id, r.name
     from sys_user s
     left join sys_user_role ur on ur.user_id = s.id
     left join sys_role r on r.id = ur.role_id
-    where username=#{username}
+    where s.id=#{userId}
   </select>
   <select id="selectUserList" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
@@ -205,13 +205,12 @@
   </select>
   <resultMap id="UserRolePermissionMap" type="com.sell.modules.sys.entity.User">
     <id column="id" javaType="java.lang.String" jdbcType="VARCHAR" property="id" />
-    <result column="open_id" javaType="java.lang.String" jdbcType="VARCHAR"  />
     <result column="username" javaType="java.lang.String" jdbcType="VARCHAR" property="username" />
     <result column="password" javaType="java.lang.String" jdbcType="VARCHAR" property="password" />
     <result column="sex" javaType="java.lang.String" jdbcType="CHAR" />
     <result column="mobile" javaType="java.lang.String" jdbcType="VARCHAR" />
     <result column="head_img" javaType="java.lang.String" jdbcType="VARCHAR" />
-    <result column="role" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    <result column="status" javaType="java.lang.String" jdbcType="VARCHAR" property="status" />
     <result column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     <result column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     <association property="roles" javaType="com.sell.modules.sys.entity.Role" resultMap="RoleMap" column="id"/>

@@ -9,12 +9,12 @@ import org.springframework.beans.BeanUtils;
  * @date 2020/1/15 20:25
  */
 public class UserUtils {
-    public static User getUser() {
+/*    public static User getUser() {
         Object o = SecurityUtils.getSubject().getPrincipal();
         User user = new User();
         BeanUtils.copyProperties(o,user);
         return user;
-    }
+    }*/
 
     public static String getUserId() {
         Object o = SecurityUtils.getSubject().getPrincipal();

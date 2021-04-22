@@ -61,6 +61,11 @@ public class Const {
         String HAVE_EVALUATION = "8";
 
     }
+    /**
+     * 用户账号状态：0：禁用，1：正常
+     */
+    public static final String USER_STATUS_ENABLE = "1";
+    public static final String USER_STATUS_DISABLE = "0";
     public static long generateOrderNo(){
         long currentTime = System.currentTimeMillis();
         return currentTime + currentTime%10;

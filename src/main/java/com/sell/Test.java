@@ -50,5 +50,12 @@ import java.util.regex.Pattern;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class Test {
+    @Autowired
+    private UserMapper userMapper;
 
+    @org.junit.Test
+    public void test(){
+        User user = userMapper.selectByUsernameOrUserId("xiaolin",null);
+        System.out.println(user);
+    }
 }

@@ -20,7 +20,13 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     User selectByUsernameOrUserId(@Param("username") String username,@Param("userId") String userId);
-    List<Role> selectRoleByUsername(String username);
+
+    /**
+     * 通过用户id获取对应角色信息
+     * @param userId
+     * @return
+     */
+    Role selectRoleByUserId(String userId);
     List<User> selectUserList();
 
     /**

@@ -1,11 +1,13 @@
 package com.sell.modules.sys.controller;
 
 import com.sell.common.Res;
+import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.service.ShopService;
+import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
@@ -42,10 +44,15 @@ public class LoginController {
             info.put("token",subject.getSession().getId());
             info.put("userId",o.toString());
             return Res.success("登录成功", info);
-        }catch(Exception e){
+        }catch(UnknownAccountException | IncorrectCredentialsException e){
             e.printStackTrace();
-            //扩展错误几次之后要多久才能再次登录
             return Res.errorMsg("用户名或密码错误");
+        } catch (LockedAccountException e){
+            e.printStackTrace();
+            return Res.errorMsg("该账号已被禁用，请联系管理员");
+        }catch (AuthenticationException e){
+            e.printStackTrace();
+            return Res.errorMsg("登录异常，请联系管理员");
         }
     }
 
@@ -56,48 +63,59 @@ public class LoginController {
     public Res<Map<String,Object>> shopLogin(String username, String password){
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
         Subject subject = SecurityUtils.getSubject();
-        Map<String,Object> info = new HashMap<>();
+        Map<String,Object> info = new HashMap<>(10);
         try {
             subject.login(token);
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            Role role = userService.getRoleName(UserUtils.getUserId());
             //校验是否是商家账号
-            if(!"business".equals(user.getRoles().get(0).getName())){
+            if(!"business".equals(role.getName())){
                 subject.logout();
                 return Res.errorMsg("该账号不是商家账号");
             }
-            String shopId = shopService.getshopId(user.getId());
+            String shopId = shopService.getshopId(UserUtils.getUserId());
             info.put("token",subject.getSession().getId());
             info.put("shopId",shopId);
             return Res.success("登录成功", info);
-        }catch(Exception e){
+        }catch(UnknownAccountException | IncorrectCredentialsException e){
             e.printStackTrace();
-            //扩展错误几次之后要多久才能再次登录
             return Res.errorMsg("用户名或密码错误");
+        } catch (LockedAccountException e){
+            e.printStackTrace();
+            return Res.errorMsg("该账号已被禁用，请联系管理员");
+        }catch (AuthenticationException e){
+            e.printStackTrace();
+            return Res.errorMsg("登录异常，请联系管理员");
         }
     }
     /**
-     * 商家登录
+     * 骑手登录
      */
     @GetMapping("delivery_login")
     public Res<Map<String,Object>> deliveryLogin(String username, String password){
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
         Subject subject = SecurityUtils.getSubject();
-        Map<String,Object> info = new HashMap<>();
+        Map<String,Object> info = new HashMap<>(10);
         try {
             subject.login(token);
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            String userId = UserUtils.getUserId();
+            Role role = userService.getRoleName(userId);
             //校验是否是骑手账号
-            if(!"delivery".equals(user.getRoles().get(0).getName())){
+            if(!"delivery".equals(role.getName())){
                 subject.logout();
                 return Res.errorMsg("该账号不是骑手账号");
             }
             info.put("token",subject.getSession().getId());
-            info.put("userId",user.getId());
+            info.put("userId",userId);
             return Res.success("登录成功", info);
-        }catch(Exception e){
+        }catch(UnknownAccountException | IncorrectCredentialsException e){
             e.printStackTrace();
-            //扩展错误几次之后要多久才能再次登录
             return Res.errorMsg("用户名或密码错误");
+        } catch (LockedAccountException e){
+            e.printStackTrace();
+            return Res.errorMsg("该账号已被禁用，请联系管理员");
+        }catch (AuthenticationException e){
+            e.printStackTrace();
+            return Res.errorMsg("登录异常，请联系管理员");
         }
     }
 

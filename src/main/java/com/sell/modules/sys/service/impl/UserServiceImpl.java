@@ -7,6 +7,7 @@ import com.sell.common.TokenCache;
 import com.sell.common.utils.CheckUtil;
 import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.sys.dao.UserMapper;
+import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
 import com.sell.common.utils.MD5Util;
@@ -150,6 +151,11 @@ public class UserServiceImpl implements UserService {
     public int saveFeedback(Feedback feedback) {
         feedback.setId(IdGenerate.uuid());
         return userMapper.insertFeedback(feedback);
+    }
+
+    @Override
+    public Role getRoleName(String userId) {
+        return userMapper.selectRoleByUserId(userId);
     }
 
 }

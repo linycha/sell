@@ -31,6 +31,8 @@ public class User implements Serializable {
 
     private String headImg;
 
+    private String status;
+
     private Date createTime;
 
     private Date updateTime;

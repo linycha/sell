@@ -1,5 +1,6 @@
 package com.sell.modules.sys.security;
 
+import com.sell.common.Const;
 import com.sell.common.utils.CheckUtil;
 import com.sell.modules.sys.entity.Permission;
 import com.sell.modules.sys.entity.Role;
@@ -81,12 +82,14 @@ public class AuthRealm extends AuthorizingRealm {
         if(CheckUtil.isNumber(username)){
             username = userService.selectUsernameByMobile(username);
         }
-
         User user = userService.selectByUsername(username,null);
-
         if(user == null){
             return null;
         }
+        if(Const.USER_STATUS_DISABLE.equals(user.getStatus())){
+            throw new LockedAccountException("该账号已被禁用，请联系管理员");
+        }
+
         //改成值存入userId，不然结合redis实现分布式时会报错
         return new SimpleAuthenticationInfo(user.getId(), user.getPassword(), this.getClass().getName());
     }
