@@ -5,6 +5,8 @@ import com.sell.common.Res;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.entity.Shipping;
 import com.sell.modules.store.service.ShippingService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("shipping")
+@Api(tags = "收货地址相关接口")
 public class ShippingController {
     @Autowired
     private ShippingService shippingService;
     @GetMapping("list")
+    @ApiOperation("查看收货地址列表")
     public Res<List<Shipping>> list(){
         String userId = UserUtils.getUserId();
         List<Shipping> shippingList = shippingService.getShippingList(userId);
@@ -35,6 +39,7 @@ public class ShippingController {
      * @return
      */
     @GetMapping("default")
+    @ApiOperation("用户生成订单时获取用户默认收货地址")
     public Res<Shipping> defaultShipping(){
         String userId = UserUtils.getUserId();
         Shipping shipping = shippingService.getDefault(userId);
@@ -44,6 +49,7 @@ public class ShippingController {
         return Res.success(shipping);
     }
     @PostMapping("save")
+    @ApiOperation("保存收货地址信息")
     public Res<String> save(Shipping shipping){
         String userId = UserUtils.getUserId();
         if("1".equals(shipping.getIsDefault())){
@@ -57,6 +63,7 @@ public class ShippingController {
         return Res.successMsg("保存成功");
     }
     @PutMapping("update")
+    @ApiOperation("修改收货地址信息")
     public Res<String> update(Shipping shipping){
         System.out.println(shipping);
         if("1".equals(shipping.getIsDefault())){
@@ -69,6 +76,7 @@ public class ShippingController {
         return Res.successMsg("修改成功");
     }
     @DeleteMapping("delete")
+    @ApiOperation("删除收货地址信息")
     public Res<String> delete(String id){
         Shipping shipping = new Shipping();
         shipping.setId(id);

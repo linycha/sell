@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.sell.common.Res;
 import com.sell.modules.sys.entity.Location;
 import com.sell.modules.sys.service.LocationService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("location")
+@Api(tags = "定位信息相关接口")
 public class LocationController {
     @Autowired
     private LocationService locationService;

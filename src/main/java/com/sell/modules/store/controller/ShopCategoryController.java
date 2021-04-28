@@ -6,6 +6,8 @@ import com.sell.common.cache.IBaseCache;
 import com.sell.common.cache.RedisCache;
 import com.sell.modules.store.entity.ShopCategory;
 import com.sell.modules.store.service.ShopCategoryService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("category")
+@Api(tags = "商家分类相关接口")
 public class ShopCategoryController {
     @Autowired
     private IBaseCache iBaseCache;
@@ -29,6 +32,7 @@ public class ShopCategoryController {
      * 获取顶级分类
      */
     @GetMapping("shop_top")
+    @ApiOperation("获取第一级的商家分类")
     public Res getTopCategory(@RequestParam(defaultValue = "0") String categoryId){
         List<ShopCategory> categoryList = iBaseCache.getShopTopCategoryList(categoryId);
         if(categoryList == null){
@@ -36,12 +40,13 @@ public class ShopCategoryController {
         }
         return Res.success(categoryList);
     }
-    @RequestMapping("del")
+    @GetMapping("del")
     public String del(){
         iBaseCache.del();
         return "删除";
     }
     @GetMapping("shop")
+    @ApiOperation("获取第二级的商家分类")
     public Res getSiblingCategory(@RequestParam(defaultValue = "0") String categoryId){
         List<ShopCategory> categoryList = shopCategoryService.getSiblingCategory(categoryId);
         if(categoryList == null){

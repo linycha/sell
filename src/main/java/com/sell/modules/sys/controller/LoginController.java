@@ -6,6 +6,7 @@ import com.sell.modules.store.service.ShopService;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
+import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
@@ -27,6 +28,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping
+@Api(tags = "登录相关接口")
 public class LoginController {
     @Autowired
     private UserService userService;
@@ -124,16 +126,16 @@ public class LoginController {
         return userService.register(username,mobile,password);
     }
 
-    @RequestMapping("/to_login")
+    @GetMapping("/to_login")
     public Res<String> toLogin(){
         return Res.errorCodeMsg(-2,"请先登录账号");
     }
-    @RequestMapping("/unauthc")
+    @GetMapping("/unauthc")
     public Res<String> unAuthor(){
         return Res.errorCodeMsg(-3,"没有权限访问该页面");
     }
 
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public Res<String> logout(){
         Subject subject = SecurityUtils.getSubject();
         subject.logout();

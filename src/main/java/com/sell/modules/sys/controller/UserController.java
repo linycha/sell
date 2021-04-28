@@ -9,6 +9,8 @@ import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.store.service.FileService;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -27,6 +29,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins="*",maxAge=3600)
 @RequestMapping("user")
+@Api(tags = "用户相关接口")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -43,6 +46,7 @@ public class UserController {
      * 获取用户个人信息
      */
     @GetMapping("info")
+    @ApiOperation("获取用户个人信息")
     public Res<User> info(){
         User user = userService.selectById(UserUtils.getUserId());
         System.out.println(user);
@@ -53,6 +57,7 @@ public class UserController {
     }
 
     @PutMapping("update_head")
+    @ApiOperation("修改个人头像")
     public Res<String> updateHead(String id, MultipartFile file, HttpServletRequest request){
         if(file == null){
             return Res.errorMsg("上传头像为空");
@@ -73,6 +78,7 @@ public class UserController {
         return Res.successMsg("修改头像成功");
     }
     @PutMapping("update_mobile")
+    @ApiOperation("修改手机号")
     public Res<String> updateMobile(String mobile){
         User user = new User();
         user.setId(UserUtils.getUserId());
@@ -80,6 +86,7 @@ public class UserController {
         return userService.updateMobile(user);
     }
     @PutMapping("update_password")
+    @ApiOperation("获取用户个人密码")
     public Res<String> updatePassword(String oldPwd,String newPwd){
         User user = new User();
         user.setId(UserUtils.getUserId());
@@ -90,12 +97,13 @@ public class UserController {
     /**
      * 未登录状态下忘记密码的重置密码
      * */
-    @RequestMapping(value = "/rest_password",method = RequestMethod.POST)
+    @PostMapping("rest_password")
     @ResponseBody
     public Res<String> restPassword(String username,String passwordNew,String forgetToken){
         return userService.restPassword(username,passwordNew,forgetToken);
     }
     @PostMapping("feedback")
+    @ApiOperation("用户端-发送意见反馈")
     public Res<String> feedback(String content){
         Feedback feedback = new Feedback();
         feedback.setContent(content);

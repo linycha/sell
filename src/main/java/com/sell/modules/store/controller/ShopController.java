@@ -14,6 +14,8 @@ import com.sell.modules.store.service.*;
 import com.sell.modules.store.vo.NewOrderVo;
 import com.sell.modules.store.vo.ShopVo;
 import com.sell.modules.sys.security.WebSocket;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import javassist.tools.web.Webserver;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -39,6 +41,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("shop")
+@Api(tags = "商家操作相关接口")
 public class ShopController {
     @Autowired
     private ShopService shopService;
@@ -52,29 +55,11 @@ public class ShopController {
     private DeliveryService deliveryService;
     @Autowired
     private WebSocket webSocket;
-
-    @GetMapping("login1")
-    public Res login1(){
-        DefaultWebSecurityManager securityManager = (DefaultWebSecurityManager) SecurityUtils.getSecurityManager();
-        DefaultWebSessionManager sessionManager = (DefaultWebSessionManager)securityManager.getSessionManager();
-        Collection<Session> sessions = sessionManager.getSessionDAO().getActiveSessions();
-        //获取当前已登录的用户session列表
-        for(Session session:sessions){
-            System.out.println("---------------");
-            System.out.println("session: "+session);
-            String str = String.valueOf(session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY));
-            System.out.println(str);
-            //清除该用户以前登录时保存的session
-            //if(userName.equals(String.valueOf(session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY)))) {
-            //    sessionManager.getSessionDAO().delete(session);
-            //}
-        }
-        return Res.success("aaaacl");
-    }
     /**
-     * 商家搜索列表
+     * 用户端-搜索店铺列表
      */
     @GetMapping("list")
+    @ApiOperation("用户端-搜索店铺列表")
     public Res<PageInfo<ShopVo>> list(String name, String categoryId, @RequestParam(defaultValue = "0") Integer sortType,
                                       @RequestParam(defaultValue = "1")Integer pageNum){
         PageInfo<ShopVo> shopList = shopService.getShopList(name,categoryId,sortType,pageNum);
@@ -87,6 +72,7 @@ public class ShopController {
         return Res.success(shopList);
     }
     @GetMapping("info")
+    @ApiOperation("商家端-商家确认接单")
     public Res<Shop> info(String id){
         if(StringUtils.isBlank(id)){
             return Res.errorMsg("该店铺已关闭或不存在");
@@ -98,6 +84,7 @@ public class ShopController {
         return Res.success(shop);
     }
     @PutMapping("update")
+    @ApiOperation("商家端-商家修改店铺信息")
     public Res<String> update(Shop shop){
         int  result = shopService.updateSelective(shop);
         if(result == 0){
@@ -106,6 +93,7 @@ public class ShopController {
         return Res.successMsg("修改店铺信息成功");
     }
     @PutMapping("update_time")
+    @ApiOperation("商家端-商家确认接单")
     public Res<String> updateOpeningTime(Shop shop){
         int  result = shopService.updateSelective(shop);
         if(result == 0){
@@ -113,7 +101,8 @@ public class ShopController {
         }
         return Res.successMsg("修改店铺营业时间成功");
     }
-    @RequestMapping("update_logo")
+    @PostMapping("update_logo")
+    @ApiOperation("商家端-修改店铺logo")
     public Res<String> upload(@RequestParam(defaultValue = "logo_img",required=false) MultipartFile file,
                       HttpServletRequest request,String id){
         String path = request.getSession().getServletContext().getRealPath("upload");
@@ -137,6 +126,7 @@ public class ShopController {
      * 商家查看已支付待接单列表
      */
     @GetMapping("new_list")
+    @ApiOperation("商家端-商家查看已支付待接单列表")
     public Res<PageInfo<NewOrderVo>> newOrderList(String shopId, String orderNo, String pageNum){
         if(StringUtils.isBlank(shopId)){
             return Res.errorMsg("商家id参数错误");
@@ -149,6 +139,7 @@ public class ShopController {
      */
     @GetMapping("order_list")
     @RequiresRoles("business")
+    @ApiOperation("商家端-查看全部订单列表")
     public Res<PageInfo<NewOrderVo>> orderList(String shopId, String orderNo, String status,String pageNum){
         if(StringUtils.isBlank(shopId)){
             return Res.errorMsg("商家id参数错误");
@@ -162,6 +153,7 @@ public class ShopController {
      */
     @PutMapping("accept")
     @RequiresRoles("business")
+    @ApiOperation("商家端-商家确认接单")
     public Res<String> accept(String orderNo){
         if(StringUtils.isBlank(orderNo)){
             return Res.errorMsg("订单号参数错误");
@@ -195,6 +187,7 @@ public class ShopController {
      */
     @PutMapping("cancel")
     @RequiresRoles("business")
+    @ApiOperation("商家端-商家取消接单")
     public Res<String> cancel(String orderNo){
         if(StringUtils.isBlank(orderNo)){
             return Res.errorMsg("订单号参数错误");
@@ -214,6 +207,7 @@ public class ShopController {
      * 获取订餐人手机号
      */
     @GetMapping("user_mobile")
+    @ApiOperation("商家端-获取订餐人手机号")
     public Res<String> userMobile(String orderNo){
         String mobile = orderService.getUserMobile(orderNo);
         if(StringUtils.isBlank(mobile)){
@@ -225,6 +219,7 @@ public class ShopController {
      * 获取骑手手机号
      */
     @GetMapping("delivery_mobile")
+    @ApiOperation("商家端-获取骑手手机号")
     public Res<String> deliveryMobile(String orderNo){
         String mobile = orderService.getDeliveryMobile(orderNo);
         if(StringUtils.isBlank(mobile)){
@@ -232,7 +227,7 @@ public class ShopController {
         }
         return Res.success(mobile);
     }
-    @RequestMapping("hour")
+    @GetMapping("hour")
     public Res<String> hour(){
         return Res.successMsg("this is new version 3.3 !!!"+new Date());
     }

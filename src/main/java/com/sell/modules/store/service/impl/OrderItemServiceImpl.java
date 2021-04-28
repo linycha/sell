@@ -1,6 +1,5 @@
 package com.sell.modules.store.service.impl;
 
-import com.google.j2objc.annotations.AutoreleasePool;
 import com.sell.common.IdGenerate;
 import com.sell.modules.store.dao.OrderItemMapper;
 import com.sell.modules.store.entity.OrderItem;

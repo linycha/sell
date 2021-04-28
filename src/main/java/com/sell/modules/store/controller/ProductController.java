@@ -16,6 +16,8 @@ import com.sell.modules.store.service.ProductCategoryService;
 import com.sell.modules.store.service.ProductService;
 import com.sell.modules.store.vo.ProductVo;
 import com.sell.modules.store.vo.ShopVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("product")
+@Api(tags = "商品相关接口")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -45,6 +48,7 @@ public class ProductController {
     private FTPUtil ftpUtil;
 
     @GetMapping("list")
+    @ApiOperation("用户查询商品列表")
     public Res<List<List<ProductVo>>> list(String shopId){
         if(StringUtils.isBlank(shopId)){
             return Res.errorMsg("该分类无商品信息");
@@ -61,6 +65,7 @@ public class ProductController {
         return Res.success(productLists);
     }
     @GetMapping("shop_list")
+    @ApiOperation("商家查询商品列表")
     public Res<PageInfo<Product>> getProductList(String categoryId, String name, String status,String pageNum){
         PageInfo<Product> productList = productService.getProductList(categoryId,name,status,pageNum);
         if(productList == null){
@@ -69,6 +74,7 @@ public class ProductController {
         return Res.success(productList);
     }
     @PostMapping("save")
+    @ApiOperation("新增保存商品信息")
     public Res<String> save(Product product,HttpServletRequest request){
         if(!StringUtils.isBlank(product.getOrigin())){
             product.setOriginPrice(new BigDecimal(product.getOrigin()));
@@ -92,6 +98,7 @@ public class ProductController {
         return Res.successMsg("保存商品信息成功");
     }
     @PutMapping("update")
+    @ApiOperation("修改商品信息")
     public Res<String> update(Product product,HttpServletRequest request){
         if(!StringUtils.isBlank(product.getOrigin())){
             product.setOriginPrice(new BigDecimal(product.getOrigin()));
@@ -115,6 +122,7 @@ public class ProductController {
         return Res.successMsg("修改商品信息成功");
     }
     @RequestMapping("upload")
+    @ApiOperation("上传图片")
     public Res<String> upload(MultipartFile file)throws IOException {
         Long start = System.currentTimeMillis();
         boolean b = ftpUtil.uploadDailyFile(file.getOriginalFilename(),file.getInputStream(),Const.FTPPATH_DAILY);
@@ -135,6 +143,7 @@ public class ProductController {
         return Res.errorMsg("更改成功");*/
     }
     @DeleteMapping("delete")
+    @ApiOperation("删除商品信息")
     public Res<String> delete(String ids){
         System.out.println(ids);
         if(StringUtils.isBlank(ids)){

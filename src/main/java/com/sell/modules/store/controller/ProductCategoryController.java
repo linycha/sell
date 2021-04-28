@@ -3,6 +3,8 @@ package com.sell.modules.store.controller;
 import com.sell.common.Res;
 import com.sell.modules.store.entity.ProductCategory;
 import com.sell.modules.store.service.ProductCategoryService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("category")
+@Api(tags = "商品分类相关接口")
 public class ProductCategoryController {
     @Autowired
     private ProductCategoryService productCategoryService;
@@ -25,6 +28,7 @@ public class ProductCategoryController {
      * @return
      */
     @GetMapping("product")
+    @ApiOperation("查找某个商家的商品分类")
     public Res getCategory(String id){
         List<ProductCategory> categoryList = productCategoryService.getProductCategory(id);
         if(categoryList == null){
@@ -33,6 +37,7 @@ public class ProductCategoryController {
         return Res.success(categoryList);
     }
     @PostMapping("save")
+    @ApiOperation("添加商品分类")
     public Res<String> saveCategory(String name){
         int result = productCategoryService.saveProductCategory(name);
         if(result > 0){
@@ -41,6 +46,7 @@ public class ProductCategoryController {
         return Res.errorMsg("添加商品分类失败");
     }
     @PutMapping("update")
+    @ApiOperation("修改商品分类")
     public Res<String> updateCategory(String id,String name){
         if(StringUtils.isBlank(id) && StringUtils.isBlank(name)){
             return Res.errorMsg("参数错误");
@@ -52,6 +58,7 @@ public class ProductCategoryController {
         return Res.errorMsg("修改失败");
     }
     @DeleteMapping
+    @ApiOperation("删除商品分类")
     public Res<String> deleteCategory(String id){
         int result = productCategoryService.deleteProductCategory(id);
         if(result > 0){

@@ -6,6 +6,7 @@ import com.sell.common.Res;
 import com.sell.common.utils.FTPUtil;
 import com.sell.common.utils.PropertiesUtil;
 import com.sell.modules.store.service.FileService;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpRequest;
 import org.apache.ibatis.annotations.Param;
@@ -24,6 +25,7 @@ import java.math.BigDecimal;
  */
 @RestController
 @RequestMapping("file")
+@Api(tags = "文件上传相关接口")
 public class FileController {
     @Autowired
     private FTPUtil ftpUtil;

@@ -53,6 +53,7 @@ public class ShiroConfig {
         //过滤是从上而下顺序执行，一般/**放到最下面
         // anon不需要做任何校验,authc只有登录用户才可以访问
         filterChainDefinitionMap.put("/logout","anon");
+        filterChainDefinitionMap.put("/doc.html/**","anon");
         filterChainDefinitionMap.put("/login","anon");
         filterChainDefinitionMap.put("/business_login","anon");
         filterChainDefinitionMap.put("/delivery_login","anon");
@@ -79,7 +80,7 @@ public class ShiroConfig {
         //filterChainDefinitionMap.put("/delivery/**","roles[delivery]");
         filterChainDefinitionMap.put("/delivery/**","roles[delivery]");
 
-        filterChainDefinitionMap.put("/**","user");
+        filterChainDefinitionMap.put("/**","anon");
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return bean;

@@ -11,6 +11,8 @@ import com.sell.modules.store.entity.Shipping;
 import com.sell.modules.store.service.*;
 import com.sell.modules.store.vo.UserOrderVo;
 import com.sell.modules.sys.security.WebSocket;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,6 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/order")
+@Api(tags = "订单模块相关接口")
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -44,6 +47,7 @@ public class OrderController {
     @Autowired
     private WebSocket webSocket;
     @PostMapping("create")
+    @ApiOperation("用户提交创建订单")
     public Res<String> create(Order order) throws Exception{
         System.out.println(order);
         //生成订单号
@@ -101,6 +105,7 @@ public class OrderController {
         return Res.success(orderList);
     }
     @GetMapping("detail")
+    @ApiOperation("用户获取订单详情")
     public Res<Order> detail(String orderNo){
         if(StringUtils.isBlank(orderNo)){
             return Res.errorMsg("订单号参数错误");
@@ -117,6 +122,7 @@ public class OrderController {
         return Res.success(order);
     }
     @GetMapping("status")
+    @ApiOperation("用户查看订单配送状态")
     public Res<List<OrderStatus>> statusList(String orderNo){
         if(StringUtils.isBlank(orderNo)){
             return Res.errorMsg("订单号参数错误");
@@ -128,6 +134,7 @@ public class OrderController {
      * 获取骑手手机号
      */
     @GetMapping("dmobile")
+    @ApiOperation("用户获取骑手手机号")
     public Res<String> deliveryMobile(String orderNo){
         String mobile = orderService.getDeliveryMobile(orderNo);
         if(StringUtils.isBlank(mobile)){

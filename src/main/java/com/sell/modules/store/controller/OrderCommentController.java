@@ -10,6 +10,8 @@ import com.sell.modules.store.service.FileService;
 import com.sell.modules.store.service.OrderCommentService;
 import com.sell.modules.store.service.OrderService;
 import com.sell.modules.store.service.OrderStatusService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ import java.math.BigDecimal;
  */
 @RestController
 @RequestMapping("comment")
+@Api(tags = "订单评价相关接口")
 public class OrderCommentController {
     @Autowired
     private OrderCommentService orderCommentService;
@@ -36,6 +39,7 @@ public class OrderCommentController {
     @Autowired
     private FileService fileService;
     @PostMapping("save")
+    @ApiOperation("用户提交保存评价信息")
     public Res<String> save(OrderComment orderComment, HttpServletRequest request){
         orderComment.setUserId(UserUtils.getUserId());
         if(orderComment.getFile() != null){
@@ -75,6 +79,7 @@ public class OrderCommentController {
      * @return Res
      */
     @GetMapping("list")
+    @ApiOperation("商家发起查询自己的订单列表")
     public Res<PageInfo<OrderComment>> list(String shopId, String scoreType, String isAnonymity, String status, String pageNum){
         System.out.println("scoreType:"+scoreType+",isAnonymity:"+isAnonymity+",pageNum:"+pageNum+",status:"+status);
         PageInfo<OrderComment> commentList = orderCommentService.list(shopId,scoreType,isAnonymity,status,pageNum);
@@ -84,6 +89,7 @@ public class OrderCommentController {
         return Res.success(commentList);
     }
     @PostMapping("reply")
+    @ApiOperation("商家回复订单评价")
     public Res<String> reply(String orderId,String reply){
         if(StringUtils.isBlank(reply)){
             return Res.errorMsg("回复内容为空");
