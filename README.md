@@ -4,7 +4,7 @@
 本系统是基于SpringBoot+Vue的前后端分离架构，使用MySQL+Redis数据库,持久层框架采用MyBatis，整合Shiro安全框架，前端项目采用VUE全家桶框架，
 前端使用axios请求调取后端接口，前后端采用Restful接口风格对接，json数据格式传输，三个客户端之间采用Websocket通讯协议进行双向的实时交互 ！
    
- :hand: 用户端和骑手端采用移动端UI框架Vant： https://vant-contrib.gitee.io/vant/#/zh-CN/home 
+ :hand: 用户端和骑手端采用移动端UI框架Vant： https://vant-contrib.gitee.io/vant/#/zh-CN/home   
  :hand: 商家端使用ElementUI： https://element.eleme.cn/#/zh-CN/component/drawer
 
 项目部署上采用Doker虚拟化技术部署在自己的阿里云上，整合合Nginx、Haproxy和keepalived,从数据库到后端、前端均采用多节点负载均衡策略部署。
