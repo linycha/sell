@@ -2,10 +2,12 @@ package com.sell.modules.store.dao;
 
 import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.vo.ProductVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface ProductMapper {
     int deleteByPrimaryKey(String id);
 

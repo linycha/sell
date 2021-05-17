@@ -4,7 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
 import com.sell.common.IdGenerate;
+import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.dao.ProductMapper;
+import com.sell.modules.store.dao.ShopMapper;
 import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.service.ProductService;
 import com.sell.modules.store.vo.ProductVo;
@@ -23,6 +25,8 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private ShopMapper shopMapper;
     @Override
     public List<ProductVo> getByCategory(String categoryId){
         return productMapper.selectProductListByCategory(categoryId);
@@ -35,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
     public int saveProduct(Product product){
         product.setId(IdGenerate.uuid());
         product.setDelFlag("0");
+        product.setShopId(shopMapper.selectShopIdByUserId(UserUtils.getUserId()));
         return productMapper.insertSelective(product);
     }
     @Override

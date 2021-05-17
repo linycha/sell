@@ -5,11 +5,13 @@ import com.sell.modules.store.entity.ShopExample;
 import java.util.List;
 
 import com.sell.modules.store.vo.ShopVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 /**
  * @author linyuc
  * @date 2020/01/20 09:40
  */
+@Mapper
 public interface ShopMapper {
     int deleteByPrimaryKey(String id);
 
