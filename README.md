@@ -2,7 +2,8 @@
 本系统共用三个客户端，用户端、商家端和骑手端，请拉取代码的老哥们点点star！！谢谢！
 
 本系统是基于SpringBoot+Vue的前后端分离架构，使用MySQL+Redis数据库,持久层框架采用MyBatis，整合Shiro安全框架，前端项目采用VUE全家桶框架，
-前端使用axios请求调取后端接口，前后端采用Restful接口风格对接，json数据格式传输，三个客户端之间采用Websocket通讯协议进行双向的实时交互 ！
+前端使用axios请求调取后端接口，前后端采用Restful接口风格对接，json数据格式传输，三个客户端之间采用Websocket通讯协议进行双向的实时交互,同时搭建了
+文件服务器系统，项目的图片文件均存储在独立的文件服务器上，可在用户端自行注册账号修改头像测试。
    
  :hand: 用户端和骑手端采用移动端UI框架Vant： https://vant-contrib.gitee.io/vant/#/zh-CN/home   
  :hand: 商家端使用ElementUI： https://element.eleme.cn/#/zh-CN/component/drawer
