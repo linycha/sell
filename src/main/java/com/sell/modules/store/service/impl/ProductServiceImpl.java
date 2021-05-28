@@ -10,7 +10,6 @@ import com.sell.modules.store.dao.ShopMapper;
 import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.service.ProductService;
 import com.sell.modules.store.vo.ProductVo;
-import com.sell.modules.store.vo.ShopVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +24,6 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductMapper productMapper;
-    @Autowired
-    private ShopMapper shopMapper;
     @Override
     public List<ProductVo> getByCategory(String categoryId){
         return productMapper.selectProductListByCategory(categoryId);
@@ -39,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     public int saveProduct(Product product){
         product.setId(IdGenerate.uuid());
         product.setDelFlag("0");
-        product.setShopId(shopMapper.selectShopIdByUserId(UserUtils.getUserId()));
+        product.setShopId(UserUtils.getUser().getShopId());
         return productMapper.insertSelective(product);
     }
     @Override
@@ -49,7 +46,8 @@ public class ProductServiceImpl implements ProductService {
             page = Integer.parseInt(pageNum);
         }
         PageHelper.startPage(page,Const.PAGE_DEFAULT_SIZE2);
-        List<Product> productList = productMapper.selectProductList(categoryId,name,status);
+        String shopId = UserUtils.getUser().getShopId();
+        List<Product> productList = productMapper.selectProductList(categoryId,name,status,shopId);
         PageInfo<Product> pageResult = new PageInfo<>(productList);
         return pageResult;
     }

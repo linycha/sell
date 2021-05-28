@@ -1,31 +1,32 @@
 package com.sell.modules.sys.controller;
 
 import com.sell.common.Const;
-import com.sell.common.ResponseCode;
 import com.sell.common.Res;
+import com.sell.common.utils.FTPUtil;
 import com.sell.common.utils.PropertiesUtil;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.entity.Feedback;
-import com.sell.modules.store.service.FileService;
+import com.sell.modules.store.service.OrderService;
+import com.sell.modules.store.service.OrderStatusService;
 import com.sell.modules.sys.entity.User;
+import com.sell.modules.sys.security.WebSocket;
 import com.sell.modules.sys.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * @author linyuc
  * @date 2019/12/18 15:10
  */
+@Slf4j
 @RestController
 @CrossOrigin(origins="*",maxAge=3600)
 @RequestMapping("user")
@@ -34,7 +35,13 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private FileService fileService;
+    private OrderService orderService;
+    @Autowired
+    private OrderStatusService orderStatusService;
+    @Autowired
+    private WebSocket webSocket;
+    @Autowired
+    private FTPUtil ftpUtil;
 
     @GetMapping("aaa")
     public Res<String> aaa(){
@@ -48,29 +55,33 @@ public class UserController {
     @GetMapping("info")
     @ApiOperation("获取用户个人信息")
     public Res<User> info(){
-        User user = userService.selectById(UserUtils.getUserId());
+        User user = userService.selectById(UserUtils.getUser().getId());
         System.out.println(user);
         if(user == null){
             return Res.errorMsg("找不到当前用户");
         }
         return Res.success(user);
     }
-
     @PutMapping("update_head")
     @ApiOperation("修改个人头像")
-    public Res<String> updateHead(String id, MultipartFile file, HttpServletRequest request){
+    public Res<String> updateHead(MultipartFile file, HttpServletRequest request){
         if(file == null){
             return Res.errorMsg("上传头像为空");
         }
         String path = request.getSession().getServletContext().getRealPath("upload");
-        String targetFileName = fileService.upload(file,path,Const.FTPPATH_USER);
-        if(targetFileName == null){
-            return Res.errorMsg("上传头像失败");
-        }
-        String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTPPATH_USER+"/"+targetFileName;
         User user = new User();
-        user.setId(id);
-        user.setHeadImg(url);
+        user.setId(UserUtils.getUserId());
+        try {
+            String fileName = ftpUtil.uploadFile(file,path,Const.FTP_PATH_USER);
+            if(fileName == null){
+                return Res.errorMsg("ftp上传图片出现失败");
+            }
+            String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTP_PATH_USER+"/"+fileName;
+            user.setHeadImg(url);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return Res.errorMsg("ftp上传图片出现异常");
+        }
         int result = userService.update(user);
         if(result == 0){
             return Res.errorMsg("修改头像失败");
@@ -81,7 +92,7 @@ public class UserController {
     @ApiOperation("修改手机号")
     public Res<String> updateMobile(String mobile){
         User user = new User();
-        user.setId(UserUtils.getUserId());
+        user.setId(UserUtils.getUser().getId());
         user.setMobile(mobile);
         return userService.updateMobile(user);
     }
@@ -89,7 +100,7 @@ public class UserController {
     @ApiOperation("获取用户个人密码")
     public Res<String> updatePassword(String oldPwd,String newPwd){
         User user = new User();
-        user.setId(UserUtils.getUserId());
+        user.setId(UserUtils.getUser().getId());
         user.setPassword(oldPwd);
         return userService.updatePassword(newPwd,user);
     }
@@ -107,11 +118,30 @@ public class UserController {
     public Res<String> feedback(String content){
         Feedback feedback = new Feedback();
         feedback.setContent(content);
-        feedback.setUserId(UserUtils.getUserId());
+        feedback.setUserId(UserUtils.getUser().getId());
         int result = userService.saveFeedback(feedback);
         if(result == 0){
             return Res.errorMsg("意见反馈失败");
         }
         return Res.successMsg("意见反馈成功");
+    }
+    @ApiOperation("用户确认收到餐操作")
+    @PutMapping("sure")
+    public Res<String> fulfill(String orderNo){
+        if(StringUtils.isBlank(orderNo)){
+            return Res.errorMsg("订单号参数错误");
+        }
+        int result = orderService.updateStatusByOrderNo(orderNo, Const.OrderStatus.ACCOMPLISH);
+        if(result == 0){
+            return Res.errorMsg("确认送达失败");
+        }
+        boolean b2 = orderStatusService.saveStatus(orderNo,Const.OrderStatus.ACCOMPLISH);
+        if(!b2){
+            return Res.errorMsg("确认送达失败");
+        }
+/*        String shopId = orderService.getShopId(orderNo);
+        webSocket.sendOneMessage(userId,"您有一条订单已送达，祝您用餐愉快");
+        webSocket.sendOneMessage(shopId,"您有一条订单已被骑手送达");*/
+        return Res.successMsg("确认送达成功");
     }
 }

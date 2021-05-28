@@ -17,9 +17,12 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties({"openId","password","sex","createTime","updateTime"})
 public class User implements Serializable {
+    private static final long serialVersionUID = 7321352169002894594L;
     private String id;
 
-    private String openId;
+    private String shopId;
+
+    private String deliveryId;
 
     private String username;
 

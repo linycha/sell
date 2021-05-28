@@ -1,6 +1,7 @@
 package com.sell.modules.store.controller;
 
 import com.sell.common.Res;
+import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.entity.ProductCategory;
 import com.sell.modules.store.service.ProductCategoryService;
 import io.swagger.annotations.Api;
@@ -24,13 +25,16 @@ public class ProductCategoryController {
 
     /**
      * 查找某个商家的商品分类
-     * @param id
+     * @param shopId
      * @return
      */
     @GetMapping("product")
     @ApiOperation("查找某个商家的商品分类")
-    public Res getCategory(String id){
-        List<ProductCategory> categoryList = productCategoryService.getProductCategory(id);
+    public Res getCategory(String shopId){
+        if(StringUtils.isBlank(shopId)){
+            shopId = UserUtils.getShopId();
+        }
+        List<ProductCategory> categoryList = productCategoryService.getProductCategory(shopId);
         if(categoryList == null){
             return Res.errorMsg("查找商铺分类失败");
         }

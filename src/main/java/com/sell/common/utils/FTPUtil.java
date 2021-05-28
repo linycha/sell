@@ -1,16 +1,17 @@
 package com.sell.common.utils;
 
 
+import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * FTP工具类
@@ -18,9 +19,9 @@ import java.util.List;
  * @date 2019/12/20 13:45
  */
 @Configuration
+@Slf4j
 public class FTPUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(FTPUtil.class);
     private static String ftpIp = PropertiesUtil.getProperty("ftp.serverIp");
     private static String ftpUser = PropertiesUtil.getProperty("ftp.user");
     private static String ftpPass = PropertiesUtil.getProperty("ftp.pass");
@@ -35,53 +36,70 @@ public class FTPUtil {
     public FTPUtil() {
     }
 
-    public static boolean uploadFile(List<File> fileList, String ftpPath) throws IOException {
+/*    public static boolean uploadFile(List<File> fileList, String ftpPath) throws IOException {
         logger.info("开始连接ftp服务器");
         FTPUtil ftpUtil = new FTPUtil(ftpIp,21,ftpUser,ftpPass);
-        boolean result = ftpUtil.uploadFile(ftpPath,fileList);
-        return result;
+        return ftpUtil.uploadFile(ftpPath,fileList);
+    }*/
 
-    }
-    private boolean uploadFile(String remotePath,List<File> fileList) throws IOException {
-        boolean isUpload = false;
+    /**
+     * ftp上传文件,返回上传到服务器上的文件名
+     * @param ftpPath ftp下文件夹
+     * @return
+     * @throws IOException
+     */
+    public String uploadFile(MultipartFile file, String path, String ftpPath) throws Exception {
+        String fileName = file.getOriginalFilename();
+        assert fileName != null;
+        String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
+        String uploadFileName = UUID.randomUUID()+"."+fileExtensionName;
+        log.info("开始上传文件，上传文件的文件名：{}，上传的源路径：{}，新文件名：{}",fileName,path,uploadFileName);
+        //该文件夹不存在就先创建
+        File fileDir = new File(path);
+        if(!fileDir.exists()){
+            //给权限
+            fileDir.setWritable(true);
+            fileDir.mkdirs();
+        }
+        File targetFile = new File(path,uploadFileName);
+        List<File> fileList = Lists.newArrayList(targetFile);
         FileInputStream fis = null;
         //连接FTP服务器
         if(open()){
             try{
-                logger.info(remotePath);
+                file.transferTo(targetFile);
                 //是否需要切换文件夹，remote为空就不需要切换
-                ftpClient.changeWorkingDirectory(remotePath);
+                ftpClient.changeWorkingDirectory(ftpPath);
                 ftpClient.setBufferSize(1024);
                 ftpClient.setControlEncoding("UTF-8");
-                //二进制
+                //二进制,开启被动模式
                 ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
-                //开启被动模式
                 ftpClient.enterLocalPassiveMode();
-                for(File file : fileList){
-                    fis = new FileInputStream(file);
-                    ftpClient.storeFile(file.getName(),fis);
+                for(File f : fileList){
+                    fis = new FileInputStream(f);
+                    ftpClient.storeFile(f.getName(),fis);
                 }
-                isUpload = true;
-                logger.info("ftp服务器上传文件成功");
+                targetFile.delete();
+                log.info("ftp服务器上传文件成功");
             }catch (IOException e){
-                logger.error("ftp服务器上传文件异常",e);
-                isUpload = false;
+                log.error("ftp服务器上传文件失败",e);
+                throw new Exception("ftp服务器上传文件异常");
             }finally {
                 fis.close();
                 ftpClient.disconnect();
             }
         }
-        return isUpload;
+        return uploadFileName;
     }
     //上传日常文件，返回是否成功
-    public boolean uploadDailyFile(String fileName, InputStream is, String path)throws IOException{
+    public boolean uploadDailyFile(String fileName, InputStream is, String ftpPath)throws IOException{
         boolean isUpload = false;
         //连接FTP服务器
         if(open()){
             try{
-                logger.info("ftp服务器连接成功，开始上传："+fileName);
+                log.info("ftp服务器连接成功，开始上传："+fileName);
                 //是否需要切换文件夹，remote为空就不需要切换
-                ftpClient.changeWorkingDirectory(path);
+                ftpClient.changeWorkingDirectory(ftpPath);
                 ftpClient.setBufferSize(1024);
                 ftpClient.setControlEncoding("UTF-8");
                 //二进制
@@ -91,9 +109,9 @@ public class FTPUtil {
                 //上传文件
                 ftpClient.storeFile(fileName,is);
                 isUpload = true;
-                logger.info("ftp服务器上传文件成功");
+                log.info("ftp服务器上传文件成功");
             }catch (IOException e){
-                logger.error("ftp服务器上传文件异常",e);
+                log.error("ftp服务器上传文件异常",e);
                 isUpload = false;
             }finally {
                 is.close();
@@ -103,6 +121,7 @@ public class FTPUtil {
         return isUpload;
     }
     private boolean open(){
+        log.info("开始连接ftp服务器");
         String ftpIp = PropertiesUtil.getProperty("ftp.serverIp");
         String ftpUser = PropertiesUtil.getProperty("ftp.user");
         String ftpPass = PropertiesUtil.getProperty("ftp.pass");
@@ -112,7 +131,7 @@ public class FTPUtil {
             ftpClient.connect(ftpIp);
             isSuccess = ftpClient.login(ftpUser,ftpPass);
         }catch (IOException e){
-            logger.error("连接ftp服务器异常",e);
+            log.error("连接ftp服务器异常",e);
             isSuccess = false;
         }
         return isSuccess;
@@ -130,11 +149,11 @@ public class FTPUtil {
                 }
                 return Arrays.asList(fileList);
             }catch (IOException e){
-                logger.error("ftp获取"+path+"路径下文件失败");
+                log.error("ftp获取"+path+"路径下文件失败");
                 return null;
             }
         }else{
-            logger.error("连接ftp服务器失败");
+            log.error("连接ftp服务器失败");
             return null;
         }
     }

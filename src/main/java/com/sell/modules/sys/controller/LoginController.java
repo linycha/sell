@@ -3,22 +3,15 @@ package com.sell.modules.sys.controller;
 import com.sell.common.Res;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.service.ShopService;
-import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.subject.support.DefaultSubjectContext;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,15 +61,14 @@ public class LoginController {
         Map<String,Object> info = new HashMap<>(10);
         try {
             subject.login(token);
-            Role role = userService.getRoleName(UserUtils.getUserId());
+            User user = UserUtils.getUser();
             //校验是否是商家账号
-            if(!"business".equals(role.getName())){
+            if(!"business".equals(user.getRoles().get(0).getName())){
                 subject.logout();
                 return Res.errorMsg("该账号不是商家账号");
             }
-            String shopId = shopService.getshopId(UserUtils.getUserId());
             info.put("token",subject.getSession().getId());
-            info.put("shopId",shopId);
+            info.put("shopId",user.getShopId());
             return Res.success("登录成功", info);
         }catch(UnknownAccountException | IncorrectCredentialsException e){
             e.printStackTrace();
@@ -99,15 +91,14 @@ public class LoginController {
         Map<String,Object> info = new HashMap<>(10);
         try {
             subject.login(token);
-            String userId = UserUtils.getUserId();
-            Role role = userService.getRoleName(userId);
+            String roleName = UserUtils.getUser().getRoles().get(0).getName();
             //校验是否是骑手账号
-            if(!"delivery".equals(role.getName())){
+            if(!"delivery".equals(roleName)){
                 subject.logout();
                 return Res.errorMsg("该账号不是骑手账号");
             }
             info.put("token",subject.getSession().getId());
-            info.put("userId",userId);
+            info.put("userId",UserUtils.getUser().getId());
             return Res.success("登录成功", info);
         }catch(UnknownAccountException | IncorrectCredentialsException e){
             e.printStackTrace();

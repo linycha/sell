@@ -1,9 +1,11 @@
 package com.sell.modules.store.dao;
 
 import com.sell.modules.store.entity.ProductCategory;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface ProductCategoryMapper {
     int deleteByPrimaryKey(String id);
 

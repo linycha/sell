@@ -1,5 +1,6 @@
 package com.sell.modules.sys.security;
 
+import com.alibaba.fastjson.JSON;
 import com.sell.common.Const;
 import com.sell.common.utils.CheckUtil;
 import com.sell.modules.sys.entity.Permission;
@@ -35,10 +36,9 @@ public class AuthRealm extends AuthorizingRealm {
         System.out.println("授权 doGetAuthorizationInfo");
         //从session里拿user,查找该用户有哪些角色、权限
         Object o = principals.fromRealm(this.getClass().getName()).iterator().next();
-        //User user = new User();
         //BeanUtils.copyProperties(o,user);
-        System.out.println("-------o.toString"+o.toString());
-        User user = userService.selectByUsername(null,o.toString());
+        //User user = userService.selectByUsername(null,o.toString());
+        User user = JSON.parseObject(o.toString(),User.class);
         /*视频里的方法
         User u = (User)principals.getPrimaryPrincipal();
         User user = userService.selectByUsername(u.getUsername());*/
@@ -89,8 +89,7 @@ public class AuthRealm extends AuthorizingRealm {
         if(Const.USER_STATUS_DISABLE.equals(user.getStatus())){
             throw new LockedAccountException("该账号已被禁用，请联系管理员");
         }
-
-        //改成值存入userId，不然结合redis实现分布式时会报错
-        return new SimpleAuthenticationInfo(user.getId(), user.getPassword(), this.getClass().getName());
+        String str = JSON.toJSONString(user);
+        return new SimpleAuthenticationInfo(str, user.getPassword(), this.getClass().getName());
     }
 }

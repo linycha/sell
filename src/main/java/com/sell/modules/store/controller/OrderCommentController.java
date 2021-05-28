@@ -3,15 +3,16 @@ package com.sell.modules.store.controller;
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
 import com.sell.common.Res;
+import com.sell.common.utils.FTPUtil;
 import com.sell.common.utils.PropertiesUtil;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.entity.OrderComment;
-import com.sell.modules.store.service.FileService;
 import com.sell.modules.store.service.OrderCommentService;
 import com.sell.modules.store.service.OrderService;
 import com.sell.modules.store.service.OrderStatusService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import java.math.BigDecimal;
  * @author linyuc
  * @date 2020/3/31 23:24
  */
+@Slf4j
 @RestController
 @RequestMapping("comment")
 @Api(tags = "订单评价相关接口")
@@ -37,19 +39,21 @@ public class OrderCommentController {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private FileService fileService;
+    private FTPUtil ftpUtil;
     @PostMapping("save")
     @ApiOperation("用户提交保存评价信息")
     public Res<String> save(OrderComment orderComment, HttpServletRequest request){
-        orderComment.setUserId(UserUtils.getUserId());
+        orderComment.setUserId(UserUtils.getUser().getId());
         if(orderComment.getFile() != null){
             String path = request.getSession().getServletContext().getRealPath("upload");
-            String targetFileName = fileService.upload(orderComment.getFile(),path, Const.FTPPATH_COMMENT);
-            if(targetFileName == null){
-                return Res.errorMsg("保存评价图片失败");
+            try {
+                String fileName = ftpUtil.uploadFile(orderComment.getFile(),path, Const.FTP_PATH_COMMENT);
+                String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTP_PATH_COMMENT+"/"+fileName;
+                orderComment.setImages(url);
+            }catch (Exception e){
+                log.info(e.getMessage());
+                return Res.errorMsg("上传评价图片出现异常");
             }
-            String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTPPATH_COMMENT+"/"+targetFileName;
-            orderComment.setImages(url);
         }
         BigDecimal score = new BigDecimal(orderComment.getScores());
         orderComment.setScore(score);

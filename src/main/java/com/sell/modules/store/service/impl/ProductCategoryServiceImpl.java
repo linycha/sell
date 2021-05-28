@@ -39,7 +39,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         productCategory.setId(IdGenerate.uuid());
         productCategory.setDelFlag("0");
         //通过当前登录用户查找shopId
-        productCategory.setShopId(UserUtils.getUserId());
+        productCategory.setShopId(UserUtils.getUser().getId());
         return this.productCategoryMapper.insertSelective(productCategory);
     }
     @Override

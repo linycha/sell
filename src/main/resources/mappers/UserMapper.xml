@@ -29,12 +29,12 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.sell.modules.sys.entity.User">
-    insert into sys_user (id, open_id, username,
+    insert into sys_user (id, username,
       password, sex, mobile,
       head_img,
       role, create_time, update_time
       )
-    values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
       #{password,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{mobile,jdbcType=VARCHAR},
       #{headImg,jdbcType=VARCHAR},
       #{role,jdbcType=INTEGER}, now(), now()
@@ -51,9 +51,6 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
-      </if>
-      <if test="openId != null">
-        open_id,
       </if>
       <if test="username != null">
         username,
@@ -76,9 +73,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="openId != null">
-        #{openId,jdbcType=VARCHAR},
       </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
@@ -105,9 +99,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.sys.entity.User">
     update sys_user
     <set>
-      <if test="openId != null">
-        open_id = #{openId,jdbcType=VARCHAR},
-      </if>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
@@ -134,7 +125,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sell.modules.sys.entity.User">
     update sys_user
-    set open_id = #{openId,jdbcType=VARCHAR},
+    set
       username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=CHAR},
@@ -172,12 +163,14 @@
   <select id="selectByUsernameOrUserId" parameterType="map" resultMap="UserRolePermissionMap">
     select s.id,s.username,s.password,s.status as status,
     r.id as rid, r.name as rname,
-    p.name as pname, p.url as url
+    p.name as pname, p.url as url,h.id as shopId,d.id as deliveryId
     from sys_user s
     left join sys_user_role ur on ur.user_id = s.id
     left join sys_role r on r.id = ur.role_id
     left join sys_role_permission rp on rp.role_id = r.id
     left join sys_permission p on p.id = rp.per_id
+    left join sell_shop h on h.user_id = s.id
+    left join sell_delivery d on d.user_id = s.id
     where 1=1
     <if test="username != null and username != ''">
       and s.username=#{username}
@@ -205,6 +198,8 @@
   </select>
   <resultMap id="UserRolePermissionMap" type="com.sell.modules.sys.entity.User">
     <id column="id" javaType="java.lang.String" jdbcType="VARCHAR" property="id" />
+    <id column="shopId" javaType="java.lang.String" jdbcType="VARCHAR" property="shopId" />
+    <id column="deliveryId" javaType="java.lang.String" jdbcType="VARCHAR" property="deliveryId" />
     <result column="username" javaType="java.lang.String" jdbcType="VARCHAR" property="username" />
     <result column="password" javaType="java.lang.String" jdbcType="VARCHAR" property="password" />
     <result column="sex" javaType="java.lang.String" jdbcType="CHAR" />

@@ -79,7 +79,7 @@ public class OrderController {
             }
         }
         //创建订单
-        order.setUserId(UserUtils.getUserId());
+        order.setUserId(UserUtils.getUser().getId());
         order.setOrderNo(orderNo);
         order.setBoxCost(new BigDecimal(order.getbCost()));
         order.setSendCost(new BigDecimal(order.getsCost()));
@@ -100,7 +100,7 @@ public class OrderController {
     }
     @GetMapping("list_user")
     public Res<PageInfo<UserOrderVo>> listOfUser(String orderNo,String pageNum){
-        String userId = UserUtils.getUserId();
+        String userId = UserUtils.getUser().getId();
         PageInfo<UserOrderVo> orderList = orderService.getUserOrderList(userId,orderNo,pageNum);
         return Res.success(orderList);
     }

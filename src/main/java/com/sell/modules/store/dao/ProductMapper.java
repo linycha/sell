@@ -23,6 +23,6 @@ public interface ProductMapper {
 
     List<ProductVo> selectProductListByCategory(String categoryId);
     List<Product> selectProductList(@Param("categoryId") String categoryId, @Param("name")String name,
-                                    @Param("status") String status);
+                                    @Param("status") String status,@Param("shopId")String shopId);
     Integer checkStockByName(@Param("name")String name,@Param("num")Integer num);
 }

@@ -36,11 +36,11 @@ public class FileController {
         if(file == null){
             return Res.errorMsg("上传文件不能为空");
         }
-        if(!check.equals(Const.UPLOAD_CHECK)){
+/*        if(!check.equals(Const.UPLOAD_CHECK)){
             return Res.errorMsg("校验码错误");
-        }
+        }*/
         Long start = System.currentTimeMillis();
-        boolean b = ftpUtil.uploadDailyFile(file.getOriginalFilename(),file.getInputStream(),Const.FTPPATH_DAILY);
+        boolean b = ftpUtil.uploadDailyFile(file.getOriginalFilename(),file.getInputStream(),Const.FTP_PATH_DAILY);
         Long end = System.currentTimeMillis();
         System.out.println(end - start);
         if(b){

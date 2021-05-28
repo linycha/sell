@@ -18,6 +18,7 @@ import com.sell.modules.store.vo.ProductVo;
 import com.sell.modules.store.vo.ShopVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,14 +35,13 @@ import java.util.Map;
  * @author linyuc
  * @date 2020/1/20 16:34
  */
+@Slf4j
 @RestController
 @RequestMapping("product")
 @Api(tags = "商品相关接口")
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @Autowired
-    private FileService fileService;
     @Autowired
     private ProductCategoryService productCategoryService;
     @Autowired
@@ -84,12 +84,17 @@ public class ProductController {
         }
         if(product.getFile() != null){
             String path = request.getSession().getServletContext().getRealPath("upload");
-            String targetFileName = fileService.upload(product.getFile(),path, Const.FTPPATH_PRODUCT);
-            if(targetFileName == null){
-                return Res.errorMsg("保存商品图片失败");
+            try {
+                String targetFileName = ftpUtil.uploadFile(product.getFile(),path, Const.FTP_PATH_PRODUCT);
+                if(targetFileName == null){
+                    return Res.errorMsg("保存商品图片失败");
+                }
+                String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTP_PATH_PRODUCT+"/"+targetFileName;
+                product.setLogoImg(url);
+            }catch (Exception e){
+                log.info(e.getMessage());
+                return Res.errorMsg("上传评价图片出现异常");
             }
-            String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTPPATH_PRODUCT+"/"+targetFileName;
-            product.setLogoImg(url);
         }
         int result = productService.saveProduct(product);
         if(result == 0){
@@ -108,12 +113,17 @@ public class ProductController {
         }
         if(product.getFile() != null){
             String path = request.getSession().getServletContext().getRealPath("upload");
-            String targetFileName = fileService.upload(product.getFile(),path, Const.FTPPATH_PRODUCT);
-            if(targetFileName == null){
-                return Res.errorMsg("修改商品图片失败");
+            try {
+                String targetFileName = ftpUtil.uploadFile(product.getFile(),path, Const.FTP_PATH_PRODUCT);
+                if(targetFileName == null){
+                    return Res.errorMsg("保存商品图片失败");
+                }
+                String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTP_PATH_PRODUCT+"/"+targetFileName;
+                product.setLogoImg(url);
+            }catch (Exception e){
+                log.info(e.getMessage());
+                return Res.errorMsg("上传评价图片出现异常");
             }
-            String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTPPATH_PRODUCT+"/"+targetFileName;
-            product.setLogoImg(url);
         }
         int result = productService.update(product);
         if(result == 0){
@@ -125,7 +135,7 @@ public class ProductController {
     @ApiOperation("上传图片")
     public Res<String> upload(MultipartFile file)throws IOException {
         Long start = System.currentTimeMillis();
-        boolean b = ftpUtil.uploadDailyFile(file.getOriginalFilename(),file.getInputStream(),Const.FTPPATH_DAILY);
+        boolean b = ftpUtil.uploadDailyFile(file.getOriginalFilename(),file.getInputStream(),Const.FTP_PATH_DAILY);
         Long end = System.currentTimeMillis();
         System.out.println(end - start);
         if(!b){

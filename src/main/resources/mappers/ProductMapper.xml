@@ -266,6 +266,9 @@
     <if test="status != null and status != ''">
       and status = #{status}
     </if>
+    <if test="shopId != null and shopId != ''">
+      and shop_id = #{shopId}
+    </if>
   </select>
   <select id="checkStockByName" parameterType="map" resultType="Integer">
     select count(0) from sell_product

@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @date 2019/12/27 11:35
  */
 public class Permission implements Serializable {
+    private static final long serialVersionUID = 6843973116522833281L;
     private String id;
     private String name;
     private String url;

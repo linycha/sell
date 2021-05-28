@@ -79,16 +79,16 @@ public class DeliveryController {
     @GetMapping("accept_list")
     @ApiOperation("获取骑手已接单订单列表")
     public Res<List<DeliveryOrderVo>> takeOrderList(){
-        String userId = UserUtils.getUserId();
-        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(userId,Const.OrderStatus.DELIVERY_ACCEPT);
+        String deliveryId = UserUtils.getUser().getDeliveryId();
+        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(deliveryId,Const.OrderStatus.DELIVERY_ACCEPT);
 
         return Res.success(orderList);
     }
     @GetMapping("take_list")
     @ApiOperation("获取骑手已取货订单列表")
     public Res<List<DeliveryOrderVo>> deliveryOrderList(){
-        String userId = UserUtils.getUserId();
-        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(userId,Const.OrderStatus.DELIVERY_TAKE);
+        String deliveryId = UserUtils.getUser().getDeliveryId();
+        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(deliveryId,Const.OrderStatus.DELIVERY_TAKE);
 
         return Res.success(orderList);
     }
@@ -136,7 +136,7 @@ public class DeliveryController {
      */
     @PutMapping("accomplish")
     @ApiOperation("骑手确认送达订单操作")
-    public Res<String> fulfill(String orderNo,String userId){
+    public Res<String> fulfill(String orderNo){
         if(StringUtils.isBlank(orderNo)){
             return Res.errorMsg("订单号参数错误");
         }
@@ -148,8 +148,8 @@ public class DeliveryController {
         if(!b2){
             return Res.errorMsg("确认送达失败");
         }
-        String deliveryId = UserUtils.getUserId();
-        boolean b3 = deliveryService.updateTaskNum(deliveryId);
+        String userId = UserUtils.getUser().getId();
+        boolean b3 = deliveryService.updateTaskNum(userId);
         if(!b3){
             return Res.errorMsg("更新骑手配送订单量失败");
         }

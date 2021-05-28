@@ -26,7 +26,7 @@ public class ShippingController {
     @GetMapping("list")
     @ApiOperation("查看收货地址列表")
     public Res<List<Shipping>> list(){
-        String userId = UserUtils.getUserId();
+        String userId = UserUtils.getUser().getId();
         List<Shipping> shippingList = shippingService.getShippingList(userId);
         if(shippingList == null){
             return Res.errorMsg("请添加收获地址");
@@ -41,7 +41,7 @@ public class ShippingController {
     @GetMapping("default")
     @ApiOperation("用户生成订单时获取用户默认收货地址")
     public Res<Shipping> defaultShipping(){
-        String userId = UserUtils.getUserId();
+        String userId = UserUtils.getUser().getId();
         Shipping shipping = shippingService.getDefault(userId);
         if(shipping == null){
             return Res.errorMsg("请选择收货地址");
@@ -51,7 +51,7 @@ public class ShippingController {
     @PostMapping("save")
     @ApiOperation("保存收货地址信息")
     public Res<String> save(Shipping shipping){
-        String userId = UserUtils.getUserId();
+        String userId = UserUtils.getUser().getId();
         if("1".equals(shipping.getIsDefault())){
             shippingService.updateDefault(userId);
         }
@@ -67,7 +67,7 @@ public class ShippingController {
     public Res<String> update(Shipping shipping){
         System.out.println(shipping);
         if("1".equals(shipping.getIsDefault())){
-            shippingService.updateDefault(UserUtils.getUserId());
+            shippingService.updateDefault(UserUtils.getUser().getId());
         }
         int result = shippingService.update(shipping);
         if(result == 0){

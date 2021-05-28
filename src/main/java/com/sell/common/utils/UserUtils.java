@@ -1,5 +1,6 @@
 package com.sell.common.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.sell.modules.sys.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
@@ -9,16 +10,18 @@ import org.springframework.beans.BeanUtils;
  * @date 2020/1/15 20:25
  */
 public class UserUtils {
-/*    public static User getUser() {
+    public static User getUser() {
         Object o = SecurityUtils.getSubject().getPrincipal();
-        User user = new User();
-        BeanUtils.copyProperties(o,user);
-        return user;
-    }*/
+        //解析user的json字符串
+        return JSON.parseObject(o.toString(),User.class);
+    }
 
     public static String getUserId() {
-        Object o = SecurityUtils.getSubject().getPrincipal();
-        return o.toString();
+        return getUser().getId();
+    }
+
+    public static String getShopId() {
+        return getUser().getShopId();
     }
 
 }

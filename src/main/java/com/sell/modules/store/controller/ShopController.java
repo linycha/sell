@@ -1,14 +1,13 @@
 package com.sell.modules.store.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Maps;
 import com.sell.common.Const;
 import com.sell.common.Res;
-import com.sell.common.utils.DateTimeUtil;
+import com.sell.common.utils.FTPUtil;
 import com.sell.common.utils.PropertiesUtil;
+import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.entity.Delivery;
 import com.sell.modules.store.entity.Order;
-import com.sell.modules.store.entity.OrderStatus;
 import com.sell.modules.store.entity.Shop;
 import com.sell.modules.store.service.*;
 import com.sell.modules.store.vo.NewOrderVo;
@@ -16,37 +15,26 @@ import com.sell.modules.store.vo.ShopVo;
 import com.sell.modules.sys.security.WebSocket;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javassist.tools.web.Webserver;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.support.DefaultSubjectContext;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * @author linyuc
  * @date 2020/1/20 9:46
  */
+@Slf4j
 @RestController
 @RequestMapping("shop")
 @Api(tags = "商家操作相关接口")
 public class ShopController {
     @Autowired
     private ShopService shopService;
-    @Autowired
-    private FileService fileService;
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -55,6 +43,8 @@ public class ShopController {
     private DeliveryService deliveryService;
     @Autowired
     private WebSocket webSocket;
+    @Autowired
+    private FTPUtil ftpUtil;
     /**
      * 用户端-搜索店铺列表
      */
@@ -72,12 +62,12 @@ public class ShopController {
         return Res.success(shopList);
     }
     @GetMapping("info")
-    @ApiOperation("商家端-商家确认接单")
-    public Res<Shop> info(String id){
-        if(StringUtils.isBlank(id)){
-            return Res.errorMsg("该店铺已关闭或不存在");
+    @ApiOperation("商家/用户端-查询店铺信息")
+    public Res<Shop> info(String shopId){
+        if(StringUtils.isBlank(shopId)){
+            shopId = UserUtils.getShopId();
         }
-        Shop shop = shopService.getShopInfo(id);
+        Shop shop = shopService.getShopInfo(shopId);
         if(shop == null){
             return Res.errorMsg("该店铺已关闭或不存在");
         }
@@ -101,25 +91,29 @@ public class ShopController {
         }
         return Res.successMsg("修改店铺营业时间成功");
     }
-    @PostMapping("update_logo")
+    @PutMapping("update_logo")
     @ApiOperation("商家端-修改店铺logo")
     public Res<String> upload(@RequestParam(defaultValue = "logo_img",required=false) MultipartFile file,
-                      HttpServletRequest request,String id){
+                      HttpServletRequest request){
         String path = request.getSession().getServletContext().getRealPath("upload");
-        String targetFileName = fileService.upload(file,path,Const.FTPPATH_SHOP);
-
-        if(targetFileName == null){
-            return Res.errorMsg("上传图片失败");
-        }
-        String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTPPATH_SHOP+"/"+targetFileName;
         Shop shop = new Shop();
-        shop.setId(id);
-        shop.setLogoImg(url);
+        shop.setId(UserUtils.getShopId());
+        try {
+            String fileName = ftpUtil.uploadFile(file,path,Const.FTP_PATH_SHOP);
+            if(fileName == null){
+                return Res.errorMsg("上传图片失败");
+            }
+            String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTP_PATH_SHOP+"/"+fileName;
+            shop.setLogoImg(url);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return Res.errorMsg("ftp上传图片出现异常");
+        }
         int result = shopService.updateSelective(shop);
         if(result == 0){
             return Res.errorMsg("更改店铺logo失败");
         }
-        return Res.success(url);
+        return Res.successMsg("修改店铺logo成功");
     }
 
     /**
@@ -127,10 +121,8 @@ public class ShopController {
      */
     @GetMapping("new_list")
     @ApiOperation("商家端-商家查看已支付待接单列表")
-    public Res<PageInfo<NewOrderVo>> newOrderList(String shopId, String orderNo, String pageNum){
-        if(StringUtils.isBlank(shopId)){
-            return Res.errorMsg("商家id参数错误");
-        }
+    public Res<PageInfo<NewOrderVo>> newOrderList(String orderNo, String pageNum){
+        String shopId = UserUtils.getShopId();
         PageInfo<NewOrderVo> orderList = orderService.getOrderList(shopId,orderNo,Const.OrderStatus.PAID,pageNum);
         return Res.success(orderList);
     }
@@ -140,10 +132,8 @@ public class ShopController {
     @GetMapping("order_list")
     @RequiresRoles("business")
     @ApiOperation("商家端-查看全部订单列表")
-    public Res<PageInfo<NewOrderVo>> orderList(String shopId, String orderNo, String status,String pageNum){
-        if(StringUtils.isBlank(shopId)){
-            return Res.errorMsg("商家id参数错误");
-        }
+    public Res<PageInfo<NewOrderVo>> orderList(String orderNo, String status,String pageNum){
+        String shopId = UserUtils.getShopId();
         PageInfo<NewOrderVo> orderList = orderService.getOrderList(shopId,orderNo,status,pageNum);
         return Res.success(orderList);
     }
