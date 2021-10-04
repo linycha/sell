@@ -2,6 +2,7 @@ package com.sell.common.utils;
 
 
 import com.google.common.collect.Lists;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -20,6 +21,7 @@ import java.util.*;
  */
 @Configuration
 @Slf4j
+@Data
 public class FTPUtil {
 
     private static String ftpIp = PropertiesUtil.getProperty("ftp.serverIp");
@@ -163,68 +165,4 @@ public class FTPUtil {
     private String user;
     private String pwd;
     private FTPClient ftpClient;
-
-    public static String getFtpIp() {
-        return ftpIp;
-    }
-
-    public static void setFtpIp(String ftpIp) {
-        FTPUtil.ftpIp = ftpIp;
-    }
-
-    public static String getFtpUser() {
-        return ftpUser;
-    }
-
-    public static void setFtpUser(String ftpUser) {
-        FTPUtil.ftpUser = ftpUser;
-    }
-
-    public static String getFtpPass() {
-        return ftpPass;
-    }
-
-    public static void setFtpPass(String ftpPass) {
-        FTPUtil.ftpPass = ftpPass;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getPwd() {
-        return pwd;
-    }
-
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
-
-    public FTPClient getFtpClient() {
-        return ftpClient;
-    }
-
-    public void setFtpClient(FTPClient ftpClient) {
-        this.ftpClient = ftpClient;
-    }
 }

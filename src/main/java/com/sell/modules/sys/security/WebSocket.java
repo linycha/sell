@@ -24,7 +24,7 @@ public class WebSocket {
     private Session session;
 
     private static CopyOnWriteArraySet<WebSocket> webSockets = new CopyOnWriteArraySet<>();
-    private static Map<String, Session> sessionPool = new HashMap<String, Session>();
+    private static Map<String, Session> sessionPool = new HashMap<>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam(value = "id") String id) {

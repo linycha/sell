@@ -16,8 +16,12 @@ public interface DeliveryMapper {
     int updateByPrimaryKey(Delivery record);
 
     int selectCount();
+
     Delivery selectBest(Integer number);
+
     String selectDeliveryIdByUserId(String userId);
+
     Delivery selectByUserId(String userId);
+
     int updateTaskNumByUserId(String userId);
 }

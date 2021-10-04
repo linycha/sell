@@ -40,6 +40,7 @@ public class OrderCommentController {
     private OrderService orderService;
     @Autowired
     private FTPUtil ftpUtil;
+
     @PostMapping("save")
     @ApiOperation("用户提交保存评价信息")
     public Res<String> save(OrderComment orderComment, HttpServletRequest request){
@@ -74,24 +75,16 @@ public class OrderCommentController {
     }
 
     /**
-     * 商家发起查询自己的订单列表
-     * @param shopId
-     * @param scoreType
-     * @param isAnonymity
-     * @param status
-     * @param pageNum
-     * @return Res
+     * 商家发起查询自己的订单评价列表
      */
     @GetMapping("list")
-    @ApiOperation("商家发起查询自己的订单列表")
-    public Res<PageInfo<OrderComment>> list(String shopId, String scoreType, String isAnonymity, String status, String pageNum){
-        System.out.println("scoreType:"+scoreType+",isAnonymity:"+isAnonymity+",pageNum:"+pageNum+",status:"+status);
+    @ApiOperation("商家发起查询自己的订单评价列表")
+    public Res<PageInfo<OrderComment>> list(String scoreType, String isAnonymity, String status, String pageNum){
+        String shopId = UserUtils.getShopId();
         PageInfo<OrderComment> commentList = orderCommentService.list(shopId,scoreType,isAnonymity,status,pageNum);
-        if(commentList.getList().size() == 0){
-            return Res.errorMsg("未找到相应的评价信息");
-        }
         return Res.success(commentList);
     }
+
     @PostMapping("reply")
     @ApiOperation("商家回复订单评价")
     public Res<String> reply(String orderId,String reply){

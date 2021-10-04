@@ -141,7 +141,7 @@ public class RedisUtil {
          * @param delta 要增加的值
          * @return
          */
-        public long incr(String key, long delta) {
+        public Long incr(String key, long delta) {
             if (delta < 0) {
                 throw new RuntimeException("递增因子必须大于0");
             }
@@ -154,7 +154,7 @@ public class RedisUtil {
          * @param delta 要减小的值
          * @return
          */
-        public long decr(String key, long delta) {
+        public Long decr(String key, long delta) {
             if (delta < 0) {
                 throw new RuntimeException("递减因子必须小于0");
             }

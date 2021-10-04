@@ -1,10 +1,12 @@
 package com.sell.modules.store.dao;
 
 import com.sell.modules.store.entity.OrderComment;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface OrderCommentMapper {
     int deleteByPrimaryKey(String id);
 

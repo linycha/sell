@@ -1,7 +1,10 @@
 package com.sell;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.google.gson.JsonObject;
 import com.sell.common.Const;
 import com.sell.common.utils.CheckUtil;
 import com.sell.common.utils.FTPUtil;
@@ -34,6 +37,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import springfox.documentation.spring.web.json.Json;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -52,10 +57,18 @@ import java.util.regex.Pattern;
 public class Test {
     @Autowired
     private UserMapper userMapper;
+    @Autowired RedisUtil.redisString redisUtil;
 
     @org.junit.Test
     public void test(){
-        User user = userMapper.selectByUsernameOrUserId("xiaolin",null);
-        System.out.println(user);
+        redisUtil.set("aaacl","qqqqq");
+        System.out.println(redisUtil.get("aaacl").toString());
+/*        User user = userMapper.selectByUsernameOrUserId("xiaolin",null);
+        String str = JSON.toJSONString(user);
+        //System.out.println(user);
+        System.out.println(str);
+        System.out.println("---------------");
+        User a  = JSON.parseObject(str,User.class);
+        System.out.println(a.toString());*/
     }
 }

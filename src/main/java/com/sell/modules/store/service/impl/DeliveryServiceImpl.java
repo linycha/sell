@@ -48,11 +48,10 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public Delivery getBest() {
         int count = deliveryMapper.selectCount();
+
         Random random = new Random();
         int number = random.nextInt(count);
-        System.out.println("number="+number);
-        Delivery delivery = deliveryMapper.selectBest(number);
-        return delivery;
+        return deliveryMapper.selectBest(number);
     }
 
     @Override
