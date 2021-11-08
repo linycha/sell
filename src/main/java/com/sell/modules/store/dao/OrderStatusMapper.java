@@ -1,6 +1,7 @@
 package com.sell.modules.store.dao;
 
 import com.sell.modules.store.entity.OrderStatus;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ import java.util.List;
  * @author linyuc
  * @date 2020/03/01 00:13
  */
+@Mapper
 public interface OrderStatusMapper {
     int deleteByPrimaryKey(String id);
 

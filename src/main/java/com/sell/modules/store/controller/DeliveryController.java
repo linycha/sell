@@ -168,7 +168,7 @@ public class DeliveryController {
         if(StringUtils.isBlank(orderNo)){
             return Res.errorMsg("订单号参数错误");
         }
-        boolean b = deliveryService.assign(orderNo);
+        boolean b = deliveryService.updateAssign(orderNo);
         if(!b){
             return Res.errorMsg("拒绝订单失败");
         }

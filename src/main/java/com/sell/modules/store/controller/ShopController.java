@@ -152,7 +152,7 @@ public class ShopController {
         Delivery delivery = deliveryService.getBest();
         Order order = new Order();
         order.setOrderNo(Long.valueOf(orderNo));
-        order.setDeliverId(delivery.getId());
+        order.setDeliveryId(delivery.getId());
         order.setDeliveryName(delivery.getTrueName());
         order.setStatus(Const.OrderStatus.SHOP_ACCEPT);
         int result = orderService.update(order);

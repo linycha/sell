@@ -4,10 +4,16 @@ import com.sell.modules.store.entity.Order;
 import com.sell.modules.store.vo.DeliveryOrderVo;
 import com.sell.modules.store.vo.NewOrderVo;
 import com.sell.modules.store.vo.UserOrderVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * @author linyuc
+ * @date 2019/12/20 11:50
+ */
+@Mapper
 public interface OrderMapper {
     int deleteByPrimaryKey(String id);
 

@@ -2,7 +2,7 @@ package com.sell.modules.sys.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.Lists;
-import lombok.Data;
+import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -15,6 +15,9 @@ import java.util.List;
  * @date 2019/12/12 12:43
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @JsonIgnoreProperties({"openId","password","sex","createTime","updateTime"})
 public class User implements Serializable {
     private static final long serialVersionUID = 7321352169002894594L;

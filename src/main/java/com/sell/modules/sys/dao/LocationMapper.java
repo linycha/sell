@@ -1,9 +1,11 @@
 package com.sell.modules.sys.dao;
 
 import com.sell.modules.sys.entity.Location;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface LocationMapper {
     int deleteByPrimaryKey(String id);
 

@@ -1,7 +1,13 @@
 package com.sell.modules.store.dao;
 
 import com.sell.modules.store.entity.Delivery;
+import org.apache.ibatis.annotations.Mapper;
 
+/**
+ * @author linyuc
+ * @date 2019/12/20 11:50
+ */
+@Mapper
 public interface DeliveryMapper {
     int deleteByPrimaryKey(String id);
 

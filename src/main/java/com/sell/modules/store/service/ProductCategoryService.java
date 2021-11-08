@@ -16,4 +16,6 @@ public interface ProductCategoryService {
 
     int deleteProductCategory(String id);
 
+    void insertTest();
+
 }

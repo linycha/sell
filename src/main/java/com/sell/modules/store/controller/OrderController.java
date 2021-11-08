@@ -81,8 +81,8 @@ public class OrderController {
         //创建订单
         order.setUserId(UserUtils.getUser().getId());
         order.setOrderNo(orderNo);
-        order.setBoxCost(new BigDecimal(order.getbCost()));
-        order.setSendCost(new BigDecimal(order.getsCost()));
+        order.setBoxCost(new BigDecimal(order.getBCost()));
+        order.setSendCost(new BigDecimal(order.getSCost()));
         order.setPayMoney(new BigDecimal(order.getMoney()));
         order.setStatus(Const.OrderStatus.PAID);
         boolean b1 = orderService.save(order);

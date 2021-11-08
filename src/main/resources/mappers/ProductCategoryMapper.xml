@@ -29,11 +29,9 @@
   </delete>
   <insert id="insert" parameterType="com.sell.modules.store.entity.ProductCategory" >
     insert into sell_product_category (id, parent_id, shop_id,
-      name, status, sort, del_flag,
-      create_time, update_time)
+      name, status, sort)
     values (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{sort,jdbcType=INTEGER}, #{delFlag,jdbcType=CHAR}, 
-      now(), now())
+      #{name,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{sort,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.sell.modules.store.entity.ProductCategory" >
     insert into sell_product_category

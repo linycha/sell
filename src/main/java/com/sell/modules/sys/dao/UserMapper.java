@@ -3,10 +3,12 @@ package com.sell.modules.sys.dao;
 import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface UserMapper {
     int deleteByPrimaryKey(String id);
 

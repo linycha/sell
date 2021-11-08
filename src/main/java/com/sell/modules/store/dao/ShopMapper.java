@@ -1,7 +1,7 @@
 package com.sell.modules.store.dao;
 
 import com.sell.modules.store.entity.Shop;
-import com.sell.modules.store.entity.ShopExample;
+
 import java.util.List;
 
 import com.sell.modules.store.vo.ShopVo;
