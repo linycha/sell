@@ -35,9 +35,8 @@ public class LoginController {
         Map<String,Object> info = new HashMap<>();
         try {
             subject.login(token);
-            Object o = SecurityUtils.getSubject().getPrincipal();
             info.put("token",subject.getSession().getId());
-            info.put("userId",o.toString());
+            info.put("userId",UserUtils.getUserId());
             return Res.success("登录成功", info);
         }catch(UnknownAccountException | IncorrectCredentialsException e){
             e.printStackTrace();

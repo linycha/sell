@@ -55,8 +55,7 @@ public class UserController {
     @GetMapping("info")
     @ApiOperation("获取用户个人信息")
     public Res<User> info(){
-        User user = userService.selectById(UserUtils.getUser().getId());
-        System.out.println(user);
+        User user = UserUtils.getUser();
         if(user == null){
             return Res.errorMsg("找不到当前用户");
         }

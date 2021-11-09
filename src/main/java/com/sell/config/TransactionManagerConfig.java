@@ -67,8 +67,7 @@ public class TransactionManagerConfig {
         methodMap.put("*", readOnlyTx);
         source.setNameMap(methodMap);
 
-        TransactionInterceptor txAdvice = new TransactionInterceptor(transactionManager, source);
-        return txAdvice;
+        return new TransactionInterceptor(transactionManager, source);
     }
 
     @Bean(name = "txAdviceAdvisor")
