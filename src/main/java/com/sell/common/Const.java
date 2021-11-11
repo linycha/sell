@@ -1,5 +1,6 @@
 package com.sell.common;
 
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -69,5 +70,16 @@ public class Const {
     public static long generateOrderNo(){
         long currentTime = System.currentTimeMillis();
         return currentTime + currentTime%10;
+    }
+
+    /**
+     * 初始化分页大小
+     */
+    public static void initPage(Integer pageNum,Integer pageSize){
+        if(pageNum == null || pageSize == null){
+            pageNum = Const.PAGE_DEFAULT_NUM;
+            pageSize = Const.PAGE_DEFAULT_SIZE;
+        }
+        PageHelper.startPage(pageNum,pageSize);
     }
 }

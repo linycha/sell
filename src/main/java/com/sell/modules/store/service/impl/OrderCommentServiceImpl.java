@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
 import com.sell.common.IdGenerate;
 import com.sell.modules.store.dao.OrderCommentMapper;
+import com.sell.modules.store.dto.QueryCommentDTO;
 import com.sell.modules.store.entity.OrderComment;
 import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.service.OrderCommentService;
@@ -29,19 +30,13 @@ public class OrderCommentServiceImpl implements OrderCommentService {
     }
 
     @Override
-    public PageInfo<OrderComment> list(String shopId, String scoreType, String isAnonymity, String status, String pageNum) {
-        Integer page = Const.PAGE_DEFAULT_NUM;
-        Integer score = null;
-        if(!StringUtils.isBlank(pageNum)){
-            page = Integer.parseInt(pageNum);
-        }
-        PageHelper.startPage(page,Const.PAGE_DEFAULT_SIZE_FIVE);
-        if(!StringUtils.isBlank(scoreType)){
-           score = Integer.parseInt(scoreType);
-        }
-        List<OrderComment> commentList = orderCommentMapper.selectOrderCommentList(shopId,score,isAnonymity,status);
-        PageInfo<OrderComment> pageResult = new PageInfo<>(commentList);
-        return pageResult;
+    public PageInfo<OrderComment> list(QueryCommentDTO dto) {
+
+        Const.initPage(dto.getPageNum(),dto.getPageSize());
+
+        List<OrderComment> commentList = orderCommentMapper.selectOrderCommentList(dto);
+
+        return new PageInfo<>(commentList);
     }
 
     @Override

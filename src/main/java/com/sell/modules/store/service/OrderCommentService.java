@@ -1,6 +1,7 @@
 package com.sell.modules.store.service;
 
 import com.github.pagehelper.PageInfo;
+import com.sell.modules.store.dto.QueryCommentDTO;
 import com.sell.modules.store.entity.OrderComment;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.List;
  */
 public interface OrderCommentService {
     int save(OrderComment orderComment);
-    PageInfo<OrderComment> list(String shopId, String scoreType, String isAnonymity,String status,String pageNum);
+
+    PageInfo<OrderComment> list(QueryCommentDTO dto);
+
     int update(String orderId,String reply);
 }

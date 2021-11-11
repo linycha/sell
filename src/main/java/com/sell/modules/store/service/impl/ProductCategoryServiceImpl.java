@@ -36,10 +36,8 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
             return -1;
         }
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setId(IdGenerate.uuid());
-        productCategory.setDelFlag("0");
         //通过当前登录用户查找shopId
-        productCategory.setShopId(UserUtils.getUser().getId());
+        productCategory.setShopId(UserUtils.getShopId());
         return this.productCategoryMapper.insertSelective(productCategory);
     }
     @Override

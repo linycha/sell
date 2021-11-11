@@ -29,6 +29,7 @@ public class OrderComment {
     private String status;
     private String reply;
     private String isAnonymity;
+
     @JsonFormat(pattern = "yy-MM-dd HH:mm",timezone = "GMT+8")
     private Date createTime;
 

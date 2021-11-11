@@ -6,6 +6,7 @@ import com.sell.common.Res;
 import com.sell.common.utils.FTPUtil;
 import com.sell.common.utils.PropertiesUtil;
 import com.sell.common.utils.UserUtils;
+import com.sell.modules.store.dto.QueryCommentDTO;
 import com.sell.modules.store.entity.OrderComment;
 import com.sell.modules.store.service.OrderCommentService;
 import com.sell.modules.store.service.OrderService;
@@ -15,10 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -79,19 +77,20 @@ public class OrderCommentController {
      */
     @GetMapping("list")
     @ApiOperation("商家发起查询自己的订单评价列表")
-    public Res<PageInfo<OrderComment>> list(String scoreType, String isAnonymity, String status, String pageNum){
-        String shopId = UserUtils.getShopId();
-        PageInfo<OrderComment> commentList = orderCommentService.list(shopId,scoreType,isAnonymity,status,pageNum);
+    public Res<PageInfo<OrderComment>> list(QueryCommentDTO dto){
+        dto.setShopId(UserUtils.getShopId());
+
+        PageInfo<OrderComment> commentList = orderCommentService.list(dto);
         return Res.success(commentList);
     }
 
     @PostMapping("reply")
     @ApiOperation("商家回复订单评价")
-    public Res<String> reply(String orderId,String reply){
-        if(StringUtils.isBlank(reply)){
+    public Res<String> reply(@RequestBody OrderComment comment){
+        if(StringUtils.isBlank(comment.getContent())){
             return Res.errorMsg("回复内容为空");
         }
-        int result = orderCommentService.update(orderId,reply);
+        int result = orderCommentService.update(comment.getOrderId(),comment.getReply());
         if(result == 1){
             return Res.successMsg("回复成功");
         }

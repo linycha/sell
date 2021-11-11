@@ -166,7 +166,7 @@
       is_anonymity = #{isAnonymity,jdbcType=CHAR},
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectOrderCommentList" parameterType="map" resultType="com.sell.modules.store.entity.OrderComment">
+  <select id="selectOrderCommentList" parameterType="com.sell.modules.store.dto.QueryCommentDTO" resultType="com.sell.modules.store.entity.OrderComment">
     select <include refid="Base_Column_List"/>
     from sell_order_comment
     where
