@@ -1,7 +1,9 @@
 package com.sell.modules.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -10,6 +12,8 @@ import java.util.Date;
  * @date 2020/02/05 16:14
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties({"userId","createTime","updateTime","delFlag"})
 public class Shipping {
     private String id;

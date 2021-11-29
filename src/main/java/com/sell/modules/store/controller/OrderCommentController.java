@@ -79,9 +79,7 @@ public class OrderCommentController {
     @ApiOperation("商家发起查询自己的订单评价列表")
     public Res<PageInfo<OrderComment>> list(QueryCommentDTO dto){
         dto.setShopId(UserUtils.getShopId());
-
-        PageInfo<OrderComment> commentList = orderCommentService.list(dto);
-        return Res.success(commentList);
+        return Res.success(orderCommentService.list(dto));
     }
 
     @PostMapping("reply")

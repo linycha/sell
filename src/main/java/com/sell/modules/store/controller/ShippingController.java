@@ -41,8 +41,7 @@ public class ShippingController {
     @GetMapping("default")
     @ApiOperation("用户生成订单时获取用户默认收货地址")
     public Res<Shipping> defaultShipping(){
-        String userId = UserUtils.getUser().getId();
-        Shipping shipping = shippingService.getDefault(userId);
+        Shipping shipping = shippingService.getDefault(UserUtils.getUserId());
         if(shipping == null){
             return Res.errorMsg("请选择收货地址");
         }

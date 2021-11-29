@@ -31,9 +31,7 @@ public class OrderCommentServiceImpl implements OrderCommentService {
 
     @Override
     public PageInfo<OrderComment> list(QueryCommentDTO dto) {
-
         Const.initPage(dto.getPageNum(),dto.getPageSize());
-
         List<OrderComment> commentList = orderCommentMapper.selectOrderCommentList(dto);
 
         return new PageInfo<>(commentList);

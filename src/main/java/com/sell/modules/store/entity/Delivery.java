@@ -1,6 +1,8 @@
 package com.sell.modules.store.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -8,6 +10,8 @@ import java.util.Date;
  * @author linyuc
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Delivery {
     private String id;
 
