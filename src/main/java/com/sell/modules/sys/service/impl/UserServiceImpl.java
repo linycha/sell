@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+
     @Override
     public Res<String> register(String username,String mobile,String password){
         User user = new User();
@@ -136,7 +137,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User selectByUsername(String username,String userId){
-        return userMapper.selectByUsernameOrUserId(username,userId);
+        User user = userMapper.selectByUsernameOrUserId(username,userId);
+        user.setRoles(user.getRoleList().stream().map(Role::getName).toArray(String[]::new));
+        return user;
     }
     @Override
     public String selectUsernameByMobile(String mobile){
@@ -154,8 +157,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Role getRoleName(String userId) {
-        return userMapper.selectRoleByUserId(userId);
+    public Res<String> updateUsername(User user) {
+        int count = userMapper.checkUsername(user.getUsername());
+        if(count > 0){
+            return Res.errorMsg("用户名已存在重复");
+        }
+        int result = userMapper.updateByPrimaryKeySelective(user);
+        if(result == 0){
+            return Res.errorMsg("修改用户名失败");
+        }
+        return Res.successMsg("修改用户名成功");
     }
 
 }

@@ -90,7 +90,7 @@ public class OrderController {
             return Res.errorMsg("创建订单失败");
         }
         //记录订单状态
-        boolean b2 = orderStatusService.saveStatus(order.getOrderNo().toString(),Const.OrderStatus.PAID);
+        boolean b2 = orderStatusService.saveStatus(order.getOrderNo(), Const.OrderStatus.PAID);
         if(!b2){
             return Res.errorMsg("订单状态修改失败");
         }
@@ -135,7 +135,7 @@ public class OrderController {
      */
     @GetMapping("dmobile")
     @ApiOperation("用户获取骑手手机号")
-    public Res<String> deliveryMobile(String orderNo){
+    public Res<String> deliveryMobile(Long orderNo){
         String mobile = orderService.getDeliveryMobile(orderNo);
         if(StringUtils.isBlank(mobile)){
             return Res.errorMsg("未找到该骑手电话");

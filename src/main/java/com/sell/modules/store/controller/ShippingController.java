@@ -26,8 +26,7 @@ public class ShippingController {
     @GetMapping("list")
     @ApiOperation("查看收货地址列表")
     public Res<List<Shipping>> list(){
-        String userId = UserUtils.getUser().getId();
-        List<Shipping> shippingList = shippingService.getShippingList(userId);
+        List<Shipping> shippingList = shippingService.getShippingList(UserUtils.getUserId());
         if(shippingList == null){
             return Res.errorMsg("请添加收获地址");
         }

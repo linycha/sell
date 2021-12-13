@@ -2,8 +2,11 @@ package com.sell.modules.store.service;
 
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Res;
+import com.sell.modules.store.dto.ShopCountDTO;
 import com.sell.modules.store.entity.Shop;
 import com.sell.modules.store.vo.ShopVo;
+
+import java.util.List;
 
 /**
  * @author linyuc
@@ -15,4 +18,16 @@ public interface ShopService {
     Shop getShopInfo(String id);
     int updateSelective(Shop shop);
     String getshopId(String userId);
+
+    /**
+     * 获取店铺首页统计信息
+     * @return dto
+     */
+    ShopCountDTO getShopCount();
+    /**
+     * 查询最近12个月每个月的数据统计
+     * @param shopId
+     * @return
+     */
+    List<ShopCountDTO> getLastYearCount(String shopId);
 }

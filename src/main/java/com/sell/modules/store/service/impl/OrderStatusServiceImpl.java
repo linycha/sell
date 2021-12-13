@@ -18,10 +18,10 @@ public class OrderStatusServiceImpl implements OrderStatusService {
     @Autowired
     private OrderStatusMapper orderStatusMapper;
     @Override
-    public boolean saveStatus(String orderNo,String status) {
+    public boolean saveStatus(Long orderNo,String status) {
         OrderStatus orderStatus = new OrderStatus();
         orderStatus.setId(IdGenerate.uuid());
-        orderStatus.setOrderNo(Long.valueOf(orderNo));
+        orderStatus.setOrderNo(orderNo);
         orderStatus.setStatus(status);
         int result = orderStatusMapper.insertSelective(orderStatus);
         if(result >= 1){

@@ -38,7 +38,7 @@ public class OrderCommentServiceImpl implements OrderCommentService {
     }
 
     @Override
-    public int update(String orderId,String reply) {
-        return orderCommentMapper.updateReplyByOrderId(orderId,reply);
+    public int update(Long orderNo,String reply) {
+        return orderCommentMapper.updateReplyByOrderId(orderNo,reply);
     }
 }

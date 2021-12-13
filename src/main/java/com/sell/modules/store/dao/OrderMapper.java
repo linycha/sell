@@ -1,5 +1,6 @@
 package com.sell.modules.store.dao;
 
+import com.sell.modules.store.dto.QueryOrderDTO;
 import com.sell.modules.store.entity.Order;
 import com.sell.modules.store.vo.DeliveryOrderVo;
 import com.sell.modules.store.vo.NewOrderVo;
@@ -26,8 +27,7 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
-    List<NewOrderVo> selectNewOrderList(@Param("shopId")String shopId, @Param("orderNo")String orderNo,
-                                        @Param("status")String status);
+    List<NewOrderVo> selectNewOrderList(QueryOrderDTO dto);
 
     List<UserOrderVo> selectUserOrderList(@Param("userId")String userId, @Param("orderNo")String orderNo);
 
@@ -36,10 +36,10 @@ public interface OrderMapper {
      */
     List<DeliveryOrderVo> selectDeliveryOrderList(@Param("deliveryId")String deliveryId,
                                                   @Param("status")String status);
-    String selectUserMobile(String orderNo);
-    String selectDeliveryMobile(String orderNo);
-    String selectUserId(String orderNo);
-    String selectShopId(String orderNo);
+    String selectUserMobile(Long orderNo);
+    String selectDeliveryMobile(Long orderNo);
+    String selectUserId(Long orderNo);
+    String selectShopId(Long orderNo);
 
     Order selectOrderByOrderNo(String orderNo);
 }

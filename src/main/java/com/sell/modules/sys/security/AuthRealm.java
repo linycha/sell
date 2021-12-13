@@ -39,12 +39,12 @@ public class AuthRealm extends AuthorizingRealm {
         //BeanUtils.copyProperties(o,user);
         //User user = userService.selectByUsername(null,o.toString());
         User user = JSON.parseObject(o.toString(),User.class);
-        /*视频里的方法
+        /*之前里的方法
         User u = (User)principals.getPrimaryPrincipal();
         User user = userService.selectByUsername(u.getUsername());*/
 
         List<String> permissionList = new ArrayList<>();
-        List<Role> roleList = user.getRoles();
+        List<Role> roleList = user.getRoleList();
         List<String> roleNameList = new ArrayList<>();
         if(!CollectionUtils.isEmpty(roleList)){
             for(int i = 0;i<roleList.size();i++){
@@ -89,6 +89,8 @@ public class AuthRealm extends AuthorizingRealm {
         if(Const.USER_STATUS_DISABLE.equals(user.getStatus())){
             throw new LockedAccountException("该账号已被禁用，请联系管理员");
         }
+        String[] roles = user.getRoleList().stream().map(Role::getName).toArray(String[]::new);
+        user.setRoles(roles);
         String str = JSON.toJSONString(user);
         return new SimpleAuthenticationInfo(str, user.getPassword(), this.getClass().getName());
     }

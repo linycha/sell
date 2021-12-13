@@ -112,13 +112,7 @@
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
       <if test="headImg != null">
-        head_img = #{headImg,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = now(),
+        head_img = #{headImg,jdbcType=VARCHAR}
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -208,7 +202,7 @@
     <result column="status" javaType="java.lang.String" jdbcType="VARCHAR" property="status" />
     <result column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     <result column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-    <association property="roles" javaType="com.sell.modules.sys.entity.Role" resultMap="RoleMap" column="id"/>
+    <association property="roleList" javaType="com.sell.modules.sys.entity.Role" resultMap="RoleMap" column="id"/>
 
   </resultMap>
   <resultMap id="RoleMap" type="com.sell.modules.sys.entity.Role">

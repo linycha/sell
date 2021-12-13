@@ -15,5 +15,5 @@ public interface OrderCommentService {
 
     PageInfo<OrderComment> list(QueryCommentDTO dto);
 
-    int update(String orderId,String reply);
+    int update(Long orderNo,String reply);
 }

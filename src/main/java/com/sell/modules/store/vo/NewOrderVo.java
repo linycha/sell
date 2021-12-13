@@ -25,6 +25,4 @@ public class NewOrderVo implements Serializable {
     private String status;
     private String address;
     private String cartStr;
-    //扩展用
-    private List<Cart> carts = new ArrayList<>();
 }

@@ -266,23 +266,23 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
-  <select id="selectUserMobile" parameterType="String" resultType="String">
+  <select id="selectUserMobile" parameterType="long" resultType="String">
     select u.mobile
     from sell_order o
     left join sys_user u on u.id = o.user_id
     where o.order_no = #{orderNo}
   </select>
-  <select id="selectDeliveryMobile" parameterType="String" resultType="String">
+  <select id="selectDeliveryMobile" parameterType="long" resultType="String">
     select d.mobile
     from sell_order o
     left join sell_delivery d on d.id = o.delivery_id
     where o.order_no = #{orderNo}
   </select>
-  <select id="selectUserId" parameterType="String" resultType="String">
+  <select id="selectUserId" parameterType="long" resultType="String">
     select user_id from sell_order
     where order_no = #{orderNo}
   </select>
-  <select id="selectShopId" parameterType="String" resultType="String">
+  <select id="selectShopId" parameterType="long" resultType="String">
     select shop_id from sell_order
     where order_no = #{orderNo}
   </select>
@@ -292,7 +292,7 @@
     where order_no = #{orderNo}
   </select>
   <!--  商家端查看订单列表-->
-  <select id="selectNewOrderList" parameterType="map" resultMap="newOrderMap">
+  <select id="selectNewOrderList" parameterType="com.sell.modules.store.dto.QueryOrderDTO" resultType="com.sell.modules.store.vo.NewOrderVo">
     select o.id as id,
     o.order_no,
     o.remark,
@@ -300,8 +300,7 @@
     o.delivery_name,
     o.pay_money,
     o.status,
-    oi.product_name as name,
-    oi.number as num
+    GROUP_CONCAT(CONCAT(oi.product_name,'×',oi.number)) cartStr
     from sell_order o
     left join sys_user u on o.user_id = u.id
     left join sell_order_item oi on o.order_no = oi.order_no
@@ -312,6 +311,7 @@
     <if test="orderNo != null and orderNo != ''">
       and o.order_no like #{orderNo}
     </if>
+    group by o.order_no order by o.create_time desc
   </select>
 <!--  用户端查看订单列表-->
   <select id="selectUserOrderList" parameterType="map" resultMap="UserOrderMap">
@@ -352,16 +352,6 @@
     /*and o.create_time > NOW()-INTERVAL 10 HOUR*/
   </select>
 
-  <resultMap id="newOrderMap" type="com.sell.modules.store.vo.NewOrderVo">
-    <id column="id" javaType="java.lang.String" jdbcType="VARCHAR" property="id" />
-    <result column="order_no" javaType="java.lang.Long" jdbcType="BIGINT" property="orderNo" />
-    <result column="username" javaType="java.lang.String" jdbcType="VARCHAR" property="username" />
-    <result column="delivery_name" javaType="java.lang.String" jdbcType="VARCHAR" property="deliveryName" />
-    <result column="remark" javaType="java.lang.String" jdbcType="VARCHAR" property="remark"/>
-    <result column="pay_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" property="payMoney" />
-    <result column="status" jdbcType="CHAR" javaType="java.lang.String" property="status" />
-    <association property="carts" javaType="com.sell.modules.store.vo.Cart" resultMap="CartMap" column="id"/>
-  </resultMap>
   <resultMap id="UserOrderMap" type="com.sell.modules.store.vo.UserOrderVo">
     <id column="id" javaType="java.lang.String" jdbcType="VARCHAR" property="id" />
     <result column="order_no" javaType="java.lang.Long" jdbcType="BIGINT" property="orderNo" />

@@ -36,4 +36,11 @@ public class UserUtils {
         return getUser().getShopId();
     }
 
+    /**
+     * 获取当前登录用户首个角色,如 “admin”
+     */
+    public static String getRole(){
+        return getUser().getRoles()[0];
+    }
+
 }

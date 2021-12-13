@@ -9,6 +9,6 @@ import java.util.List;
  * @date 2020/3/1 18:30
  */
 public interface OrderStatusService {
-    boolean saveStatus(String orderNo,String status);
+    boolean saveStatus(Long orderNo,String status);
     List<OrderStatus> getList(String orderNo);
 }

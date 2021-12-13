@@ -1,5 +1,6 @@
 package com.sell.modules.store.dao;
 
+import com.sell.modules.store.dto.ShopCountDTO;
 import com.sell.modules.store.entity.Shop;
 
 import java.util.List;
@@ -28,4 +29,16 @@ public interface ShopMapper {
     List<ShopVo> selectShopList(@Param("name") String name, @Param("categoryIds")List<String> categoryIds,
                                 @Param("sort")String sort);
     String selectShopIdByUserId(String userId);
+    /**
+     * 获取店铺首页统计信息
+     * @return dto
+     */
+    ShopCountDTO selectShopCount(String shopId);
+
+    /**
+     * 查询最近12个月每个月的数据统计
+     * @param shopId
+     * @return
+     */
+    List<ShopCountDTO> getLastYearCount(String shopId);
 }

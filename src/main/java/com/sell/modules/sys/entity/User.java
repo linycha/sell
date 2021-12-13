@@ -43,5 +43,7 @@ public class User implements Serializable {
 
     private Date updateTime;
 
-    private List<Role> roles = new ArrayList<>();
+    private String[] roles;
+
+    private List<Role> roleList = new ArrayList<>();
 }

@@ -3,6 +3,7 @@ package com.sell.modules.store.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
@@ -11,6 +12,8 @@ import java.util.Date;
  * @date 2020/01/16 17:47
  */
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 @JsonIgnoreProperties({"parentId","sort","delFlag","createTime","updateTime"})
 public class ShopCategory {
     private String id;
@@ -31,16 +34,6 @@ public class ShopCategory {
     public ShopCategory(String id, String text) {
         this.id = id;
         this.text = text;
-    }
-
-    public ShopCategory(String id, String parentId, String name, Integer sort, String delFlag, Date createTime, Date updateTime) {
-        this.id = id;
-        this.parentId = parentId;
-        this.name = name;
-        this.sort = sort;
-        this.delFlag = delFlag;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
     }
 
 }

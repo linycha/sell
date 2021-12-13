@@ -365,5 +365,17 @@
     select id from sell_shop
     where user_id = #{userId}
   </select>
+  <select id="selectShopCount" parameterType="string" resultType="com.sell.modules.store.dto.ShopCountDTO">
+    select count(1) orderTotal,sum(pay_money) salesTotal,count(distinct user_id) customerTotal,
+           (select count(1) productTotal from sell_product where shop_id = #{shopId} ) productTotal
+           from sell_order where shop_id = #{shopId}
+  </select>
+  <select id="getLastYearCount" parameterType="string" resultType="com.sell.modules.store.dto.ShopCountDTO">
+    select count(id) orderTotal,count(DISTINCT user_id) customerTotal,
+           DATE_FORMAT(create_time, '%Y%m') month,sum(pay_money) salesTotal
+    from sell_order
+    where shop_id = #{shopId} and DATE_FORMAT(create_time, '%Y%m') >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 12 MONTH), '%Y%m')
+    group by DATE_FORMAT(create_time, '%Y%m') order by create_time desc
+  </select>
 
 </mapper>

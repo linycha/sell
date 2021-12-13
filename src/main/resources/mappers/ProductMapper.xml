@@ -218,10 +218,6 @@
       <if test="delFlag != null" >
         del_flag = #{delFlag,jdbcType=CHAR},
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-        update_time = now(),
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -246,7 +242,7 @@
       update_time = now()
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectProductListByCategory" parameterType="String" resultType="com.sell.modules.store.vo.ProductVo">
+  <select id="selectProductListByCategory" parameterType="integer" resultType="com.sell.modules.store.vo.ProductVo">
     select id, name, logo_img, remark, origin_price, sell_price,
     discount, limit_num, monthly_sales
     from sell_product
@@ -256,9 +252,9 @@
   <select id="selectProductList" parameterType="map" resultType="com.sell.modules.store.entity.Product">
     select <include refid="Base_Column_List"/>
     from sell_product
-    where del_flag = '0'
-    <if test="name != null and name != ''">
-      and name like "%"#{name}"%"
+    where del_flag = 0
+    <if test="shopId != null and shopId != ''">
+      and shop_id = #{shopId}
     </if>
     <if test="categoryId != null and categoryId != ''">
       and category_id = #{categoryId}
@@ -266,12 +262,20 @@
     <if test="status != null and status != ''">
       and status = #{status}
     </if>
-    <if test="shopId != null and shopId != ''">
-      and shop_id = #{shopId}
+    <if test="name != null and name != ''">
+      and name like "%"#{name}"%"
     </if>
+    order by create_time desc
   </select>
   <select id="checkStockByName" parameterType="map" resultType="Integer">
     select count(0) from sell_product
     where name = #{name} and stock >= #{num}
   </select>
+  <update id="deleteBatch" parameterType="string">
+    update sell_product set del_flag = 1
+    where id in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="_parameter.split(',')">
+      #{item}
+    </foreach>
+  </update>
 </mapper>

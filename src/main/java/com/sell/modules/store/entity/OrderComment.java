@@ -14,7 +14,7 @@ import java.util.Date;
 public class OrderComment {
     private String id;
 
-    private String orderId;
+    private Long orderNo;
 
     private String userId;
     private String shopId;
@@ -38,5 +38,5 @@ public class OrderComment {
 
     private String scores;
 
-    private String orderNo;
+    private String username;
 }

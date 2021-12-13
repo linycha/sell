@@ -15,6 +15,8 @@ import java.io.Serializable;
 @Data
 public class QueryCommentDTO implements Serializable {
 
+    private static final long serialVersionUID = 4230409002628279977L;
+
     String  shopId;
 
     String scoreType;
@@ -23,7 +25,7 @@ public class QueryCommentDTO implements Serializable {
 
     String status;
 
-    Integer pageNum;
+    int pageNum;
 
-    Integer pageSize;
+    int pageSize;
 }

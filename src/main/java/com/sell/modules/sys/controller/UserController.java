@@ -55,7 +55,7 @@ public class UserController {
     @GetMapping("info")
     @ApiOperation("获取用户个人信息")
     public Res<User> info(){
-        User user = UserUtils.getUser();
+        User user = userService.selectByUsername(null,UserUtils.getUserId());
         if(user == null){
             return Res.errorMsg("找不到当前用户");
         }
@@ -95,6 +95,17 @@ public class UserController {
         user.setMobile(mobile);
         return userService.updateMobile(user);
     }
+
+    @PutMapping("update_name")
+    @ApiOperation("修改用户名")
+    public Res<String> updateName(@RequestBody String username){
+        if(StringUtils.isBlank(username)){
+            return Res.errorMsg("用户名不能为空");
+        }
+        return userService.updateUsername(User.builder()
+                .id(UserUtils.getUserId()).username(username).build());
+    }
+
     @PutMapping("update_password")
     @ApiOperation("获取用户个人密码")
     public Res<String> updatePassword(String oldPwd,String newPwd){
@@ -126,8 +137,8 @@ public class UserController {
     }
     @ApiOperation("用户确认收到餐操作")
     @PutMapping("sure")
-    public Res<String> fulfill(String orderNo){
-        if(StringUtils.isBlank(orderNo)){
+    public Res<String> fulfill(Long orderNo){
+        if(orderNo == null){
             return Res.errorMsg("订单号参数错误");
         }
         int result = orderService.updateStatusByOrderNo(orderNo, Const.OrderStatus.ACCOMPLISH);

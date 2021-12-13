@@ -95,8 +95,8 @@ public class DeliveryController {
 
     @PutMapping("accept")
     @ApiOperation("骑手确认接受订单")
-    public Res<String> accept(String orderNo,String userId){
-        if(StringUtils.isBlank(orderNo)){
+    public Res<String> accept(Long orderNo,String userId){
+        if(orderNo == null){
             return Res.errorMsg("订单号参数错误");
         }
         int result = orderService.updateStatusByOrderNo(orderNo, Const.OrderStatus.DELIVERY_ACCEPT);
@@ -116,8 +116,8 @@ public class DeliveryController {
      */
     @PutMapping("take")
     @ApiOperation("骑手确认取货")
-    public Res<String> take(String orderNo,String userId){
-        if(StringUtils.isBlank(orderNo)){
+    public Res<String> take(Long orderNo,String userId){
+        if(orderNo == null){
             return Res.errorMsg("订单号参数错误");
         }
         int result = orderService.updateStatusByOrderNo(orderNo, Const.OrderStatus.DELIVERY_TAKE);
@@ -136,8 +136,8 @@ public class DeliveryController {
      */
     @PutMapping("accomplish")
     @ApiOperation("骑手确认送达订单操作")
-    public Res<String> fulfill(String orderNo){
-        if(StringUtils.isBlank(orderNo)){
+    public Res<String> fulfill(Long orderNo){
+        if(orderNo == null){
             return Res.errorMsg("订单号参数错误");
         }
         int result = orderService.updateStatusByOrderNo(orderNo, Const.OrderStatus.ACCOMPLISH);

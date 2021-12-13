@@ -23,6 +23,6 @@ public interface OrderCommentMapper {
 
     List<OrderComment> selectOrderCommentList(QueryCommentDTO dto);
 
-    int updateReplyByOrderId(@Param("orderId") String orderId,@Param("reply") String reply);
+    int updateReplyByOrderId(@Param("orderNo") Long orderNo,@Param("reply") String reply);
 
 }

@@ -1,5 +1,6 @@
 package com.sell.modules.store.dao;
 
+import com.sell.modules.store.dto.QueryProductDTO;
 import com.sell.modules.store.entity.ProductCategory;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,5 +20,11 @@ public interface ProductCategoryMapper {
 
     int updateByPrimaryKey(ProductCategory record);
 
-    List<ProductCategory> selectCategoryByShopId(String shopId);
+    List<ProductCategory> selectCategoryList(QueryProductDTO dto);
+    /**
+     * 批量假删
+     * @param ids
+     * @return
+     */
+    int deleteBatch(String ids);
 }

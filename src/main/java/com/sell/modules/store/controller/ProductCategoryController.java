@@ -1,7 +1,9 @@
 package com.sell.modules.store.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.sell.common.Res;
 import com.sell.common.utils.UserUtils;
+import com.sell.modules.store.dto.QueryProductDTO;
 import com.sell.modules.store.entity.ProductCategory;
 import com.sell.modules.store.service.ProductCategoryService;
 import io.swagger.annotations.Api;
@@ -30,20 +32,28 @@ public class ProductCategoryController {
      */
     @GetMapping("product")
     @ApiOperation("查找某个商家的商品分类")
-    public Res getCategory(String shopId){
+    public Res<List<ProductCategory>> getCategory(String shopId){
         if(StringUtils.isBlank(shopId)){
             shopId = UserUtils.getShopId();
         }
         List<ProductCategory> categoryList = productCategoryService.getProductCategory(shopId);
-        if(categoryList == null){
-            return Res.errorMsg("查找商铺分类失败");
-        }
         return Res.success(categoryList);
+    }
+    /**
+     * 商家查询自家店铺的商品分类
+     * @param dto
+     * @return
+     */
+    @GetMapping("list")
+    @ApiOperation("查找某个商家的商品分类")
+    public Res<PageInfo<ProductCategory>> getCategoryList(QueryProductDTO dto){
+        dto.setShopId(UserUtils.getShopId());
+        return Res.success(productCategoryService.getCategoryList(dto));
     }
     @PostMapping("save")
     @ApiOperation("添加商品分类")
-    public Res<String> saveCategory(String name){
-        int result = productCategoryService.saveProductCategory(name);
+    public Res<String> saveCategory(@RequestBody ProductCategory category){
+        int result = productCategoryService.saveProductCategory(category.getName());
         if(result > 0){
             return Res.successMsg("添加商品分类成功");
         }
@@ -51,24 +61,27 @@ public class ProductCategoryController {
     }
     @PutMapping("update")
     @ApiOperation("修改商品分类")
-    public Res<String> updateCategory(String id,String name){
-        if(StringUtils.isBlank(id) && StringUtils.isBlank(name)){
+    public Res<String> updateCategory(@RequestBody ProductCategory category){
+        if(category.getId() == null && StringUtils.isBlank(category.getName())){
             return Res.errorMsg("参数错误");
         }
-        int result = productCategoryService.updateProductCategory(id, name);
+        int result = productCategoryService.updateProductCategory(category);
         if(result > 0){
             return Res.successMsg("修改成功");
         }
         return Res.errorMsg("修改失败");
     }
-    @DeleteMapping
+    @DeleteMapping("delete")
     @ApiOperation("删除商品分类")
-    public Res<String> deleteCategory(String id){
-        int result = productCategoryService.deleteProductCategory(id);
-        if(result > 0){
-            return Res.successMsg("删除成功");
+    public Res<String> deleteCategory(String ids){
+        if(StringUtils.isBlank(ids)){
+            return Res.errorMsg("传递的id参数失败");
         }
-        return Res.errorMsg("删除失败");
+        int result = productCategoryService.deleteBatch(ids);
+        if(result == 0){
+            return Res.errorMsg("删除失败");
+        }
+        return Res.successMsg("删除成功");
     }
 
 }

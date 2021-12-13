@@ -9,10 +9,11 @@ public enum ResponseCode {
      * success
      * @Params
      */
-    SUCCESS(0,"SUCCESS"),
-    ERROR(1,"ERROR"),
+    SUCCESS(200,"SUCCESS"),
+    ERROR(400,"ERROR"),
     NEED_LOGIN(10,"NEED_LOGIN"),
-    ILLEGAL_ARGUMENT(2,"LLEGAL_ARGUMENT");
+    Unauthorized(401,"Unauthorized"),
+    Forbidden(403,"Forbidden");
 
     private final int code;
     private final String desc;

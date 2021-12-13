@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.OrderComment" >
     <constructor >
       <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="order_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="order_no" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="shop_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="parent_id" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -18,7 +18,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_id, user_id, shop_id, parent_id, content, images, score, status, reply, is_anonymity, create_time
+    id, order_no, user_id, shop_id, parent_id, content, images, score, status, reply, is_anonymity, create_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
@@ -31,7 +31,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.sell.modules.store.entity.OrderComment" >
-    insert into sell_order_comment (id, order_id, user_id, shop_id, parent_id,
+    insert into sell_order_comment (id, order_no, user_id, shop_id, parent_id,
       content, images, score,
       status, reply, is_anonymity,create_time)
     values (#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR},
@@ -45,7 +45,7 @@
         id,
       </if>
       <if test="orderId != null" >
-        order_id,
+        order_no,
       </if>
       <if test="userId != null" >
         user_id,
@@ -117,7 +117,7 @@
     update sell_order_comment
     <set >
       <if test="orderId != null" >
-        order_id = #{orderId,jdbcType=VARCHAR},
+        order_no = #{orderId,jdbcType=VARCHAR},
       </if>
       <if test="userId != null" >
         user_id = #{userId,jdbcType=VARCHAR},
@@ -154,7 +154,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.OrderComment" >
     update sell_order_comment
-    set order_id = #{orderId,jdbcType=VARCHAR},
+    set order_no = #{orderId,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR},
       shop_id = #{shopId,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=VARCHAR},
@@ -167,15 +167,16 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectOrderCommentList" parameterType="com.sell.modules.store.dto.QueryCommentDTO" resultType="com.sell.modules.store.entity.OrderComment">
-    select <include refid="Base_Column_List"/>
-    from sell_order_comment
-    where
-    shop_id = #{shopId}
+    select order_no, username, shop_id, parent_id,
+           content, images, score, c.status, reply, is_anonymity, c.create_time
+    from sell_order_comment c
+    left join sys_user u on u.id = c.user_id
+    where shop_id = #{shopId} and c.del_flag = 0
     <if test="isAnonymity != null and isAnonymity != ''" >
       and is_anonymity = #{isAnonymity}
     </if>
     <if test="status != null and status != '' " >
-      and status = #{status}
+      and c.status = #{status}
     </if>
     <if test="scoreType == 0" >
       and score between 4 and 5
@@ -186,11 +187,11 @@
     <if test="scoreType == 2" >
       and score between 1 and 2.5
     </if>
-    order by create_time desc
+    order by c.create_time desc
   </select>
   <update id="updateReplyByOrderId" parameterType="map">
     update sell_order_comment
     set reply = #{reply}, status = '1'
-    where order_id = #{orderId}
+    where order_no = #{orderNo}
   </update>
 </mapper>

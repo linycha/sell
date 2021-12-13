@@ -6,6 +6,8 @@ import com.sell.common.Res;
 import com.sell.common.utils.FTPUtil;
 import com.sell.common.utils.PropertiesUtil;
 import com.sell.common.utils.UserUtils;
+import com.sell.modules.store.dto.QueryOrderDTO;
+import com.sell.modules.store.dto.ShopCountDTO;
 import com.sell.modules.store.entity.Delivery;
 import com.sell.modules.store.entity.Order;
 import com.sell.modules.store.entity.Shop;
@@ -22,7 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
+import java.net.URL;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author linyuc
@@ -75,7 +79,7 @@ public class ShopController {
     }
     @PutMapping("update")
     @ApiOperation("商家端-商家修改店铺信息")
-    public Res<String> update(Shop shop){
+    public Res<String> update(@RequestBody Shop shop){
         int  result = shopService.updateSelective(shop);
         if(result == 0){
             return Res.errorMsg("修改店铺信息失败");
@@ -91,19 +95,20 @@ public class ShopController {
         }
         return Res.successMsg("修改店铺营业时间成功");
     }
-    @PutMapping("update_logo")
+    @PostMapping("update_logo")
     @ApiOperation("商家端-修改店铺logo")
-    public Res<String> upload(@RequestParam(defaultValue = "logo_img",required=false) MultipartFile file,
+    public Res<String> upload(MultipartFile file,
                       HttpServletRequest request){
         String path = request.getSession().getServletContext().getRealPath("upload");
         Shop shop = new Shop();
         shop.setId(UserUtils.getShopId());
+        String url;
         try {
             String fileName = ftpUtil.uploadFile(file,path,Const.FTP_PATH_SHOP);
             if(fileName == null){
                 return Res.errorMsg("上传图片失败");
             }
-            String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTP_PATH_SHOP+"/"+fileName;
+            url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTP_PATH_SHOP+"/"+fileName;
             shop.setLogoImg(url);
         }catch (Exception e){
             log.info(e.getMessage());
@@ -113,7 +118,7 @@ public class ShopController {
         if(result == 0){
             return Res.errorMsg("更改店铺logo失败");
         }
-        return Res.successMsg("修改店铺logo成功");
+        return Res.success(url);
     }
 
     /**
@@ -121,20 +126,21 @@ public class ShopController {
      */
     @GetMapping("new_list")
     @ApiOperation("商家端-商家查看已支付待接单列表")
-    public Res<PageInfo<NewOrderVo>> newOrderList(String orderNo, String pageNum){
-        String shopId = UserUtils.getShopId();
-        PageInfo<NewOrderVo> orderList = orderService.getOrderList(shopId,orderNo,Const.OrderStatus.PAID,pageNum);
+    public Res<PageInfo<NewOrderVo>> newOrderList(QueryOrderDTO dto){
+        dto.setShopId(UserUtils.getShopId());
+        dto.setStatus(Const.OrderStatus.PAID);
+        PageInfo<NewOrderVo> orderList = orderService.getOrderList(dto);
         return Res.success(orderList);
     }
     /**
      * 查看全部订单列表
      */
     @GetMapping("order_list")
-    @RequiresRoles("business")
+    // @RequiresRoles("business")
     @ApiOperation("商家端-查看全部订单列表")
-    public Res<PageInfo<NewOrderVo>> orderList(String orderNo, String status,String pageNum){
-        String shopId = UserUtils.getShopId();
-        PageInfo<NewOrderVo> orderList = orderService.getOrderList(shopId,orderNo,status,pageNum);
+    public Res<PageInfo<NewOrderVo>> orderList(QueryOrderDTO dto){
+        dto.setShopId(UserUtils.getShopId());
+        PageInfo<NewOrderVo> orderList = orderService.getOrderList(dto);
         return Res.success(orderList);
     }
     /**
@@ -142,16 +148,16 @@ public class ShopController {
      * @return orderNo
      */
     @PutMapping("accept")
-    @RequiresRoles("business")
+    // @RequiresRoles("business")
     @ApiOperation("商家端-商家确认接单")
-    public Res<String> accept(String orderNo){
-        if(StringUtils.isBlank(orderNo)){
+    public Res<String> accept(@RequestBody Long orderNo){
+        if(orderNo == null){
             return Res.errorMsg("订单号参数错误");
         }
         //分派订单给骑手,匹配最佳骑手
         Delivery delivery = deliveryService.getBest();
         Order order = new Order();
-        order.setOrderNo(Long.valueOf(orderNo));
+        order.setOrderNo(orderNo);
         order.setDeliveryId(delivery.getId());
         order.setDeliveryName(delivery.getTrueName());
         order.setStatus(Const.OrderStatus.SHOP_ACCEPT);
@@ -176,10 +182,10 @@ public class ShopController {
      * @return orderNo
      */
     @PutMapping("cancel")
-    @RequiresRoles("business")
+    // @RequiresRoles("business")
     @ApiOperation("商家端-商家取消接单")
-    public Res<String> cancel(String orderNo){
-        if(StringUtils.isBlank(orderNo)){
+    public Res<String> cancel(@RequestBody Long orderNo){
+        if(orderNo == null){
             return Res.errorMsg("订单号参数错误");
         }
         int result = orderService.updateStatusByOrderNo(orderNo,Const.OrderStatus.REFUND_SHOP);
@@ -198,7 +204,7 @@ public class ShopController {
      */
     @GetMapping("user_mobile")
     @ApiOperation("商家端-获取订餐人手机号")
-    public Res<String> userMobile(String orderNo){
+    public Res<String> userMobile(Long orderNo){
         String mobile = orderService.getUserMobile(orderNo);
         if(StringUtils.isBlank(mobile)){
             return Res.errorMsg("未找到该订餐人电话");
@@ -210,7 +216,7 @@ public class ShopController {
      */
     @GetMapping("delivery_mobile")
     @ApiOperation("商家端-获取骑手手机号")
-    public Res<String> deliveryMobile(String orderNo){
+    public Res<String> deliveryMobile(Long orderNo){
         String mobile = orderService.getDeliveryMobile(orderNo);
         if(StringUtils.isBlank(mobile)){
             return Res.errorMsg("未找到该骑手电话");
@@ -220,5 +226,23 @@ public class ShopController {
     @GetMapping("hour")
     public Res<String> hour(){
         return Res.successMsg("this is new version 3.3 !!!"+new Date());
+    }
+
+    /**
+     * 获取店铺首页统计信息
+     * @return dto
+     */
+    @GetMapping("count")
+    public Res<ShopCountDTO> count(){
+        return Res.success(shopService.getShopCount());
+    }
+
+    /**
+     * 查询最近12个月每个月的数据统计
+     * @return
+     */
+    @GetMapping("yearCount")
+    public Res<List<ShopCountDTO>> getLastYearCount(){
+        return Res.success(shopService.getLastYearCount("3"));
     }
 }

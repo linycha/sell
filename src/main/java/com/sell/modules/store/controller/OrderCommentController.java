@@ -85,10 +85,10 @@ public class OrderCommentController {
     @PostMapping("reply")
     @ApiOperation("商家回复订单评价")
     public Res<String> reply(@RequestBody OrderComment comment){
-        if(StringUtils.isBlank(comment.getContent())){
+        if(StringUtils.isBlank(comment.getReply())){
             return Res.errorMsg("回复内容为空");
         }
-        int result = orderCommentService.update(comment.getOrderId(),comment.getReply());
+        int result = orderCommentService.update(comment.getOrderNo(),comment.getReply());
         if(result == 1){
             return Res.successMsg("回复成功");
         }

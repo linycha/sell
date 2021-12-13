@@ -6,6 +6,7 @@ import com.sell.common.Const;
 import com.sell.common.IdGenerate;
 import com.sell.common.utils.DateTimeUtil;
 import com.sell.modules.store.dao.OrderMapper;
+import com.sell.modules.store.dto.QueryOrderDTO;
 import com.sell.modules.store.entity.Order;
 import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.service.OrderService;
@@ -43,31 +44,16 @@ public class OrderServiceImpl implements OrderService {
 
      */
     @Override
-    public PageInfo<NewOrderVo> getOrderList(String shopId, String orderNo,String status,String pageNum) {
-        /*int page = Const.PAGE_DEFAULT_NUM;
-        if(!StringUtils.isBlank(pageNum)){
-            page = Integer.parseInt(pageNum);
-        }
-        PageHelper.startPage(page,Const.PAGE_DEFAULT_SIZE);*/
-        List<NewOrderVo> orderList = orderMapper.selectNewOrderList(shopId,orderNo,status);
-        //处理得到的商品信息和数量拼接成String字符串
-        for(NewOrderVo order : orderList){
-            System.out.println(order.toString());
-            String str = "";
-            for(Cart cart : order.getCarts()){
-                str += cart.getName()+ "×" + cart.getNum()+",";
-            }
-            order.setCartStr(str);
-            order.setCarts(null);
-        }
-        PageInfo<NewOrderVo> pageResult = new PageInfo<>(orderList);
-        return pageResult;
+    public PageInfo<NewOrderVo> getOrderList(QueryOrderDTO dto) {
+        Const.initPage(dto.getPageNum(), dto.getPageSize());
+        List<NewOrderVo> orderList = orderMapper.selectNewOrderList(dto);
+        return new PageInfo<>(orderList);
     }
 
     @Override
-    public int updateStatusByOrderNo(String orderNo,String status) {
+    public int updateStatusByOrderNo(Long orderNo,String status) {
         Order order = new Order();
-        order.setOrderNo(Long.valueOf(orderNo));
+        order.setOrderNo(orderNo);
         order.setStatus(status);
         return orderMapper.updateByPrimaryKeySelective(order);
     }
@@ -100,8 +86,7 @@ public class OrderServiceImpl implements OrderService {
             order.setCompleteTimeStr(DateTimeUtil.dateToStr(order.getCompleteTime()));
             order.setCarts(null);
         }
-        PageInfo<UserOrderVo> pageResult = new PageInfo<>(orderList);
-        return pageResult;
+        return new PageInfo<>(orderList);
     }
 
     /**
@@ -113,22 +98,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String getUserMobile(String orderNo) {
+    public String getUserMobile(Long orderNo) {
         return orderMapper.selectUserMobile(orderNo);
     }
 
     @Override
-    public String getDeliveryMobile(String orderNo) {
+    public String getDeliveryMobile(Long orderNo) {
         return orderMapper.selectDeliveryMobile(orderNo);
     }
 
     @Override
-    public String getUserId(String orderNo) {
+    public String getUserId(Long orderNo) {
         return orderMapper.selectUserId(orderNo);
     }
 
     @Override
-    public String getShopId(String orderNo) {
+    public String getShopId(Long orderNo) {
         return orderMapper.selectShopId(orderNo);
     }
 

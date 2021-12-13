@@ -67,6 +67,16 @@ public class Const {
      */
     public static final String USER_STATUS_ENABLE = "1";
     public static final String USER_STATUS_DISABLE = "0";
+
+    /**
+     * 角色信息
+     * @return
+     */
+    public static final String USER_ROLE_ADMIN = "admin";
+    public static final String USER_ROLE_CUSTOMER = "customer";
+    public static final String USER_ROLE_BUSINESS = "business";
+    public static final String USER_ROLE_DELIVERY = "delivery";
+
     public static long generateOrderNo(){
         long currentTime = System.currentTimeMillis();
         return currentTime + currentTime%10;
@@ -75,8 +85,8 @@ public class Const {
     /**
      * 初始化分页大小
      */
-    public static void initPage(Integer pageNum,Integer pageSize){
-        if(pageNum == null || pageSize == null){
+    public static void initPage(int pageNum,int pageSize){
+        if(pageNum == 0 || pageSize == 0){
             pageNum = Const.PAGE_DEFAULT_NUM;
             pageSize = Const.PAGE_DEFAULT_SIZE;
         }

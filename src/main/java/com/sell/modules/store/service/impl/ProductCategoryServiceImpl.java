@@ -1,9 +1,13 @@
 package com.sell.modules.store.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
 import com.sell.common.IdGenerate;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.dao.ProductCategoryMapper;
+import com.sell.modules.store.dto.QueryProductDTO;
+import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.entity.ProductCategory;
 import com.sell.modules.store.service.ProductCategoryService;
 import org.apache.commons.lang3.StringUtils;
@@ -28,8 +32,18 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
      */
     @Override
     public List<ProductCategory> getProductCategory(String shopId){
-        return productCategoryMapper.selectCategoryByShopId(shopId);
+        QueryProductDTO dto = new QueryProductDTO();
+        dto.setShopId(shopId);
+        return productCategoryMapper.selectCategoryList(dto);
     }
+
+    @Override
+    public PageInfo<ProductCategory> getCategoryList(QueryProductDTO dto) {
+        Const.initPage(dto.getPageNum(),dto.getPageSize());
+        List<ProductCategory> list = productCategoryMapper.selectCategoryList(dto);
+        return new PageInfo<>(list);
+    }
+
     @Override
     public int saveProductCategory(String name){
         if(StringUtils.isBlank(name)){
@@ -38,21 +52,12 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         ProductCategory productCategory = new ProductCategory();
         //通过当前登录用户查找shopId
         productCategory.setShopId(UserUtils.getShopId());
+        productCategory.setName(name);
         return this.productCategoryMapper.insertSelective(productCategory);
     }
     @Override
-    public int updateProductCategory(String id, String name){
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setId(id);
-        productCategory.setName(name);
-        return productCategoryMapper.updateByPrimaryKeySelective(productCategory);
-    }
-    @Override
-    public int deleteProductCategory(String id){
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setId(id);
-        productCategory.setDelFlag(Const.DELETED);
-        return productCategoryMapper.updateByPrimaryKeySelective(productCategory);
+    public int updateProductCategory(ProductCategory category){
+        return productCategoryMapper.updateByPrimaryKeySelective(category);
     }
 
     @Override
@@ -62,6 +67,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         productCategory.setName("测试分类");
         productCategoryMapper.insert(productCategory);
         int i = 1/0;
+    }
+
+    @Override
+    public int deleteBatch(String ids) {
+        return productCategoryMapper.deleteBatch(ids);
     }
 
 }

@@ -4,8 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
 import com.sell.common.Res;
+import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.dao.ShopCategoryMapper;
 import com.sell.modules.store.dao.ShopMapper;
+import com.sell.modules.store.dto.ShopCountDTO;
 import com.sell.modules.store.entity.Shop;
 import com.sell.modules.store.entity.ShopCategory;
 import com.sell.modules.store.service.ShopService;
@@ -14,8 +16,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author linyuc
@@ -50,11 +54,7 @@ public class ShopServiceImpl implements ShopService {
         //给予选择的分页大小和分类
         PageHelper.startPage(pageNum,Const.PAGE_DEFAULT_SIZE2);
         shopList = shopMapper.selectShopList(name, categoryIds, sort);
-        if(shopList.size() == 0){
-            return null;
-        }
-        PageInfo<ShopVo> pageResult = new PageInfo<>(shopList);
-        return pageResult;
+        return new PageInfo<>(shopList);
     }
     @Override
     public Shop getShopInfo(String id){
@@ -68,5 +68,37 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public String getshopId(String userId) {
         return shopMapper.selectShopIdByUserId(userId);
+    }
+
+    @Override
+    public ShopCountDTO getShopCount() {
+        return shopMapper.selectShopCount(UserUtils.getShopId());
+    }
+
+    @Override
+    public List<ShopCountDTO> getLastYearCount(String shopId) {
+        List<ShopCountDTO> list = shopMapper.getLastYearCount(shopId);
+        //如果有某月份的数据为空进行处理
+        if(list.size() < 12){
+            List<String> monthList = list.stream().map(ShopCountDTO::getMonth).collect(Collectors.toList());
+            List<String> allList = getLastSevMonth();
+            allList.removeAll(monthList);
+            allList.forEach(month -> list.add(ShopCountDTO.builder().month(month)
+                    .salesTotal(new BigDecimal("0")).build()));
+            return list.stream().sorted(Comparator.comparing(ShopCountDTO::getMonth)).collect(Collectors.toList());
+        }
+        return list;
+    }
+    List<String> getLastSevMonth(){
+        List<String> strings = new ArrayList<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMM");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        strings.add(formatter.format(calendar.getTime()));
+        for (int i = 0; i < 11; i++) {
+            calendar.add(Calendar.MONTH, -1);
+            strings.add(formatter.format(calendar.getTime()));
+        }
+        return strings;
     }
 }

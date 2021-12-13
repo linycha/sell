@@ -30,11 +30,6 @@ public interface UserService {
     int update(User user);
     int saveFeedback(Feedback feedback);
 
-    /**
-     * 通过userId获取角色
-     * @param userId
-     * @return
-     */
-    Role getRoleName(String userId);
+    Res<String> updateUsername(User user);
 
 }

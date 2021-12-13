@@ -6,7 +6,6 @@ import com.sell.modules.store.service.ShopCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,14 +21,11 @@ public class RedisCache implements IBaseCache {
     @Autowired
     private ShopCategoryService shopCategoryService;
     @Override
-    public List<ShopCategory> getShopTopCategoryList(String categoryId) {
+    public List getShopTopCategoryList(String categoryId) {
         //List list = new ArrayList<>();
         if (redisUtil.hasKey("shopTopCategoryList")) {
-            System.out.println("直接从redis里读取");
-            List list = redisList.get("shopTopCategoryList", 0, -1);
-            return list;
+            return redisList.get("shopTopCategoryList", 0, -1);
         }else{
-            System.out.println("redis里没有这个值，从Mysql里读取");
             List<ShopCategory> list2 = shopCategoryService.getSiblingCategory(categoryId);
             redisList.set("shopTopCategoryList", list2,1800);
             return list2;

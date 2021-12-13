@@ -3,6 +3,7 @@ package com.sell.modules.store.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -28,11 +29,14 @@ public class Shop {
     private String address;
 
     private String categoryId;
-    @JsonFormat(pattern = "HH:mm",timezone = "GMT+8")
-    private Date openingTime;
-    @JsonFormat(pattern = "HH:mm",timezone = "GMT+8")
-    private Date closingTime;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "HH:mm")
+    private Date openingTime;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "HH:mm")
+    private Date closingTime;
     private String tags;
 
     private String notice;

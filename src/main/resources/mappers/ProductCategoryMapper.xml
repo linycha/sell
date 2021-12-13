@@ -52,13 +52,8 @@
         status,
       </if>
       <if test="sort != null" >
-        sort,
+        sort
       </if>
-      <if test="delFlag != null" >
-        del_flag,
-      </if>
-        create_time,
-        update_time,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -77,13 +72,8 @@
         #{status,jdbcType=CHAR},
       </if>
       <if test="sort != null" >
-        #{sort,jdbcType=INTEGER},
+        #{sort,jdbcType=INTEGER}
       </if>
-      <if test="delFlag != null" >
-        #{delFlag,jdbcType=CHAR},
-      </if>
-        now(),
-        now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.ProductCategory" >
@@ -105,12 +95,8 @@
         sort = #{sort,jdbcType=INTEGER},
       </if>
       <if test="delFlag != null" >
-        del_flag = #{delFlag,jdbcType=CHAR},
+        del_flag = #{delFlag,jdbcType=CHAR}
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-        update_time = now(),
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -126,9 +112,20 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectCategoryByShopId" parameterType="String" resultType="com.sell.modules.store.entity.ProductCategory">
-    select id, name from sell_product_category
-    where shop_id=#{shopId}
+  <select id="selectCategoryList" parameterType="com.sell.modules.store.dto.QueryProductDTO" resultType="com.sell.modules.store.entity.ProductCategory">
+    select id, name, status, create_time from sell_product_category
+    where shop_id=#{shopId} and del_flag = 0
+    <if test="name != null and name != ''" >
+      and name like "%"#{name}"%"
+    </if>
+    order by create_time desc
   </select>
+  <update id="deleteBatch" parameterType="string">
+    update sell_product_category set del_flag = 1
+    where id in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="_parameter.split(',')">
+      #{item}
+    </foreach>
+  </update>
 
 </mapper>

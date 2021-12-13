@@ -71,7 +71,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/admin/**","roles[admin]");
         filterChainDefinitionMap.put("/test/**","anon");
         filterChainDefinitionMap.put("/file/**","anon");
-        filterChainDefinitionMap.put("/comment/**","roles[customer]");
+        //filterChainDefinitionMap.put("/comment/**","roles[customer]");
+        filterChainDefinitionMap.put("/comment/**","anon");
         //filterChainDefinitionMap.put("/test","roles[delivery]");
         //filterChainDefinitionMap.put("/admin/delete","perms[delete]");
         filterChainDefinitionMap.put("/user/**","authc");
@@ -111,7 +112,7 @@ public class ShiroConfig {
     public MySessionManager sessionManager(){
         MySessionManager sessionManager = new MySessionManager();
         //会话超时时间，单位毫秒，30分钟
-        sessionManager.setGlobalSessionTimeout(30*60*1000);
+        sessionManager.setGlobalSessionTimeout(10*60*1000);
         //去掉url上的jSessionId
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         //session持久化

@@ -1,9 +1,9 @@
 package com.sell.modules.sys.controller;
 
+import com.sell.common.Const;
 import com.sell.common.Res;
+import com.sell.common.ResponseCode;
 import com.sell.common.utils.UserUtils;
-import com.sell.modules.store.service.ShopService;
-import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
@@ -25,8 +25,6 @@ import java.util.Map;
 public class LoginController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private ShopService shopService;
 
     @GetMapping("login")
     public Res<Map<String,Object>> login(String username, String password){
@@ -60,14 +58,13 @@ public class LoginController {
         Map<String,Object> info = new HashMap<>(10);
         try {
             subject.login(token);
-            User user = UserUtils.getUser();
             //校验是否是商家账号
-            if(!"business".equals(user.getRoles().get(0).getName())){
+            if(!Const.USER_ROLE_BUSINESS.equals(UserUtils.getRole())){
                 subject.logout();
                 return Res.errorMsg("该账号不是商家账号");
             }
             info.put("token",subject.getSession().getId());
-            info.put("shopId",user.getShopId());
+            info.put("shopId",UserUtils.getShopId());
             return Res.success("登录成功", info);
         }catch(UnknownAccountException | IncorrectCredentialsException e){
             e.printStackTrace();
@@ -90,9 +87,8 @@ public class LoginController {
         Map<String,Object> info = new HashMap<>(10);
         try {
             subject.login(token);
-            String roleName = UserUtils.getUser().getRoles().get(0).getName();
             //校验是否是骑手账号
-            if(!"delivery".equals(roleName)){
+            if(!Const.USER_ROLE_DELIVERY.equals(UserUtils.getRole())){
                 subject.logout();
                 return Res.errorMsg("该账号不是骑手账号");
             }
@@ -118,7 +114,7 @@ public class LoginController {
 
     @GetMapping("/to_login")
     public Res<String> toLogin(){
-        return Res.errorCodeMsg(-2,"请先登录账号");
+        return Res.errorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"请先登录账号");
     }
     @GetMapping("/unauthc")
     public Res<String> unAuthor(){

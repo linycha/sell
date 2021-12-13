@@ -139,15 +139,12 @@ public class FTPUtil {
         return isSuccess;
     }
     public List<FTPFile> getFileList(String path){
-        //FTPUtil ftpUtil = new FTPUtil(ftpIp,21,ftpUser,ftpPass);
         if(open()){
             try{
-                //String[] list = (ftpClient.listNames(path));
                 FTPFile[] fileList = ftpClient.listFiles(path);
                 for(FTPFile file : fileList){
                     long size = file.getSize()/1024;
                     String date = DateTimeUtil.dateToStr(file.getTimestamp().getTime());
-                    System.out.println("名字"+file.getName()+"大小："+size+"时间"+date+"类型："+file.getType());
                 }
                 return Arrays.asList(fileList);
             }catch (IOException e){

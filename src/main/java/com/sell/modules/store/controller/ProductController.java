@@ -7,6 +7,7 @@ import com.sell.common.Const;
 import com.sell.common.Res;
 import com.sell.common.utils.FTPUtil;
 import com.sell.common.utils.PropertiesUtil;
+import com.sell.modules.store.dto.QueryProductDTO;
 import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.entity.ProductCategory;
 import com.sell.modules.store.entity.Shipping;
@@ -66,16 +67,13 @@ public class ProductController {
     }
     @GetMapping("shop_list")
     @ApiOperation("商家查询商品列表")
-    public Res<PageInfo<Product>> getProductList(String categoryId, String name, String status,String pageNum){
-        PageInfo<Product> productList = productService.getProductList(categoryId,name,status,pageNum);
-        if(productList == null){
-            return Res.errorMsg("未找到相应的商品信息");
-        }
+    public Res<PageInfo<Product>> getProductList(QueryProductDTO dto){
+        PageInfo<Product> productList = productService.getProductList(dto);
         return Res.success(productList);
     }
     @PostMapping("save")
     @ApiOperation("新增保存商品信息")
-    public Res<String> save(Product product,HttpServletRequest request){
+    public Res<String> save(@RequestBody Product product,HttpServletRequest request){
         if(!StringUtils.isBlank(product.getOrigin())){
             product.setOriginPrice(new BigDecimal(product.getOrigin()));
         }
@@ -104,7 +102,7 @@ public class ProductController {
     }
     @PutMapping("update")
     @ApiOperation("修改商品信息")
-    public Res<String> update(Product product,HttpServletRequest request){
+    public Res<String> update(@RequestBody Product product,HttpServletRequest request){
         if(!StringUtils.isBlank(product.getOrigin())){
             product.setOriginPrice(new BigDecimal(product.getOrigin()));
         }
@@ -155,19 +153,12 @@ public class ProductController {
     @DeleteMapping("delete")
     @ApiOperation("删除商品信息")
     public Res<String> delete(String ids){
-        System.out.println(ids);
         if(StringUtils.isBlank(ids)){
             return Res.errorMsg("传递的id参数失败");
         }
-        String[] idArray = ids.split(",");
-        for(String id : idArray){
-            Product product = new Product();
-            product.setId(id);
-            product.setDelFlag(Const.DELETED);
-            int result = productService.update(product);
-            if(result == 0){
-                return Res.errorMsg("删除失败");
-            }
+        int result = productService.deleteBatch(ids);
+        if(result == 0){
+            return Res.errorMsg("删除失败");
         }
         return Res.successMsg("删除成功");
     }

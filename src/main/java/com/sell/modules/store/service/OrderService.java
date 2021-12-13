@@ -1,6 +1,7 @@
 package com.sell.modules.store.service;
 
 import com.github.pagehelper.PageInfo;
+import com.sell.modules.store.dto.QueryOrderDTO;
 import com.sell.modules.store.entity.Order;
 import com.sell.modules.store.vo.DeliveryOrderVo;
 import com.sell.modules.store.vo.NewOrderVo;
@@ -15,15 +16,15 @@ import java.util.List;
  */
 public interface OrderService {
     boolean save(Order order);
-    PageInfo<NewOrderVo> getOrderList(String shopId, String orderNo, String status,String pageNum);
-    int updateStatusByOrderNo(String orderNo,String status);
+    PageInfo<NewOrderVo> getOrderList(QueryOrderDTO dto);
+    int updateStatusByOrderNo(Long orderNo,String status);
     int update(Order order);
     PageInfo<UserOrderVo> getUserOrderList(String userId, String orderNo,String pageNum );
     List<DeliveryOrderVo> getDeliveryOrderList(String deliveryId,String status);
 
-    String getUserMobile(String orderNo);
-    String getDeliveryMobile(String orderNo);
-    String getUserId(String orderNo);
-    String getShopId(String orderNo);
+    String getUserMobile(Long orderNo);
+    String getDeliveryMobile(Long orderNo);
+    String getUserId(Long orderNo);
+    String getShopId(Long orderNo);
     Order getOrderDetail(String orderNo);
 }
