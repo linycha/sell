@@ -246,7 +246,7 @@
     select id, name, logo_img, remark, origin_price, sell_price,
     discount, limit_num, monthly_sales
     from sell_product
-    where del_flag = '0' and status = '1'
+    where del_flag = 0 and status = '1'
     and category_id = #{categoryId}
   </select>
   <select id="selectProductList" parameterType="map" resultType="com.sell.modules.store.entity.Product">
