@@ -73,7 +73,7 @@ public class ProductController {
     }
     @PostMapping("save")
     @ApiOperation("新增保存商品信息")
-    public Res<String> save(@RequestBody Product product,HttpServletRequest request){
+    public Res<String> save(Product product,HttpServletRequest request){
         if(!StringUtils.isBlank(product.getOrigin())){
             product.setOriginPrice(new BigDecimal(product.getOrigin()));
         }
@@ -102,7 +102,7 @@ public class ProductController {
     }
     @PutMapping("update")
     @ApiOperation("修改商品信息")
-    public Res<String> update(@RequestBody Product product,HttpServletRequest request){
+    public Res<String> update(Product product,HttpServletRequest request){
         if(!StringUtils.isBlank(product.getOrigin())){
             product.setOriginPrice(new BigDecimal(product.getOrigin()));
         }
