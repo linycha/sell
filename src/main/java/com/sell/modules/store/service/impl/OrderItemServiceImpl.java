@@ -1,6 +1,5 @@
 package com.sell.modules.store.service.impl;
 
-import com.sell.common.IdGenerate;
 import com.sell.modules.store.dao.OrderItemMapper;
 import com.sell.modules.store.entity.OrderItem;
 import com.sell.modules.store.service.OrderItemService;
@@ -19,7 +18,6 @@ public class OrderItemServiceImpl implements OrderItemService {
     private OrderItemMapper orderItemMapper;
     @Override
     public int insert(OrderItem orderItem) {
-        orderItem.setId(IdGenerate.uuid());
         return orderItemMapper.insertSelective(orderItem);
     }
 

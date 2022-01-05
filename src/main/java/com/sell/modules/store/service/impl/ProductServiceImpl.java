@@ -1,18 +1,13 @@
 package com.sell.modules.store.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
-import com.sell.common.IdGenerate;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.dao.ProductMapper;
-import com.sell.modules.store.dao.ShopMapper;
 import com.sell.modules.store.dto.QueryProductDTO;
 import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.service.ProductService;
 import com.sell.modules.store.vo.ProductVo;
-import com.sell.modules.sys.entity.User;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +31,6 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public int saveProduct(Product product){
-        product.setId(IdGenerate.uuid());
-        product.setDelFlag("0");
         product.setShopId(UserUtils.getUser().getShopId());
         return productMapper.insertSelective(product);
     }

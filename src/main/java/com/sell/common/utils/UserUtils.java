@@ -3,6 +3,7 @@ package com.sell.common.utils;
 import com.alibaba.fastjson.JSON;
 import com.sell.modules.sys.entity.User;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -41,6 +42,16 @@ public class UserUtils {
      */
     public static String getRole(){
         return getUser().getRoles()[0];
+    }
+
+    /**
+     * 利用shiro的api加密密码
+     * @param password
+     * @return
+     */
+    public static String hashTwo(String password){
+        Object md5Password = new SimpleHash("md5",password, null, 2);
+        return md5Password.toString();
     }
 
 }

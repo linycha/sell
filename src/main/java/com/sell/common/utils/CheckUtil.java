@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 校验工具类
  * @author linyuc
  * @date 2020/4/20 13:04
  */
@@ -19,11 +20,7 @@ public class CheckUtil {
         //编译正则表达式
         Pattern pattern= Pattern.compile(regex);
         Matcher matcher=pattern.matcher(mobile);
-        if(matcher.matches()){
-            return true;
-        }else{
-            return false;
-        }
+        return matcher.matches();
 
     }
 }

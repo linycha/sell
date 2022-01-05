@@ -1,6 +1,5 @@
 package com.sell.modules.store.service.impl;
 
-import com.sell.common.IdGenerate;
 import com.sell.modules.store.dao.OrderStatusMapper;
 import com.sell.modules.store.entity.OrderStatus;
 import com.sell.modules.store.service.OrderStatusService;
@@ -20,7 +19,6 @@ public class OrderStatusServiceImpl implements OrderStatusService {
     @Override
     public boolean saveStatus(Long orderNo,String status) {
         OrderStatus orderStatus = new OrderStatus();
-        orderStatus.setId(IdGenerate.uuid());
         orderStatus.setOrderNo(orderNo);
         orderStatus.setStatus(status);
         int result = orderStatusMapper.insertSelective(orderStatus);

@@ -3,8 +3,6 @@ package com.sell.modules.sys.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
-import com.sell.common.IdGenerate;
-import com.sell.modules.store.entity.Product;
 import com.sell.modules.sys.dao.LocationMapper;
 import com.sell.modules.sys.entity.Location;
 import com.sell.modules.sys.service.LocationService;
@@ -12,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.acl.LastOwnerException;
 import java.util.List;
 
 /**
@@ -25,7 +22,6 @@ public class LocationServiceImpl implements LocationService {
     private LocationMapper locationMapper;
     @Override
     public int save(Location location) {
-        location.setId(IdGenerate.uuid());
         return locationMapper.insertSelective(location);
     }
 

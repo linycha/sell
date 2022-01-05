@@ -1,20 +1,16 @@
 package com.sell.modules.store.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
-import com.sell.common.IdGenerate;
 import com.sell.common.utils.DateTimeUtil;
 import com.sell.modules.store.dao.OrderMapper;
 import com.sell.modules.store.dto.QueryOrderDTO;
 import com.sell.modules.store.entity.Order;
-import com.sell.modules.store.entity.Product;
 import com.sell.modules.store.service.OrderService;
 import com.sell.modules.store.vo.Cart;
 import com.sell.modules.store.vo.DeliveryOrderVo;
 import com.sell.modules.store.vo.NewOrderVo;
 import com.sell.modules.store.vo.UserOrderVo;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +26,6 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
     @Override
     public boolean save(Order order){
-        order.setId(IdGenerate.uuid());
         order.setPayType("1");
         int result = orderMapper.insertSelective(order);
         if(result >= 1){

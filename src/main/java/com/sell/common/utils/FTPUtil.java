@@ -138,7 +138,7 @@ public class FTPUtil {
         }
         return isSuccess;
     }
-    public List<FTPFile> getFileList(String path){
+/*    public List<FTPFile> getFileList(String path){
         if(open()){
             try{
                 FTPFile[] fileList = ftpClient.listFiles(path);
@@ -155,7 +155,7 @@ public class FTPUtil {
             log.error("连接ftp服务器失败");
             return null;
         }
-    }
+    }*/
 
     private String ip;
     private int port;

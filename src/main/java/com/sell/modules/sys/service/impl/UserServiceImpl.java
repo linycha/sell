@@ -1,16 +1,14 @@
 package com.sell.modules.sys.service.impl;
 
 import com.sell.common.Const;
-import com.sell.common.IdGenerate;
 import com.sell.common.Res;
-import com.sell.common.TokenCache;
 import com.sell.common.utils.CheckUtil;
 import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.sys.dao.UserMapper;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
-import com.sell.common.utils.MD5Util;
+import com.sell.common.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,11 +39,10 @@ public class UserServiceImpl implements UserService {
             return Res.errorMsg("该手机号已被注册");
         }
         //保存加密完的密码
-        String md5Password = MD5Util.hashTwo(password);
+        String md5Password = UserUtils.hashTwo(password);
         user.setUsername(username);
         user.setMobile(mobile);
         user.setPassword(md5Password);
-        user.setId(IdGenerate.uuid());
         int result = userMapper.insertSelective(user);
         if(result == 0) {
             return Res.errorMsg("注册失败");
@@ -73,11 +70,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Res<String> updatePassword(String newPwd,User user){
         User user1 = userMapper.selectByPrimaryKey(user.getId());
-        String oldPwd = MD5Util.hashTwo(user.getPassword());
+        String oldPwd = UserUtils.hashTwo(user.getPassword());
         if(!oldPwd.equals(user1.getPassword())){
             return Res.errorMsg("输入的旧密码错误");
         }
-        user.setPassword(MD5Util.hashTwo(newPwd));
+        user.setPassword(UserUtils.hashTwo(newPwd));
         int result = userMapper.updateByPrimaryKeySelective(user);
         if(result > 0){
             return Res.successMsg("修改成功");
@@ -119,19 +116,19 @@ public class UserServiceImpl implements UserService {
             //用户不存在
             return Res.errorMsg("用户不存在");
         }
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
+/*        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
         if(StringUtils.isBlank(token)){
             return Res.errorMsg("token无效或者过期");
         }
         if(StringUtils.equals(forgetToken,token)){
-            String md5Password = MD5Util.MD5EncodeUtf8(newPassword);
+            String md5Password = UserUtils.hashTwo(newPassword);
             int rowCount = userMapper.updatePasswordByUsername(username,md5Password);
             if(rowCount > 0){
                 return Res.successMsg("修改密码成功");
             }
         }else{
             return Res.errorMsg("token错误，请重新获取重置密码的token");
-        }
+        }*/
         return Res.errorMsg("修改密码失败");
     }
 
@@ -152,7 +149,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int saveFeedback(Feedback feedback) {
-        feedback.setId(IdGenerate.uuid());
         return userMapper.insertFeedback(feedback);
     }
 
