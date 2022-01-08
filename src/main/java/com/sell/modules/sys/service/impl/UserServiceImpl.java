@@ -5,6 +5,7 @@ import com.sell.common.Res;
 import com.sell.common.utils.CheckUtil;
 import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.sys.dao.UserMapper;
+import com.sell.modules.sys.dto.PasswordDTO;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
@@ -52,10 +53,6 @@ public class UserServiceImpl implements UserService {
         return Res.successMsg("注册成功");
     }
     @Override
-    public User selectById(String id){
-        return userMapper.selectByPrimaryKey(id);
-    }
-    @Override
     public Res<String> updateMobile(User user){
         int result = userMapper.checkMobile(user.getMobile());
         if(result != 1){
@@ -68,14 +65,16 @@ public class UserServiceImpl implements UserService {
             return Res.errorMsg("修改失败");
     }
     @Override
-    public Res<String> updatePassword(String newPwd,User user){
-        User user1 = userMapper.selectByPrimaryKey(user.getId());
-        String oldPwd = UserUtils.hashTwo(user.getPassword());
-        if(!oldPwd.equals(user1.getPassword())){
+    public Res<String> updatePassword(PasswordDTO dto){
+        User user = userMapper.selectByPrimaryKey(UserUtils.getUserId());
+        String oldPwd = UserUtils.hashTwo(dto.getOldPassword());
+        if(!oldPwd.equals(user.getPassword())){
             return Res.errorMsg("输入的旧密码错误");
         }
-        user.setPassword(UserUtils.hashTwo(newPwd));
-        int result = userMapper.updateByPrimaryKeySelective(user);
+        int result = userMapper.updateByPrimaryKeySelective(
+                User.builder().id(UserUtils.getUserId()).
+                        password(UserUtils.hashTwo(dto.getNewPassword())).build()
+        );
         if(result > 0){
             return Res.successMsg("修改成功");
         }
@@ -133,7 +132,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User selectByUsername(String username,String userId){
+    public User selectByUsername(String username,Integer userId){
         User user = userMapper.selectByUsernameOrUserId(username,userId);
         user.setRoles(user.getRoleList().stream().map(Role::getName).toArray(String[]::new));
         return user;

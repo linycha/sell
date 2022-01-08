@@ -19,15 +19,11 @@
     id, open_id, username, password, sex, mobile, head_img, role, create_time,
     update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="com.sell.modules.sys.entity.User">
-    select id, username, mobile, head_img
+  <select id="selectByPrimaryKey" parameterType="integer" resultType="com.sell.modules.sys.entity.User">
+    select id, username, mobile, head_img, password
     from sys_user
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from sys_user
-    where id = #{id,jdbcType=VARCHAR}
-  </delete>
   <insert id="insert" parameterType="com.sell.modules.sys.entity.User">
     insert into sys_user (id, username,
       password, sex, mobile,
@@ -93,7 +89,7 @@
         now(),
     </trim>
   </insert>
-  <insert id="insertCustomerRole" parameterType="String">
+  <insert id="insertCustomerRole" parameterType="integer">
     insert into sys_user_role values (#{userId},"1")
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.sys.entity.User">
@@ -191,7 +187,7 @@
     from sys_user
   </select>
   <resultMap id="UserRolePermissionMap" type="com.sell.modules.sys.entity.User">
-    <id column="id" javaType="java.lang.String" jdbcType="VARCHAR" property="id" />
+    <id column="id" javaType="java.lang.Integer" property="id" />
     <id column="shopId" javaType="java.lang.String" jdbcType="VARCHAR" property="shopId" />
     <id column="deliveryId" javaType="java.lang.String" jdbcType="VARCHAR" property="deliveryId" />
     <result column="username" javaType="java.lang.String" jdbcType="VARCHAR" property="username" />

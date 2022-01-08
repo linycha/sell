@@ -18,7 +18,7 @@ import java.util.Date;
 public class Shipping {
     private String id;
 
-    private String userId;
+    private Integer userId;
 
     private String name;
 
@@ -30,7 +30,9 @@ public class Shipping {
 
     private String county;
 
-    private String address;
+    private String areaCode;
+
+    private String addressDetail;
 
     private String isDefault;
 

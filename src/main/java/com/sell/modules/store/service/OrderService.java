@@ -19,7 +19,7 @@ public interface OrderService {
     PageInfo<NewOrderVo> getOrderList(QueryOrderDTO dto);
     int updateStatusByOrderNo(Long orderNo,String status);
     int update(Order order);
-    PageInfo<UserOrderVo> getUserOrderList(String userId, String orderNo,String pageNum );
+    PageInfo<UserOrderVo> getUserOrderList(Integer userId, String orderNo,String pageNum );
     List<DeliveryOrderVo> getDeliveryOrderList(String deliveryId,String status);
 
     String getUserMobile(Long orderNo);

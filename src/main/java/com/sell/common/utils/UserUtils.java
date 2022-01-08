@@ -25,7 +25,7 @@ public class UserUtils {
      * 获取当前登录用户Id
      * @return userId
      */
-    public static String getUserId() {
+    public static Integer getUserId() {
         return getUser().getId();
     }
 

@@ -23,12 +23,9 @@ public interface ShippingMapper {
 
     int updateByPrimaryKey(Shipping record);
 
-    List<Shipping> selectListByUserId(String userId);
+    List<Shipping> selectListByUserId(Integer userId);
 
-    Shipping selectDefaultByUserId(String userId);
+    Shipping selectDefaultByUserId(Integer userId);
 
-    void updateDefault(String userId);
-
-    int insertAll(List<Shipping> list);
-
+    void updateDefault(Integer userId);
 }

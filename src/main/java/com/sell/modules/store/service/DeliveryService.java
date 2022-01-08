@@ -12,5 +12,5 @@ public interface DeliveryService {
     String getDeliveryId(String userId);
     Delivery getInfo(String userId);
     boolean update(Delivery delivery);
-    boolean updateTaskNum(String userId);
+    boolean updateTaskNum(Integer userId);
 }

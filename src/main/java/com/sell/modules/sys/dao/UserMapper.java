@@ -10,18 +10,16 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    int deleteByPrimaryKey(String id);
-
     int insert(User record);
 
     int insertSelective(User record);
     int insertFeedback(Feedback feedback);
 
-    User selectByPrimaryKey(String id);
+    User selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(User record);
 
-    User selectByUsernameOrUserId(@Param("username") String username,@Param("userId") String userId);
+    User selectByUsernameOrUserId(@Param("username") String username,@Param("userId") Integer userId);
 
     /**
      * 通过用户id获取对应角色信息
@@ -34,7 +32,7 @@ public interface UserMapper {
     /**
      * 添加普通用户的角色给用户
      */
-    int insertCustomerRole(String userId);
+    int insertCustomerRole(Integer userId);
     int updateByPrimaryKey(User record);
     int checkUsername(String username);
     int checkMobile(String mobile);

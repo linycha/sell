@@ -8,6 +8,7 @@ import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.store.service.OrderService;
 import com.sell.modules.store.service.OrderStatusService;
+import com.sell.modules.sys.dto.PasswordDTO;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.security.WebSocket;
 import com.sell.modules.sys.service.UserService;
@@ -106,13 +107,10 @@ public class UserController {
                 .id(UserUtils.getUserId()).username(username).build());
     }
 
-    @PutMapping("update_password")
-    @ApiOperation("获取用户个人密码")
-    public Res<String> updatePassword(String oldPwd,String newPwd){
-        User user = new User();
-        user.setId(UserUtils.getUser().getId());
-        user.setPassword(oldPwd);
-        return userService.updatePassword(newPwd,user);
+    @PutMapping("updatePwd")
+    @ApiOperation("修改用户个人密码")
+    public Res<String> updatePassword(@RequestBody PasswordDTO dto){
+        return userService.updatePassword(dto);
     }
 
     /**
@@ -128,7 +126,7 @@ public class UserController {
     public Res<String> feedback(String content){
         Feedback feedback = new Feedback();
         feedback.setContent(content);
-        feedback.setUserId(UserUtils.getUser().getId());
+        feedback.setUserId(UserUtils.getUserId());
         int result = userService.saveFeedback(feedback);
         if(result == 0){
             return Res.errorMsg("意见反馈失败");

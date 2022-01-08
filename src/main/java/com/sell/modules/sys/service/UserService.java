@@ -2,6 +2,7 @@ package com.sell.modules.sys.service;
 
 import com.sell.common.Res;
 import com.sell.modules.store.entity.Feedback;
+import com.sell.modules.sys.dto.PasswordDTO;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
 
@@ -13,18 +14,21 @@ import java.util.List;
  */
 public interface UserService {
     Res<String> register(String username,String phone,String password);
-
-    User selectById(String id);
-
     Res<String> updateMobile(User user);
-    Res<String> updatePassword(String newPwd,User user);
+
+    /**
+     * 修改用户密码
+     * @param dto dto
+     * @return
+     */
+    Res<String> updatePassword(PasswordDTO dto);
 
     Res<String> checkValid(String str, String type);
 
     Res<String> restPassword(String username,String passwordNew,String forgetToken);
 
 
-    User selectByUsername(String username, String userId);
+    User selectByUsername(String username, Integer userId);
     String selectUsernameByMobile(String mobile);
 
     int update(User user);

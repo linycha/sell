@@ -16,7 +16,7 @@ public class OrderComment {
 
     private Long orderNo;
 
-    private String userId;
+    private Integer userId;
     private String shopId;
     private String parentId;
 

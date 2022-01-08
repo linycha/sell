@@ -62,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
      * 查询用户自己的订单列表
      */
     @Override
-    public PageInfo<UserOrderVo> getUserOrderList(String userId, String orderNo, String pageNum) {
+    public PageInfo<UserOrderVo> getUserOrderList(Integer userId, String orderNo, String pageNum) {
         //先不分页
         /*int page = Const.PAGE_DEFAULT_NUM;
         if(!StringUtils.isBlank(pageNum)){

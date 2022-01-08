@@ -42,7 +42,7 @@ public class OrderCommentController {
     @PostMapping("save")
     @ApiOperation("用户提交保存评价信息")
     public Res<String> save(OrderComment orderComment, HttpServletRequest request){
-        orderComment.setUserId(UserUtils.getUser().getId());
+        orderComment.setUserId(UserUtils.getUserId());
         if(orderComment.getFile() != null){
             String path = request.getSession().getServletContext().getRealPath("upload");
             try {

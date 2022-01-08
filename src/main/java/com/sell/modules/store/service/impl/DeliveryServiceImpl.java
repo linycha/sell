@@ -74,7 +74,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
-    public boolean updateTaskNum(String userId) {
+    public boolean updateTaskNum(Integer userId) {
         int result = deliveryMapper.updateTaskNumByUserId(userId);
         if(result == 1){
             return true;

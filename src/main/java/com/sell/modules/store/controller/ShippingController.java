@@ -48,8 +48,8 @@ public class ShippingController {
     }
     @PostMapping("save")
     @ApiOperation("保存收货地址信息")
-    public Res<String> save(Shipping shipping){
-        String userId = UserUtils.getUser().getId();
+    public Res<String> save(@RequestBody Shipping shipping){
+        Integer userId = UserUtils.getUserId();
         if("1".equals(shipping.getIsDefault())){
             shippingService.updateDefault(userId);
         }
@@ -62,10 +62,10 @@ public class ShippingController {
     }
     @PutMapping("update")
     @ApiOperation("修改收货地址信息")
-    public Res<String> update(Shipping shipping){
+    public Res<String> update(@RequestBody Shipping shipping){
         System.out.println(shipping);
         if("1".equals(shipping.getIsDefault())){
-            shippingService.updateDefault(UserUtils.getUser().getId());
+            shippingService.updateDefault(UserUtils.getUserId());
         }
         int result = shippingService.update(shipping);
         if(result == 0){

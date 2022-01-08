@@ -14,7 +14,7 @@ public class Feedback implements Serializable {
     private static final long serialVersionUID = 6862768841930387646L;
 
     private String id;
-    private String userId;
+    private Integer userId;
     private String content;
     /**
      * 反馈类别

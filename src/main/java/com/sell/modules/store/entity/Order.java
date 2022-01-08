@@ -17,11 +17,12 @@ import java.util.List;
  */
 @Data
 public class Order implements Serializable {
+    private static final long serialVersionUID = 3515425295792740287L;
     private String id;
 
     private Long orderNo;
 
-    private String userId;
+    private Integer userId;
 
     private String shippingId;
 

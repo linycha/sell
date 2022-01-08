@@ -148,13 +148,13 @@ public class DeliveryController {
         if(!b2){
             return Res.errorMsg("确认送达失败");
         }
-        String userId = UserUtils.getUser().getId();
+        Integer userId = UserUtils.getUserId();
         boolean b3 = deliveryService.updateTaskNum(userId);
         if(!b3){
             return Res.errorMsg("更新骑手配送订单量失败");
         }
         String shopId = orderService.getShopId(orderNo);
-        webSocket.sendOneMessage(userId,"您有一条订单已送达，祝您用餐愉快");
+        webSocket.sendOneMessage(userId.toString(),"您有一条订单已送达，祝您用餐愉快");
         webSocket.sendOneMessage(shopId,"您有一条订单已被骑手送达");
         return Res.successMsg("确认送达成功");
     }

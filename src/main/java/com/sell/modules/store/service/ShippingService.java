@@ -9,10 +9,10 @@ import java.util.List;
  * @date 2020/2/5 16:15
  */
 public interface ShippingService {
-    List<Shipping> getShippingList(String userId);
+    List<Shipping> getShippingList(Integer userId);
     int save(Shipping shipping);
     int update(Shipping shipping);
-    Shipping getDefault(String userId);
-    void updateDefault(String userId);
+    Shipping getDefault(Integer userId);
+    void updateDefault(Integer userId);
     Shipping getByOrderNo(String orderNo);
 }

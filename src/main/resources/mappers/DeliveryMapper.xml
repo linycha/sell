@@ -182,7 +182,7 @@
     from sell_delivery
     where user_id = #{userId}
   </select>
-  <update id="updateTaskNumByUserId" parameterType="String">
+  <update id="updateTaskNumByUserId" parameterType="integer">
     update sell_delivery set
     day_task_num = day_task_num+1,
     month_task_num = month_task_num+1,

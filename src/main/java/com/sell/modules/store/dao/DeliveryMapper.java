@@ -29,5 +29,5 @@ public interface DeliveryMapper {
 
     Delivery selectByUserId(String userId);
 
-    int updateTaskNumByUserId(String userId);
+    int updateTaskNumByUserId(Integer userId);
 }

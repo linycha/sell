@@ -15,7 +15,7 @@ import java.util.Date;
 public class Delivery {
     private String id;
 
-    private String userId;
+    private Integer userId;
 
     private String trueName;
 

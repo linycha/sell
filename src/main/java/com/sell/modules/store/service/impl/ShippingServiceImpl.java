@@ -19,7 +19,7 @@ public class ShippingServiceImpl implements ShippingService {
     @Autowired
     private ShippingMapper shippingMapper;
     @Override
-    public List<Shipping> getShippingList(String userId) {
+    public List<Shipping> getShippingList(Integer userId) {
         return shippingMapper.selectListByUserId(userId);
     }
 
@@ -39,7 +39,7 @@ public class ShippingServiceImpl implements ShippingService {
     }
 
     @Override
-    public Shipping getDefault(String userId) {
+    public Shipping getDefault(Integer userId) {
         return shippingMapper.selectDefaultByUserId(userId);
     }
 
@@ -47,7 +47,7 @@ public class ShippingServiceImpl implements ShippingService {
      * 改掉原来的默认地址
      */
     @Override
-    public void updateDefault(String userId) {
+    public void updateDefault(Integer userId) {
         shippingMapper.updateDefault(userId);
     }
 
