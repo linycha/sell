@@ -22,11 +22,12 @@
 
 
 **移动用户端主要界面：**    
-![输入图片说明](%E7%94%A8%E6%88%B7%E7%AB%AF.png)
-
+![输入图片说明](src/main/resources/templates/images/%E7%94%A8%E6%88%B7%E7%AB%AF.png)
+![输入图片说明](src/main/resources/templates/images/%E7%94%A8%E6%88%B7%E7%AB%AF3.png)
+![输入图片说明](src/main/resources/templates/images/%E7%94%A8%E6%88%B7%E7%AB%AF4.png)
 
 **移动骑手端主要界面：**    
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0504/205721_b621a480_5465839.png "骑手待接单.png")![输入图片说明](https://images.gitee.com/uploads/images/2021/0504/205728_dc634f98_5465839.png "骑手待送达.png")
+![输入图片说明](src/main/resources/templates/images/%E9%AA%91%E6%89%8B%E7%AB%AF.png)
 
 
 **pc商家管理端主要界面：**    
