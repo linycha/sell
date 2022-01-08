@@ -32,6 +32,9 @@
 
 **pc商家管理端主要界面：**    
 
-![商家端](https://images.gitee.com/uploads/images/2020/0306/171814_03e922d5_5465839.png "屏幕截图.png")
-![商家端](https://images.gitee.com/uploads/images/2020/0306/171846_605cfba4_5465839.png "屏幕截图.png")
-
+![输入图片说明](src/main/resources/templates/images/%E5%95%86%E5%AE%B6%E7%AB%AF.png)
+![输入图片说明](src/main/resources/templates/images/%E5%95%86%E5%AE%B6%E7%AB%AF2.jpg)
+![输入图片说明](src/main/resources/templates/images/%E5%95%86%E5%AE%B6%E7%AB%AF3.png)
+![输入图片说明](src/main/resources/templates/images/%E5%95%86%E5%AE%B6%E7%AB%AF4.png)
+![输入图片说明](src/main/resources/templates/images/%E5%95%86%E5%AE%B6%E7%AB%AF5.png)
+![输入图片说明](src/main/resources/templates/images/%E5%95%86%E5%AE%B6%E7%AB%AF6.png)
