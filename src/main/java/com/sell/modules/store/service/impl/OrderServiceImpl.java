@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
      * 获取骑手自己的订单,5个小时内
      */
     @Override
-    public List<DeliveryOrderVo> getDeliveryOrderList(String deliveryId, String status) {
+    public List<DeliveryOrderVo> getDeliveryOrderList(Integer deliveryId, String status) {
         return orderMapper.selectDeliveryOrderList(deliveryId,status);
     }
 

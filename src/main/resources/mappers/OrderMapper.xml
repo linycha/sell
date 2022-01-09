@@ -339,7 +339,7 @@
     o.user_id as userId,
     s.name as shopName,
     s.address as shopAddress,
-    si.address as userAddress,
+    si.address_detail as userAddress,
     si.name as username,
     si.tel as mobile,
     s.delivery_time as deliveryTime,

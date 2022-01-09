@@ -33,12 +33,12 @@ public class ShopServiceImpl implements ShopService {
     private ShopCategoryMapper shopCategoryMapper;
 
     @Override
-    public PageInfo<ShopVo> getShopList(String name, String categoryId, Integer sortType,Integer pageNum){
+    public PageInfo<ShopVo> getShopList(String name, Integer categoryId, Integer sortType,Integer pageNum){
         String sort = Const.ShopList.ORDER_BY.get(sortType);
         //判断是否是顶级分类，如果是查找它的二级分类放到categoryIds里
-        List<String> categoryIds = new ArrayList<>();
+        List<Integer> categoryIds = new ArrayList<>();
         List<ShopVo> shopList = new ArrayList<>();
-        if(!StringUtils.isBlank(categoryId)){
+        if(categoryId != null){
             ShopCategory shopCategory = shopCategoryMapper.selectByPrimaryKey(categoryId);
             if(shopCategory.getParentId().equals(Const.CATEGORY_PARENT_ID)){
                 categoryIds = shopCategoryMapper.selectCategoryList(categoryId);
@@ -57,7 +57,7 @@ public class ShopServiceImpl implements ShopService {
         return new PageInfo<>(shopList);
     }
     @Override
-    public Shop getShopInfo(String id){
+    public Shop getShopInfo(Integer id){
         return shopMapper.selectByPrimaryKey(id);
     }
     @Override
@@ -76,7 +76,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<ShopCountDTO> getLastYearCount(String shopId) {
+    public List<ShopCountDTO> getLastYearCount(Integer shopId) {
         List<ShopCountDTO> list = shopMapper.getLastYearCount(shopId);
         //如果有某月份的数据为空进行处理
         if(list.size() < 12){

@@ -33,7 +33,7 @@ public class ShopCategoryController {
      */
     @GetMapping("shop_top")
     @ApiOperation("获取第一级的商家分类")
-    public Res getTopCategory(@RequestParam(defaultValue = "0") String categoryId){
+    public Res getTopCategory(@RequestParam(defaultValue = "0") Integer categoryId){
         List<ShopCategory> categoryList = iBaseCache.getShopTopCategoryList(categoryId);
         if(categoryList == null){
             return Res.errorMsg("查找商铺分类失败");
@@ -47,7 +47,7 @@ public class ShopCategoryController {
     }
     @GetMapping("shop")
     @ApiOperation("获取第二级的商家分类")
-    public Res getSiblingCategory(@RequestParam(defaultValue = "0") String categoryId){
+    public Res getSiblingCategory(@RequestParam(defaultValue = "0") Integer categoryId){
         List<ShopCategory> categoryList = shopCategoryService.getSiblingCategory(categoryId);
         if(categoryList == null){
             return Res.errorMsg("查找商铺分类失败");

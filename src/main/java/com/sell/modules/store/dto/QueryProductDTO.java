@@ -12,13 +12,13 @@ import java.io.Serializable;
 public class QueryProductDTO implements Serializable {
     private static final long serialVersionUID = 8826638126597745310L;
 
-    private String categoryId;
+    private Integer categoryId;
 
     private String name;
 
     private String status;
 
-    private String shopId;
+    private Integer shopId;
 
     private int pageNum;
 

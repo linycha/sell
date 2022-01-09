@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonIgnoreProperties({"userId","createTime","updateTime","delFlag"})
 public class Shipping {
-    private String id;
+    private Integer id;
 
     private Integer userId;
 

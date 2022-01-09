@@ -9,7 +9,7 @@ import java.util.List;
  * @date 2020/4/8 20:36
  */
 public interface IBaseCache {
-    List<ShopCategory> getShopTopCategoryList(String categoryId);
-    List<ShopCategory> getShopSiblingCategoryList(String categoryId);
+    List<ShopCategory> getShopTopCategoryList(Integer categoryId);
+    List<ShopCategory> getShopSiblingCategoryList(Integer categoryId);
     void del();
 }

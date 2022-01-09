@@ -32,7 +32,7 @@ public class Const {
     public static final Integer PAGE_DEFAULT_SIZE2 = 5;
     public static final Integer PAGE_DEFAULT_SIZE_TEN = 10;
     public static final Integer PAGE_DEFAULT_SIZE_FIVE = 5;
-    public static final String CATEGORY_PARENT_ID = "0";
+    public static final Integer CATEGORY_PARENT_ID = 0;
     public static final String UPLOADING_IMG_URL = "";
     //评价等级  0:好评，1：一般，2：差评
     public static final Integer COMMENT_GOOD = 0;

@@ -41,14 +41,12 @@ public class DeliveryController {
     @GetMapping("info")
     @ApiOperation("获取骑手基本信息")
     public Res<Delivery> info(){
-        //String userId = UserUtils.getUserId();
-        String userId = "32";
-        Delivery delivery = deliveryService.getInfo(userId);
+        Delivery delivery = deliveryService.getInfo(UserUtils.getDeliveryId());
         return Res.success(delivery);
     }
     @PutMapping("start")
     @ApiOperation("切换骑手工作状态")
-    public Res<String> startWork(String id,boolean value){
+    public Res<String> startWork(Integer id,boolean value){
         Delivery delivery = new Delivery();
         delivery.setId(id);
         if(value){
@@ -65,30 +63,21 @@ public class DeliveryController {
     @GetMapping("new_list")
     @ApiOperation("获取骑手待接单列表")
     public Res<List<DeliveryOrderVo>> newOrderList(){
-        //String userId = UserUtils.getUserId();
-        String userId = "32";
-//        String deliveryId = deliveryService.getDeliveryId(userId);
-//        System.out.println("deliveryId="+deliveryId);
-//        if(StringUtils.isBlank(deliveryId)){
-//            return Res.errorMsg("请先登录相应的账号");
-//        }
-        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(userId,Const.OrderStatus.SHOP_ACCEPT);
+        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(UserUtils.getDeliveryId(),Const.OrderStatus.SHOP_ACCEPT);
 
         return Res.success(orderList);
     }
     @GetMapping("accept_list")
     @ApiOperation("获取骑手已接单订单列表")
     public Res<List<DeliveryOrderVo>> takeOrderList(){
-        String deliveryId = UserUtils.getUser().getDeliveryId();
-        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(deliveryId,Const.OrderStatus.DELIVERY_ACCEPT);
+        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(UserUtils.getDeliveryId(),Const.OrderStatus.DELIVERY_ACCEPT);
 
         return Res.success(orderList);
     }
     @GetMapping("take_list")
     @ApiOperation("获取骑手已取货订单列表")
     public Res<List<DeliveryOrderVo>> deliveryOrderList(){
-        String deliveryId = UserUtils.getUser().getDeliveryId();
-        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(deliveryId,Const.OrderStatus.DELIVERY_TAKE);
+        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(UserUtils.getDeliveryId(),Const.OrderStatus.DELIVERY_TAKE);
 
         return Res.success(orderList);
     }

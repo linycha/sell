@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Delivery {
-    private String id;
+    private Integer id;
 
     private Integer userId;
 

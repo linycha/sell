@@ -20,7 +20,7 @@ public interface OrderService {
     int updateStatusByOrderNo(Long orderNo,String status);
     int update(Order order);
     PageInfo<UserOrderVo> getUserOrderList(Integer userId, String orderNo,String pageNum );
-    List<DeliveryOrderVo> getDeliveryOrderList(String deliveryId,String status);
+    List<DeliveryOrderVo> getDeliveryOrderList(Integer deliveryId,String status);
 
     String getUserMobile(Long orderNo);
     String getDeliveryMobile(Long orderNo);

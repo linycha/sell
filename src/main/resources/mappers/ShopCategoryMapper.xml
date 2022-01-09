@@ -15,7 +15,7 @@
   <sql id="Base_Column_List" >
     id, parent_id, name, sort, del_flag, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultType="com.sell.modules.store.entity.ShopCategory" parameterType="integer" >
     select 
     <include refid="Base_Column_List" />
     from sell_shop_category
@@ -116,13 +116,13 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectSiblingCategory" resultType="com.sell.modules.store.entity.ShopCategory" parameterType="String">
+  <select id="selectSiblingCategory" resultType="com.sell.modules.store.entity.ShopCategory" parameterType="integer">
     select id, name as text
     from sell_shop_category
-    where parent_id = #{id} and del_flag = '0'
+    where parent_id = #{id} and del_flag = 0
     order by sort
   </select>
-  <select id="selectCategoryList" parameterType="String" resultType="String">
+  <select id="selectCategoryList" parameterType="integer" resultType="integer">
     select id from sell_shop_category
     where parent_id = #{id}
   </select>

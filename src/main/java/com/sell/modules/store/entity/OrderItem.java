@@ -14,13 +14,13 @@ import java.util.Date;
 public class OrderItem implements Serializable {
     private static final long serialVersionUID = 1023918481434137016L;
 
-    private String id;
+    private Integer id;
 
     private Long orderNo;
 
-    private String shopId;
+    private Integer shopId;
 
-    private String productId;
+    private Integer productId;
 
     private String productName;
 

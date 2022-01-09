@@ -28,7 +28,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
      * @return
      */
     @Override
-    public List<ProductCategory> getProductCategory(String shopId){
+    public List<ProductCategory> getProductCategory(Integer shopId){
         QueryProductDTO dto = new QueryProductDTO();
         dto.setShopId(shopId);
         return productCategoryMapper.selectCategoryList(dto);
@@ -55,15 +55,6 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     public int updateProductCategory(ProductCategory category){
         return productCategoryMapper.updateByPrimaryKeySelective(category);
-    }
-
-    @Override
-    public void insertTest() {
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setShopId("123");
-        productCategory.setName("测试分类");
-        productCategoryMapper.insert(productCategory);
-        int i = 1/0;
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.Date;
 public class Feedback implements Serializable {
     private static final long serialVersionUID = 6862768841930387646L;
 
-    private String id;
+    private Integer id;
     private Integer userId;
     private String content;
     /**

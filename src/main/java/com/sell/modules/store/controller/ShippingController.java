@@ -75,7 +75,7 @@ public class ShippingController {
     }
     @DeleteMapping("delete")
     @ApiOperation("删除收货地址信息")
-    public Res<String> delete(String id){
+    public Res<String> delete(Integer id){
         Shipping shipping = new Shipping();
         shipping.setId(id);
         shipping.setDelFlag(Const.DELETED);

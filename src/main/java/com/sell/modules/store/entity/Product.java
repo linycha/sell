@@ -13,11 +13,11 @@ import java.util.Date;
 @Data
 @JsonIgnoreProperties({"shopId","createTime","updateTime","delFlag","file"})
 public class Product {
-    private String id;
+    private Integer id;
 
-    private String shopId;
+    private Integer shopId;
 
-    private String categoryId;
+    private Integer categoryId;
 
     private String name;
 

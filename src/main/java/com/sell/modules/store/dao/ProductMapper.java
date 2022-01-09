@@ -22,7 +22,7 @@ public interface ProductMapper {
 
     int updateByPrimaryKey(Product record);
 
-    List<ProductVo> selectProductListByCategory(Integer categoryId);
+    List<ProductVo> selectProductListByCategory(Integer shopId);
     List<Product> selectProductList(QueryProductDTO dto);
     Integer checkStockByName(@Param("name")String name,@Param("num")Integer num);
 

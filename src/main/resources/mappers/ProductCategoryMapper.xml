@@ -118,7 +118,7 @@
     <if test="name != null and name != ''" >
       and name like "%"#{name}"%"
     </if>
-    order by create_time desc
+    order by sort desc,create_time
   </select>
   <update id="deleteBatch" parameterType="string">
     update sell_product_category set del_flag = 1

@@ -15,7 +15,6 @@ import java.util.Set;
  */
 public class MyRolesAuthorizationFilter extends AuthorizationFilter {
 
-    @SuppressWarnings("unchecked")
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object o) throws Exception {
         Subject subject = this.getSubject(request, response);

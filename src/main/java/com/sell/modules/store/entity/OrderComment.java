@@ -12,13 +12,13 @@ import java.util.Date;
  */
 @Data
 public class OrderComment {
-    private String id;
+    private Integer id;
 
     private Long orderNo;
 
     private Integer userId;
-    private String shopId;
-    private String parentId;
+    private Integer shopId;
+    private Integer parentId;
 
     private String content;
 
@@ -30,7 +30,7 @@ public class OrderComment {
     private String reply;
     private String isAnonymity;
 
-    @JsonFormat(pattern = "yy-MM-dd HH:mm",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date createTime;
 
     //用于接收前端传过来的值

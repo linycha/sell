@@ -17,7 +17,7 @@ public class ProductCategory {
 
     private String parentId;
 
-    private String shopId;
+    private Integer shopId;
 
     private String name;
 

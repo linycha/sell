@@ -33,8 +33,15 @@ public class UserUtils {
      * 获取当前登录用户的商家Id
      * @return shopId
      */
-    public static String getShopId() {
+    public static Integer getShopId() {
         return getUser().getShopId();
+    }
+    /**
+     * 获取当前登录用户的骑手Id
+     * @return shopId
+     */
+    public static Integer getDeliveryId() {
+        return getUser().getDeliveryId();
     }
 
     /**

@@ -14,7 +14,11 @@ import java.math.BigDecimal;
 public class ProductVo implements Serializable{
     private static final long serialVersionUID = 2397081056042082197L;
 
-    private String id;
+    private Integer id;
+
+    private Integer categoryId;
+
+    private String  categoryName;
 
     private String name;
 

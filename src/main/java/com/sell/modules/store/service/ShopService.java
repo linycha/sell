@@ -14,8 +14,8 @@ import java.util.List;
  */
 public interface ShopService {
 
-    PageInfo<ShopVo> getShopList(String name, String categoryId, Integer sortType,Integer pageNum);
-    Shop getShopInfo(String id);
+    PageInfo<ShopVo> getShopList(String name, Integer categoryId, Integer sortType,Integer pageNum);
+    Shop getShopInfo(Integer id);
     int updateSelective(Shop shop);
     String getshopId(String userId);
 
@@ -29,5 +29,5 @@ public interface ShopService {
      * @param shopId
      * @return
      */
-    List<ShopCountDTO> getLastYearCount(String shopId);
+    List<ShopCountDTO> getLastYearCount(Integer shopId);
 }

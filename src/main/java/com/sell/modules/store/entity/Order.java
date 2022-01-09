@@ -18,15 +18,15 @@ import java.util.List;
 @Data
 public class Order implements Serializable {
     private static final long serialVersionUID = 3515425295792740287L;
-    private String id;
+    private Integer id;
 
     private Long orderNo;
 
     private Integer userId;
 
-    private String shippingId;
+    private Integer shippingId;
 
-    private String shopId;
+    private Integer shopId;
 
     private String shopName;
 
@@ -34,7 +34,7 @@ public class Order implements Serializable {
 
     private String shopMobile;
 
-    private String deliveryId;
+    private Integer deliveryId;
 
     private String deliveryName;
 

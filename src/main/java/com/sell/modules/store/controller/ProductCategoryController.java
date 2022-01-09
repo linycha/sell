@@ -9,6 +9,7 @@ import com.sell.modules.store.service.ProductCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +33,8 @@ public class ProductCategoryController {
      */
     @GetMapping("product")
     @ApiOperation("查找某个商家的商品分类")
-    public Res<List<ProductCategory>> getCategory(String shopId){
-        if(StringUtils.isBlank(shopId)){
+    public Res<List<ProductCategory>> getCategory(Integer shopId){
+        if(shopId == null){
             shopId = UserUtils.getShopId();
         }
         List<ProductCategory> categoryList = productCategoryService.getProductCategory(shopId);
@@ -45,12 +46,14 @@ public class ProductCategoryController {
      * @return
      */
     @GetMapping("list")
+    @RequiresRoles("business")
     @ApiOperation("查找某个商家的商品分类")
     public Res<PageInfo<ProductCategory>> getCategoryList(QueryProductDTO dto){
         dto.setShopId(UserUtils.getShopId());
         return Res.success(productCategoryService.getCategoryList(dto));
     }
     @PostMapping("save")
+    @RequiresRoles("business")
     @ApiOperation("添加商品分类")
     public Res<String> saveCategory(@RequestBody ProductCategory category){
         int result = productCategoryService.saveProductCategory(category.getName());
@@ -60,6 +63,7 @@ public class ProductCategoryController {
         return Res.errorMsg("添加商品分类失败");
     }
     @PutMapping("update")
+    @RequiresRoles("business")
     @ApiOperation("修改商品分类")
     public Res<String> updateCategory(@RequestBody ProductCategory category){
         if(category.getId() == null && StringUtils.isBlank(category.getName())){
@@ -72,6 +76,7 @@ public class ProductCategoryController {
         return Res.errorMsg("修改失败");
     }
     @DeleteMapping("delete")
+    @RequiresRoles("business")
     @ApiOperation("删除商品分类")
     public Res<String> deleteCategory(String ids){
         if(StringUtils.isBlank(ids)){

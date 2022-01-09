@@ -20,6 +20,7 @@ import com.sell.modules.store.vo.ShopVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author linyuc
@@ -50,16 +52,25 @@ public class ProductController {
 
     @GetMapping("list")
     @ApiOperation("用户查询商品列表")
-    public Res<List<List<ProductVo>>> list(String shopId){
-        if(StringUtils.isBlank(shopId)){
+    public Res<List<List<ProductVo>>> list(Integer shopId){
+        if(shopId == null){
             return Res.errorMsg("该分类无商品信息");
         }
         List<ProductCategory> categoryList = productCategoryService.getProductCategory(shopId);
+        List<ProductVo> productList = productService.getByCategory(shopId);
         List<List<ProductVo>> productLists = new ArrayList<>();
-        for(ProductCategory category :categoryList){
-            List<ProductVo> productList = productService.getByCategory(category.getId());
-            productLists.add(productList);
-        }
+        categoryList.forEach(e->{
+            List<ProductVo> list = new ArrayList<>();
+            for(ProductVo item : productList){
+                if(item.getCategoryId().equals(e.getId())){
+                    item.setCategoryName(e.getName());
+                    list.add(item);
+                }
+            }
+            if(CollectionUtils.isNotEmpty(list)){
+                productLists.add(list);
+            }
+        });
         if(productLists.size() == 0){
             return Res.errorMsg("该分类无商品信息");
         }

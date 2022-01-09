@@ -14,7 +14,7 @@ public class QueryOrderDTO implements Serializable {
 
     private Integer orderNo;
 
-    private String shopId;
+    private Integer shopId;
 
     private String status;
 

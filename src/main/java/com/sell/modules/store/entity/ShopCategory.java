@@ -16,22 +16,22 @@ import java.util.Date;
 @RequiredArgsConstructor
 @JsonIgnoreProperties({"parentId","sort","delFlag","createTime","updateTime"})
 public class ShopCategory {
-    private String id;
+    private Integer id;
 
-    private String parentId;
+    private Integer parentId;
 
     private String name;
 
     private Integer sort;
 
-    private String delFlag;
+    private Integer delFlag;
 
     private Date createTime;
 
     private Date updateTime;
     //返回给前端的
     private String text;
-    public ShopCategory(String id, String text) {
+    public ShopCategory(Integer id, String text) {
         this.id = id;
         this.text = text;
     }

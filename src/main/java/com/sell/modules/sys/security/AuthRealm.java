@@ -84,7 +84,7 @@ public class AuthRealm extends AuthorizingRealm {
         }
         User user = userService.selectByUsername(username,null);
         if(user == null){
-            return null;
+            throw new UnknownAccountException();
         }
         if(Const.USER_STATUS_DISABLE.equals(user.getStatus())){
             throw new LockedAccountException("该账号已被禁用，请联系管理员");

@@ -95,7 +95,7 @@ public class OrderController {
             return Res.errorMsg("订单状态修改失败");
         }
         //webSocket消息推送通知商家
-        webSocket.sendOneMessage(order.getShopId(), "您有一条新的Lin sell订单了");
+        webSocket.sendOneMessage(order.getShopId().toString(), "您有一条新的Lin sell订单了");
         return Res.successMsg("订单创建成功");
     }
     @GetMapping("list_user")

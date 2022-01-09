@@ -14,9 +14,9 @@ import java.util.Date;
 @Data
 @JsonIgnoreProperties({"userId","createTime","updateTime","delFlag"})
 public class Shop {
-    private String id;
+    private Integer id;
 
-    private String userId;
+    private Integer userId;
 
     private String name;
 

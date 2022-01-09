@@ -44,12 +44,6 @@ public class UserController {
     @Autowired
     private FTPUtil ftpUtil;
 
-    @GetMapping("aaa")
-    public Res<String> aaa(){
-        Object object = SecurityUtils.getSubject().getPrincipal();
-        System.out.println(object.toString());
-        return Res.success("aaaacl");
-    }
     /**
      * 获取用户个人信息
      */

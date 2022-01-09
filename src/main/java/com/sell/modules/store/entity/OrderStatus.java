@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 @JsonIgnoreProperties({"id","orderNo","remark"})
 public class OrderStatus {
-    private String id;
+    private Integer id;
 
     private Long orderNo;
 

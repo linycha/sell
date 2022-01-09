@@ -54,7 +54,7 @@ public class ShopController {
      */
     @GetMapping("list")
     @ApiOperation("用户端-搜索店铺列表")
-    public Res<PageInfo<ShopVo>> list(String name, String categoryId, @RequestParam(defaultValue = "0") Integer sortType,
+    public Res<PageInfo<ShopVo>> list(String name, Integer categoryId, @RequestParam(defaultValue = "0") Integer sortType,
                                       @RequestParam(defaultValue = "1")Integer pageNum){
         PageInfo<ShopVo> shopList = shopService.getShopList(name,categoryId,sortType,pageNum);
         if(shopList == null){
@@ -67,8 +67,8 @@ public class ShopController {
     }
     @GetMapping("info")
     @ApiOperation("商家/用户端-查询店铺信息")
-    public Res<Shop> info(String shopId){
-        if(StringUtils.isBlank(shopId)){
+    public Res<Shop> info(Integer shopId){
+        if(shopId == null){
             shopId = UserUtils.getShopId();
         }
         Shop shop = shopService.getShopInfo(shopId);
@@ -136,7 +136,6 @@ public class ShopController {
      * 查看全部订单列表
      */
     @GetMapping("order_list")
-    // @RequiresRoles("business")
     @ApiOperation("商家端-查看全部订单列表")
     public Res<PageInfo<NewOrderVo>> orderList(QueryOrderDTO dto){
         dto.setShopId(UserUtils.getShopId());
@@ -148,7 +147,6 @@ public class ShopController {
      * @return orderNo
      */
     @PutMapping("accept")
-    // @RequiresRoles("business")
     @ApiOperation("商家端-商家确认接单")
     public Res<String> accept(@RequestBody Long orderNo){
         if(orderNo == null){
@@ -172,7 +170,7 @@ public class ShopController {
         }
         String userId = orderService.getUserId(orderNo);
         //把消息推送给骑手和用户
-        webSocket.sendOneMessage(delivery.getId(),"您有一条新的Lin sell订单了");
+        webSocket.sendOneMessage(delivery.getId().toString(),"您有一条新的Lin sell订单了");
         webSocket.sendOneMessage(userId,"您有一条订单已被商家接单");
         return Res.successMsg("商家确认接单成功，已派单给相应的骑手");
     }
@@ -243,6 +241,6 @@ public class ShopController {
      */
     @GetMapping("yearCount")
     public Res<List<ShopCountDTO>> getLastYearCount(){
-        return Res.success(shopService.getLastYearCount("3"));
+        return Res.success(shopService.getLastYearCount(UserUtils.getShopId()));
     }
 }

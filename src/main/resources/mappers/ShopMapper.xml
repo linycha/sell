@@ -36,7 +36,7 @@
     notice, send_cost, delivery_cost, box_cost, delivery_time, score, food_score, pack_score, 
     delivery_score, total_sales, monthly_sales, status, del_flag, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultType="com.sell.modules.store.entity.Shop" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultType="com.sell.modules.store.entity.Shop" parameterType="integer" >
     select
     s.id, s.user_id, s.name, s.mobile, s.logo_img, s.store_img, s.address, s.category_id, s.opening_time,s.closing_time,
     s.tags,s.notice, s.send_cost, s.delivery_cost, s.box_cost, s.delivery_time, s.score, s.food_score, s.pack_score,
@@ -365,12 +365,12 @@
     select id from sell_shop
     where user_id = #{userId}
   </select>
-  <select id="selectShopCount" parameterType="string" resultType="com.sell.modules.store.dto.ShopCountDTO">
+  <select id="selectShopCount" parameterType="integer" resultType="com.sell.modules.store.dto.ShopCountDTO">
     select count(1) orderTotal,sum(pay_money) salesTotal,count(distinct user_id) customerTotal,
            (select count(1) productTotal from sell_product where shop_id = #{shopId} ) productTotal
            from sell_order where shop_id = #{shopId}
   </select>
-  <select id="getLastYearCount" parameterType="string" resultType="com.sell.modules.store.dto.ShopCountDTO">
+  <select id="getLastYearCount" parameterType="integer" resultType="com.sell.modules.store.dto.ShopCountDTO">
     select count(id) orderTotal,count(DISTINCT user_id) customerTotal,
            DATE_FORMAT(create_time, '%Y%m') month,sum(pay_money) salesTotal
     from sell_order

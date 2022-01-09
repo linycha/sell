@@ -13,12 +13,12 @@ public interface ShopCategoryMapper {
 
     int insertSelective(ShopCategory record);
 
-    ShopCategory selectByPrimaryKey(String id);
+    ShopCategory selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(ShopCategory record);
 
     int updateByPrimaryKey(ShopCategory record);
 
-    List<ShopCategory> selectSiblingCategory(String id);
-    List<String> selectCategoryList(String id);
+    List<ShopCategory> selectSiblingCategory(Integer id);
+    List<Integer> selectCategoryList(Integer id);
 }

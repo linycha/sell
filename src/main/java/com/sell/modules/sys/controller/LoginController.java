@@ -118,7 +118,7 @@ public class LoginController {
     }
     @GetMapping("/unauthc")
     public Res<String> unAuthor(){
-        return Res.errorCodeMsg(-3,"没有权限访问该页面");
+        return Res.errorCodeMsg(403,"当前用户没有操作权限");
     }
 
     @GetMapping("/logout")

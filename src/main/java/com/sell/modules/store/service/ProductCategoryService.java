@@ -11,7 +11,7 @@ import java.util.List;
  * @date 2020/1/16 18:50
  */
 public interface ProductCategoryService {
-    List<ProductCategory> getProductCategory(String shopId);
+    List<ProductCategory> getProductCategory(Integer shopId);
 
     /**
      * 商家查询自家店铺的商品分类
@@ -22,8 +22,6 @@ public interface ProductCategoryService {
     int saveProductCategory(String name);
 
     int updateProductCategory(ProductCategory category);
-
-    void insertTest();
 
     /**
      * 批量假删

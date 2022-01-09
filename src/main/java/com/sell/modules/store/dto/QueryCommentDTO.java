@@ -17,15 +17,15 @@ public class QueryCommentDTO implements Serializable {
 
     private static final long serialVersionUID = 4230409002628279977L;
 
-    String  shopId;
+    private Integer  shopId;
 
-    String scoreType;
+    private String scoreType;
 
-    String isAnonymity;
+    private String isAnonymity;
 
-    String status;
+    private String status;
 
-    int pageNum;
+    private int pageNum;
 
-    int pageSize;
+    private int pageSize;
 }

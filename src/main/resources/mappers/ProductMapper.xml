@@ -243,11 +243,11 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectProductListByCategory" parameterType="integer" resultType="com.sell.modules.store.vo.ProductVo">
-    select id, name, logo_img, remark, origin_price, sell_price,
+    select id,category_id, name, logo_img, remark, origin_price, sell_price,
     discount, limit_num, monthly_sales
     from sell_product
     where del_flag = 0 and status = '1'
-    and category_id = #{categoryId}
+    and shop_id = #{shopId}
   </select>
   <select id="selectProductList" parameterType="map" resultType="com.sell.modules.store.entity.Product">
     select <include refid="Base_Column_List"/>

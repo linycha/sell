@@ -134,7 +134,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User selectByUsername(String username,Integer userId){
         User user = userMapper.selectByUsernameOrUserId(username,userId);
-        user.setRoles(user.getRoleList().stream().map(Role::getName).toArray(String[]::new));
+        if(user != null){
+            user.setRoles(user.getRoleList().stream().map(Role::getName).toArray(String[]::new));
+        }
         return user;
     }
     @Override

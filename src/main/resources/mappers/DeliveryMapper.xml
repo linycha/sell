@@ -3,8 +3,8 @@
 <mapper namespace="com.sell.modules.store.dao.DeliveryMapper" >
   <resultMap id="BaseResultMap" type="com.sell.modules.store.entity.Delivery" >
     <constructor >
-      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.Integer" />
+      <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.Integer" />
       <arg column="true_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="score" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
@@ -173,14 +173,10 @@
     where status = '1'
     order by score desc limit #{number},1
   </select>
-  <select id="selectDeliveryIdByUserId" parameterType="String" resultType="String">
-    select id from sell_delivery
-    where user_id =#{userId}
-  </select>
-  <select id="selectByUserId" parameterType="String" resultMap="BaseResultMap">
+  <select id="selectByUserId" parameterType="integer" resultType="com.sell.modules.store.entity.Delivery">
     select <include refid="Base_Column_List"/>
     from sell_delivery
-    where user_id = #{userId}
+    where id = #{id}
   </select>
   <update id="updateTaskNumByUserId" parameterType="integer">
     update sell_delivery set

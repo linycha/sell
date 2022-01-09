@@ -9,8 +9,7 @@ import com.sell.modules.store.entity.Delivery;
 public interface DeliveryService {
     boolean updateAssign(String orderNo);
     Delivery getBest();
-    String getDeliveryId(String userId);
-    Delivery getInfo(String userId);
+    Delivery getInfo(Integer deliveryId);
     boolean update(Delivery delivery);
     boolean updateTaskNum(Integer userId);
 }

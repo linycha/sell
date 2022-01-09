@@ -168,7 +168,7 @@
     <if test="userId != null and userId != ''">
       and s.id = #{userId}
     </if>
-    and s.del_flag = '0'
+    and s.del_flag = 0
   </select>
   <select id="selectUsernameByMobile" parameterType="String" resultType="String">
     select username from sys_user
@@ -188,8 +188,8 @@
   </select>
   <resultMap id="UserRolePermissionMap" type="com.sell.modules.sys.entity.User">
     <id column="id" javaType="java.lang.Integer" property="id" />
-    <id column="shopId" javaType="java.lang.String" jdbcType="VARCHAR" property="shopId" />
-    <id column="deliveryId" javaType="java.lang.String" jdbcType="VARCHAR" property="deliveryId" />
+    <id column="shopId" javaType="java.lang.Integer" property="shopId" />
+    <id column="deliveryId" javaType="java.lang.Integer" property="deliveryId" />
     <result column="username" javaType="java.lang.String" jdbcType="VARCHAR" property="username" />
     <result column="password" javaType="java.lang.String" jdbcType="VARCHAR" property="password" />
     <result column="sex" javaType="java.lang.String" jdbcType="CHAR" property="sex"/>

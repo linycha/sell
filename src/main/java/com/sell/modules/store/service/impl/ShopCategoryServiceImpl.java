@@ -17,7 +17,7 @@ public class ShopCategoryServiceImpl implements ShopCategoryService {
     @Autowired
     private ShopCategoryMapper shopCategoryMapper;
     @Override
-    public List<ShopCategory> getSiblingCategory(String id){
+    public List<ShopCategory> getSiblingCategory(Integer id){
         return shopCategoryMapper.selectSiblingCategory(id);
     }
 }

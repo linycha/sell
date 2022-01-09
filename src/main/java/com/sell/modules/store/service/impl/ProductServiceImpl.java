@@ -22,8 +22,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductMapper productMapper;
     @Override
-    public List<ProductVo> getByCategory(Integer categoryId){
-        return productMapper.selectProductListByCategory(categoryId);
+    public List<ProductVo> getByCategory(Integer shopId){
+        return productMapper.selectProductListByCategory(shopId);
     }
     @Override
     public int update(Product product){

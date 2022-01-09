@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class DeliveryOrderVo implements Serializable {
     private static final long serialVersionUID = 6144455599924303947L;
 
-    private String id;
+    private Integer id;
     private Long orderNo;
     private String userId;
     private String shopName;

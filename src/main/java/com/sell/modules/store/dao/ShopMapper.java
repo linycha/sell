@@ -20,25 +20,25 @@ public interface ShopMapper {
 
     int insertSelective(Shop record);
 
-    Shop selectByPrimaryKey(String id);
+    Shop selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Shop record);
 
     int updateByPrimaryKey(Shop record);
 
-    List<ShopVo> selectShopList(@Param("name") String name, @Param("categoryIds")List<String> categoryIds,
+    List<ShopVo> selectShopList(@Param("name") String name, @Param("categoryIds")List<Integer> categoryIds,
                                 @Param("sort")String sort);
     String selectShopIdByUserId(String userId);
     /**
      * 获取店铺首页统计信息
      * @return dto
      */
-    ShopCountDTO selectShopCount(String shopId);
+    ShopCountDTO selectShopCount(Integer shopId);
 
     /**
      * 查询最近12个月每个月的数据统计
      * @param shopId
      * @return
      */
-    List<ShopCountDTO> getLastYearCount(String shopId);
+    List<ShopCountDTO> getLastYearCount(Integer shopId);
 }

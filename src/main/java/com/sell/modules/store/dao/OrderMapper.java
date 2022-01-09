@@ -34,7 +34,7 @@ public interface OrderMapper {
     /**
      * 5个小时内
      */
-    List<DeliveryOrderVo> selectDeliveryOrderList(@Param("deliveryId")String deliveryId,
+    List<DeliveryOrderVo> selectDeliveryOrderList(@Param("deliveryId")Integer deliveryId,
                                                   @Param("status")String status);
     String selectUserMobile(Long orderNo);
     String selectDeliveryMobile(Long orderNo);

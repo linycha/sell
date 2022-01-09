@@ -48,20 +48,15 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public Delivery getBest() {
         int count = deliveryMapper.selectCount();
-
+        //暂时使用随机匹配一个
         Random random = new Random();
         int number = random.nextInt(count);
         return deliveryMapper.selectBest(number);
     }
 
     @Override
-    public String getDeliveryId(String userId) {
-        return deliveryMapper.selectDeliveryIdByUserId(userId);
-    }
-
-    @Override
-    public Delivery getInfo(String userId) {
-        return deliveryMapper.selectByUserId(userId);
+    public Delivery getInfo(Integer deliveryId) {
+        return deliveryMapper.selectByUserId(deliveryId);
     }
 
     @Override
