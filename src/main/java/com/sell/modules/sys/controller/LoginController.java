@@ -109,7 +109,7 @@ public class LoginController {
 
     @PostMapping("register")
     public Res<String> register(String username, String mobile, String password){
-        return userService.register(username,mobile,password);
+        return userService.insertRegister(username,mobile,password);
     }
 
     @GetMapping("/to_login")

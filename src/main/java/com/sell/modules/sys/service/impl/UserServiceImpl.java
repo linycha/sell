@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public Res<String> register(String username,String mobile,String password){
+    public Res<String> insertRegister(String username,String mobile,String password){
         User user = new User();
         int i = userMapper.checkUsername(username);
         if(i == 1){

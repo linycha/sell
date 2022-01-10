@@ -42,7 +42,7 @@
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
      #{type,jdbcType=CHAR},now())
   </insert>
-  <insert id="insertSelective" parameterType="com.sell.modules.sys.entity.User">
+  <insert id="insertSelective" parameterType="com.sell.modules.sys.entity.User" useGeneratedKeys="true" keyProperty="id">
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

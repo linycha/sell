@@ -3,17 +3,14 @@ package com.sell.modules.sys.service;
 import com.sell.common.Res;
 import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.sys.dto.PasswordDTO;
-import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
-
-import java.util.List;
 
 /**
  * @author linyuc
  * @date 2019/12/18 15:15
  */
 public interface UserService {
-    Res<String> register(String username,String phone,String password);
+    Res<String> insertRegister(String username,String phone,String password);
     Res<String> updateMobile(User user);
 
     /**
