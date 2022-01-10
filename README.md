@@ -12,14 +12,22 @@
 
 整个项目用的都是目前主流的技术，覆盖前后端各个技术的基础，从数据库，到后端，再到前端，再部署上云，只需这一个项目即可了解掌握整个项目的开发流程及各种细节！
 
+ :smile:  :smile:  :smile:  :smile:  :smile:  :smile: 
+
  :raised_hand:  :raised_hand:  :raised_hand: 手机移动用户端访问地址（电脑端打开请按ctrl+shirt+i进入浏览器调试模式，调成手机大小模式）
- http://106.14.242.100:8090/#/user   
- :raised_hand:  :raised_hand:  :raised_hand: 项目接口文档地址：http://106.14.242.100:8086/doc.html   
- :raised_hand:  :raised_hand:  :raised_hand: 需要前端vue项目和sql文件的前往：
- http://106.14.242.100:8090/#/UploadRes
+ [点击进入移动用户端](http://106.14.242.100:8018/#/user)
 
-本人毕设项目，还请多多指教！如有疑问，请联系qq:1058298031!!!
+ :raised_hand:  :raised_hand:  :raised_hand: 商家端访问地址：[点击进入商家端访问地址](http://106.14.242.100:8017/#/login)
 
+ :raised_hand:  :raised_hand:  :raised_hand: 项目接口文档地址：[点击进入接口文档地址](http://106.14.242.100:8086/doc.html)
+
+需要前端代码及sql，请联系qq:1058298031!!!
+
+需要前端代码及sql，请联系qq:1058298031!!!
+
+如有疑问需要沟通交流或技术帮助，请联系qq:1058298031!!!
+
+如有疑问需要沟通交流或技术帮助，请联系qq:1058298031!!!
 
 **移动用户端主要界面：**    
 ![输入图片说明](src/main/resources/templates/images/%E7%94%A8%E6%88%B7%E7%AB%AF.png)
