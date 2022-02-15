@@ -16,11 +16,7 @@ import java.util.regex.Pattern;
  */
 public class Const {
     public static final String CURRENT_USER = "currentUser";
-<<<<<<< HEAD
-    public static final String USERNAME = "sername";
-=======
     public static final String USERNAME = "username";
->>>>>>> 0d4b376 (333)
     public static final String EMAIL = "email";
     public static final String PHONE = "phone";
     public static final String NOT_DELETE = "0";
