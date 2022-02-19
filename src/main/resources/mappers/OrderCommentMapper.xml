@@ -44,7 +44,7 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="orderId != null" >
+      <if test="orderNo != null" >
         order_no,
       </if>
       <if test="userId != null" >
@@ -72,16 +72,15 @@
         reply,
       </if>
       <if test="isAnonymity != null" >
-        is_anonymity,
+        is_anonymity
       </if>
-      create_time,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="orderId != null" >
-        #{orderId,jdbcType=VARCHAR},
+      <if test="orderNo != null" >
+        #{orderNo},
       </if>
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
@@ -108,9 +107,8 @@
         #{reply,jdbcType=VARCHAR},
       </if>
       <if test="isAnonymity != null" >
-        #{isAnonymity,jdbcType=CHAR},
+        #{isAnonymity,jdbcType=CHAR}
       </if>
-      now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.store.entity.OrderComment" >

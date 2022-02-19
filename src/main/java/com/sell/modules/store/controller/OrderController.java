@@ -17,10 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -48,7 +45,7 @@ public class OrderController {
     private WebSocket webSocket;
     @PostMapping("create")
     @ApiOperation("用户提交创建订单")
-    public Res<String> create(Order order) throws Exception{
+    public Res<String> create(@RequestBody Order order) throws Exception{
         System.out.println(order);
         //生成订单号
         Long orderNo = Const.generateOrderNo();
@@ -81,8 +78,8 @@ public class OrderController {
         //创建订单
         order.setUserId(UserUtils.getUserId());
         order.setOrderNo(orderNo);
-        order.setBoxCost(new BigDecimal(order.getBCost()));
-        order.setSendCost(new BigDecimal(order.getSCost()));
+        //order.setBoxCost(new BigDecimal(order.getBCost()));
+        //order.setSendCost(new BigDecimal(order.getSCost()));
         order.setPayMoney(new BigDecimal(order.getMoney()));
         order.setStatus(Const.OrderStatus.PAID);
         boolean b1 = orderService.save(order);

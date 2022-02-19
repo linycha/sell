@@ -117,9 +117,7 @@ public class UserController {
     }
     @PostMapping("feedback")
     @ApiOperation("用户端-发送意见反馈")
-    public Res<String> feedback(String content){
-        Feedback feedback = new Feedback();
-        feedback.setContent(content);
+    public Res<String> feedback(@RequestBody Feedback feedback){
         feedback.setUserId(UserUtils.getUserId());
         int result = userService.saveFeedback(feedback);
         if(result == 0){

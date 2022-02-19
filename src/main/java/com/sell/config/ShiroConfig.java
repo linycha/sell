@@ -66,6 +66,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/product/**","roles[business]");
         filterChainDefinitionMap.put("/shop/list","anon");
         filterChainDefinitionMap.put("/shop/info","anon");
+        filterChainDefinitionMap.put("/shop/delivery_mobile","anon");
         filterChainDefinitionMap.put("/shop/**","roles[business]");
         filterChainDefinitionMap.put("/location/**","anon");
         filterChainDefinitionMap.put("/order/**","roles[customer]");
