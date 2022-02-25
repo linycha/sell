@@ -15,9 +15,9 @@
  :smile:  :smile:  :smile:  :smile:  :smile:  :smile: 
 
  :raised_hand:  :raised_hand:  :raised_hand: 手机移动用户端访问地址（电脑端打开请按ctrl+shirt+i进入浏览器调试模式，调成手机大小模式）
- [点击进入移动用户端](http://106.14.242.100:8018/#/user)
+ [点击进入移动用户端](http://106.14.242.100:8018/#/user) (可先注册)
 
- :raised_hand:  :raised_hand:  :raised_hand: 商家端访问地址：[点击进入商家端访问地址](http://106.14.242.100:8017/#/login)
+ :raised_hand:  :raised_hand:  :raised_hand: 商家端访问地址：[点击进入商家端访问地址](http://106.14.242.100:8017/#/login) 体验账号：yidiandian/123456
 
  :raised_hand:  :raised_hand:  :raised_hand: 项目接口文档地址：[点击进入接口文档地址](http://106.14.242.100:8086/doc.html)
 
