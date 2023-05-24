@@ -7,6 +7,7 @@ import com.sell.modules.sys.entity.Permission;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author linyuc
  * @date 2019/12/29 15:41
  */
+@Slf4j
 public class AuthRealm extends AuthorizingRealm {
 
     @Autowired
@@ -33,7 +35,7 @@ public class AuthRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        System.out.println("授权 doGetAuthorizationInfo");
+        log.info("授权 doGetAuthorizationInfo");
         //从session里拿user,查找该用户有哪些角色、权限
         Object o = principals.fromRealm(this.getClass().getName()).iterator().next();
         //BeanUtils.copyProperties(o,user);
@@ -73,8 +75,7 @@ public class AuthRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenToken) throws AuthenticationException {
-
-        System.out.println("开始认证 doGetAuthenticationInfo");
+        log.info("开始认证 doGetAuthenticationInfo");
         //从token中获取用户信息
         UsernamePasswordToken token = (UsernamePasswordToken) authenToken;
         String username = token.getUsername();

@@ -2,19 +2,14 @@ package com.sell.config;
 
 
 import com.sell.modules.sys.security.AuthRealm;
-
 import com.sell.modules.sys.security.MySessionManager;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.crazycake.shiro.RedisCacheManager;
-import org.crazycake.shiro.RedisManager;
-import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -30,12 +25,12 @@ import java.util.Map;
  * @date 2020/1/2 13:41
  */
 @Configuration
+@Slf4j
 public class ShiroConfig {
 
     @Bean
     public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager manager){
-        System.out.println("执行 ShiroFilterFactoryBean.shiroFilter");
-
+        log.info("执行 ShiroFilterFactoryBean.shiroFilter");
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(securityManager());
         //没有登录时跳转的url
@@ -69,11 +64,15 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/shop/delivery_mobile","anon");
         filterChainDefinitionMap.put("/shop/**","roles[business]");
         filterChainDefinitionMap.put("/location/**","anon");
+        filterChainDefinitionMap.put("/order/listDelivery","authc");
+        filterChainDefinitionMap.put("/order/status","authc");
         filterChainDefinitionMap.put("/order/**","roles[customer]");
         filterChainDefinitionMap.put("/admin/**","roles[admin]");
         filterChainDefinitionMap.put("/test/**","anon");
         filterChainDefinitionMap.put("/file/**","anon");
         filterChainDefinitionMap.put("/comment/save","roles[customer]");
+        filterChainDefinitionMap.put("/comment/list","authc");
+        filterChainDefinitionMap.put("/comment/listUser","authc");
         filterChainDefinitionMap.put("/comment/**","roles[business]");
         //filterChainDefinitionMap.put("/admin/delete","perms[delete]");
         filterChainDefinitionMap.put("/user/**","authc");
@@ -111,7 +110,7 @@ public class ShiroConfig {
     public MySessionManager sessionManager(){
         MySessionManager sessionManager = new MySessionManager();
         //会话超时时间，单位毫秒，30分钟
-        sessionManager.setGlobalSessionTimeout(10*60*1000);
+        sessionManager.setGlobalSessionTimeout(30*60*1000);
         //去掉url上的jSessionId
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         //session持久化
@@ -120,7 +119,7 @@ public class ShiroConfig {
     }
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher(){
-        System.out.println("开始密码加解密");
+        log.info("开始密码加解密");
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
         //设置散列算法，使用MD5算法,散列2次
         credentialsMatcher.setHashAlgorithmName("md5");

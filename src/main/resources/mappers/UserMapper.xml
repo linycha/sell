@@ -89,8 +89,8 @@
         now(),
     </trim>
   </insert>
-  <insert id="insertCustomerRole" parameterType="integer">
-    insert into sys_user_role values (#{userId},"1")
+  <insert id="insertUserRole" parameterType="map">
+    insert into sys_user_role values (#{userId}, #{roleId})
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.sell.modules.sys.entity.User">
     update sys_user
@@ -109,6 +109,9 @@
       </if>
       <if test="headImg != null">
         head_img = #{headImg,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null and status != ''">
+        status = #{status,jdbcType=VARCHAR}
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -182,9 +185,19 @@
     left join sys_role r on r.id = ur.role_id
     where s.id=#{userId}
   </select>
-  <select id="selectUserList" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from sys_user
+  <select id="selectUserList" resultType="com.sell.modules.sys.entity.User">
+    select u.id, u.username, u.sex, u.mobile, u.head_img, u.status, u.create_time
+    from sys_user u
+    left join sys_user_role ur on ur.user_id = u.id
+    left join sys_role r on r.id = ur.role_id
+    where u.del_flag = 0 and r.name = 'customer'
+    <if test="username != null and username != ''">
+      and u.username like "%"#{username}"%"
+    </if>
+    <if test="status != null and status != ''">
+      and u.status = #{status}
+    </if>
+    order by u.create_time desc
   </select>
   <resultMap id="UserRolePermissionMap" type="com.sell.modules.sys.entity.User">
     <id column="id" javaType="java.lang.Integer" property="id" />
@@ -210,4 +223,12 @@
       <id column="url" property="url"/>
     </collection>
   </resultMap>
+
+  <update id="deleteBatch" parameterType="string">
+    update sys_user set del_flag = 1
+    where id in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="_parameter.split(',')">
+      #{item}
+    </foreach>
+  </update>
 </mapper>

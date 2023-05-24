@@ -127,4 +127,20 @@
     where parent_id = #{id}
   </select>
 
+  <select id="selectShopCategoryList" resultType="com.sell.modules.store.entity.ShopCategory">
+    select <include refid="Base_Column_List" />
+    from sell_shop_category where del_flag = 0
+    <if test="name != null and name != ''" >
+      and name like "%"#{name}"%"
+    </if>
+    order by sort, create_time desc
+  </select>
+
+  <update id="deleteBatch" parameterType="string">
+    update sell_shop_category set del_flag = 1
+    where id in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="_parameter.split(',')">
+      #{item}
+    </foreach>
+  </update>
 </mapper>

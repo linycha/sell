@@ -13,7 +13,8 @@ public enum ResponseCode {
     ERROR(400,"ERROR"),
     NEED_LOGIN(10,"NEED_LOGIN"),
     Unauthorized(401,"Unauthorized"),
-    Forbidden(403,"Forbidden");
+    Forbidden(403,"Forbidden"),
+    BUSINESS_ERROR(500,"BUSINESS_ERROR");
 
     private final int code;
     private final String desc;

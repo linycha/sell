@@ -63,7 +63,6 @@ public class ShippingController {
     @PutMapping("update")
     @ApiOperation("修改收货地址信息")
     public Res<String> update(@RequestBody Shipping shipping){
-        System.out.println(shipping);
         if("1".equals(shipping.getIsDefault())){
             shippingService.updateDefault(UserUtils.getUserId());
         }

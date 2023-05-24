@@ -1,5 +1,6 @@
 package com.sell.modules.sys.dao;
 
+import com.sell.modules.store.dto.QueryDTO;
 import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
@@ -27,12 +28,19 @@ public interface UserMapper {
      * @return
      */
     Role selectRoleByUserId(String userId);
-    List<User> selectUserList();
+
+    /**
+     * 查询用户列表
+     * @param dto
+     * @return
+     */
+    List<User> selectUserList(QueryDTO dto);
 
     /**
      * 添加普通用户的角色给用户
      */
-    int insertCustomerRole(Integer userId);
+    int insertUserRole(@Param("userId")Integer userId,@Param("roleId")Integer roleId);
+
     int updateByPrimaryKey(User record);
     int checkUsername(String username);
     int checkMobile(String mobile);
@@ -40,4 +48,10 @@ public interface UserMapper {
     int updatePasswordByUsername(@Param("username")String username,@Param("password")String password);
     int checkPassword(@Param("password")String password,@Param("userId")String userId);
     String selectUsernameByMobile(String phone);
+    /**
+     * 批量假删
+     * @param ids
+     * @return
+     */
+    int deleteBatch(String ids);
 }

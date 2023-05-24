@@ -32,7 +32,7 @@
     pay_type, remark, complete_time,status, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from sell_order
     where id = #{id,jdbcType=VARCHAR}
@@ -42,20 +42,20 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.sell.modules.store.entity.Order" >
-    insert into sell_order (id, order_no, user_id, 
-      shipping_id, shop_id, shop_name, 
-      shop_logo, shop_mobile, delivery_id,
-      delivery_name, delivery_mobile, box_cost,
-      send_cost, total_money, pay_money, 
-      pay_type, remark, complete_time, 
-      create_time, update_time)
-    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, 
-      #{shippingId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
-      #{shopLogo,jdbcType=VARCHAR}, #{shopMobile,jdbcType=VARCHAR}, #{deliveryId,jdbcType=VARCHAR},
-      #{deliveryName,jdbcType=VARCHAR}, #{deliveryMobile,jdbcType=VARCHAR}, #{boxCost,jdbcType=DECIMAL},
-      #{sendCost,jdbcType=DECIMAL}, #{totalMoney,jdbcType=DECIMAL}, #{payMoney,jdbcType=DECIMAL}, 
-      #{payType,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{completeTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    insert into sell_order (id, order_no, user_id,
+    shipping_id, shop_id, shop_name,
+    shop_logo, shop_mobile, delivery_id,
+    delivery_name, delivery_mobile, box_cost,
+    send_cost, total_money, pay_money,
+    pay_type, remark, complete_time,
+    create_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR},
+    #{shippingId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR},
+    #{shopLogo,jdbcType=VARCHAR}, #{shopMobile,jdbcType=VARCHAR}, #{deliveryId,jdbcType=VARCHAR},
+    #{deliveryName,jdbcType=VARCHAR}, #{deliveryMobile,jdbcType=VARCHAR}, #{boxCost,jdbcType=DECIMAL},
+    #{sendCost,jdbcType=DECIMAL}, #{totalMoney,jdbcType=DECIMAL}, #{payMoney,jdbcType=DECIMAL},
+    #{payType,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{completeTime,jdbcType=TIMESTAMP},
+    #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.sell.modules.store.entity.Order" >
     insert into sell_order
@@ -117,8 +117,8 @@
       <if test="status != null" >
         status,
       </if>
-        create_time,
-        update_time,
+      create_time,
+      update_time,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -228,8 +228,8 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="completeTime != null" >
-      complete_time = #{completeTime,jdbcType=TIMESTAMP},
-    </if>
+        complete_time = #{completeTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="status != null" >
         status = #{status,jdbcType=CHAR},
       </if>
@@ -245,24 +245,24 @@
   <update id="updateByPrimaryKey" parameterType="com.sell.modules.store.entity.Order" >
     update sell_order
     set order_no = #{orderNo,jdbcType=BIGINT},
-      user_id = #{userId,jdbcType=VARCHAR},
-      shipping_id = #{shippingId,jdbcType=VARCHAR},
-      shop_id = #{shopId,jdbcType=VARCHAR},
-      shop_name = #{shopName,jdbcType=VARCHAR},
-      shop_logo = #{shopLogo,jdbcType=VARCHAR},
-      shop_mobile = #{shopMobile,jdbcType=VARCHAR},
-      delivery_id = #{deliveryId,jdbcType=VARCHAR},
-      delivery_name = #{deliveryName,jdbcType=VARCHAR},
-      delivery_mobile = #{deliveryMobile,jdbcType=VARCHAR},
-      box_cost = #{boxCost,jdbcType=DECIMAL},
-      send_cost = #{sendCost,jdbcType=DECIMAL},
-      total_money = #{totalMoney,jdbcType=DECIMAL},
-      pay_money = #{payMoney,jdbcType=DECIMAL},
-      pay_type = #{payType,jdbcType=CHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      complete_time = #{completeTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    user_id = #{userId,jdbcType=VARCHAR},
+    shipping_id = #{shippingId,jdbcType=VARCHAR},
+    shop_id = #{shopId,jdbcType=VARCHAR},
+    shop_name = #{shopName,jdbcType=VARCHAR},
+    shop_logo = #{shopLogo,jdbcType=VARCHAR},
+    shop_mobile = #{shopMobile,jdbcType=VARCHAR},
+    delivery_id = #{deliveryId,jdbcType=VARCHAR},
+    delivery_name = #{deliveryName,jdbcType=VARCHAR},
+    delivery_mobile = #{deliveryMobile,jdbcType=VARCHAR},
+    box_cost = #{boxCost,jdbcType=DECIMAL},
+    send_cost = #{sendCost,jdbcType=DECIMAL},
+    total_money = #{totalMoney,jdbcType=DECIMAL},
+    pay_money = #{payMoney,jdbcType=DECIMAL},
+    pay_type = #{payType,jdbcType=CHAR},
+    remark = #{remark,jdbcType=VARCHAR},
+    complete_time = #{completeTime,jdbcType=TIMESTAMP},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
@@ -297,23 +297,27 @@
     o.order_no,
     o.remark,
     u.username,
-    o.delivery_name,
+    d.true_name deliveryName,
     o.pay_money,
     o.status,
     GROUP_CONCAT(CONCAT(oi.product_name,'×',oi.number)) cartStr
     from sell_order o
     left join sys_user u on o.user_id = u.id
     left join sell_order_item oi on o.order_no = oi.order_no
+    left join sell_delivery d on d.id = o.delivery_id
     where o.shop_id = #{shopId}
     <if test="status != null and status != ''">
       and o.status = #{status}
     </if>
-    <if test="orderNo != null and orderNo != ''">
-      and o.order_no like #{orderNo}
+    <if test="orderNo != null">
+      and o.order_no = #{orderNo}
+    </if>
+    <if test="mobile != null">
+      and u.mobile = #{mobile}
     </if>
     group by o.order_no order by o.create_time desc
   </select>
-<!--  用户端查看订单列表-->
+  <!--  用户端查看订单列表-->
   <select id="selectUserOrderList" parameterType="map" resultMap="UserOrderMap">
     select o.id as id,
     o.order_no,
@@ -324,10 +328,19 @@
     o.pay_money,
     o.create_time,
     oi.product_name as name,
-    oi.number as num
+    oi.number as num,
+    oi.product_id,
+    s.username
     from sell_order o
     left join sell_order_item oi on o.order_no = oi.order_no
-    where o.user_id = #{userId}
+    left join sys_user s on s.id = o.user_id
+    where 1=1
+    <if test="userId != null">
+      and o.user_id = #{userId}
+    </if>
+    <if test="deliveryId != null">
+      and o.delivery_id = #{deliveryId}
+    </if>
     <if test="orderNo != null and orderNo != ''">
       and o.order_no like #{orderNo}
     </if>
@@ -347,7 +360,10 @@
     from sell_order o
     left join sell_shop s on s.id = o.shop_id
     left join sell_shipping si on si.id = o.shipping_id
-    where o.delivery_id = #{deliveryId}
+    where 1=1
+    <if test="deliveryId != null">
+      and o.delivery_id = #{deliveryId}
+    </if>
     and o.status = #{status}
     /*and o.create_time > NOW()-INTERVAL 10 HOUR*/
   </select>
@@ -357,6 +373,7 @@
     <result column="order_no" javaType="java.lang.Long" jdbcType="BIGINT" property="orderNo" />
     <result column="shop_id" javaType="java.lang.String" jdbcType="VARCHAR" property="shopId" />
     <result column="shop_logo" javaType="java.lang.String" jdbcType="VARCHAR" property="shopLogo" />
+    <result column="username" javaType="java.lang.String" jdbcType="VARCHAR" property="username" />
     <result column="shop_name" javaType="java.lang.String" jdbcType="VARCHAR" property="shopName" />
     <result column="status" jdbcType="CHAR" javaType="java.lang.String" property="status" />
     <result column="pay_money" jdbcType="DECIMAL" javaType="java.math.BigDecimal" property="payMoney" />
@@ -366,6 +383,7 @@
   <resultMap id="CartMap" type="com.sell.modules.store.vo.Cart">
     <result column="name" property="name"/>
     <result column="num" property="num"/>
+    <result column="product_id" property="productId"/>
   </resultMap>
 
 </mapper>

@@ -29,7 +29,7 @@ public interface OrderMapper {
     int updateByPrimaryKey(Order record);
     List<NewOrderVo> selectNewOrderList(QueryOrderDTO dto);
 
-    List<UserOrderVo> selectUserOrderList(@Param("userId")Integer userId, @Param("orderNo")String orderNo);
+    List<UserOrderVo> selectUserOrderList(@Param("userId")Integer userId, @Param("deliveryId")Integer deliveryId, @Param("orderNo")String orderNo);
 
     /**
      * 5个小时内

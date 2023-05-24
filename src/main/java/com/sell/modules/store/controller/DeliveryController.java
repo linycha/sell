@@ -1,11 +1,11 @@
 package com.sell.modules.store.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.sell.common.Const;
 import com.sell.common.Res;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.entity.Delivery;
 import com.sell.modules.store.entity.Order;
-import com.sell.modules.store.entity.OrderStatus;
 import com.sell.modules.store.service.DeliveryService;
 import com.sell.modules.store.service.OrderService;
 import com.sell.modules.store.service.OrderStatusService;
@@ -39,13 +39,13 @@ public class DeliveryController {
     @Autowired
     private WebSocket webSocket;
     @GetMapping("info")
-    @ApiOperation("获取骑手基本信息")
+    @ApiOperation("获取骑手基本的基本个人信息")
     public Res<Delivery> info(){
         Delivery delivery = deliveryService.getInfo(UserUtils.getDeliveryId());
         return Res.success(delivery);
     }
     @PutMapping("start")
-    @ApiOperation("切换骑手工作状态")
+    @ApiOperation("切换骑手所处的工作状态")
     public Res<String> startWork(Integer id,boolean value){
         Delivery delivery = new Delivery();
         delivery.setId(id);
@@ -54,8 +54,8 @@ public class DeliveryController {
         }else{
             delivery.setStatus("2");
         }
-        boolean b = deliveryService.update(delivery);
-        if(!b){
+        int b = deliveryService.update(delivery);
+        if(b != 1){
             return Res.errorMsg("切换开工状态失败");
         }
         return Res.successMsg("切换开工状态成功");
@@ -63,7 +63,7 @@ public class DeliveryController {
     @GetMapping("new_list")
     @ApiOperation("获取骑手待接单列表")
     public Res<List<DeliveryOrderVo>> newOrderList(){
-        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(UserUtils.getDeliveryId(),Const.OrderStatus.SHOP_ACCEPT);
+        List<DeliveryOrderVo> orderList = orderService.getDeliveryOrderList(null,Const.OrderStatus.SHOP_ACCEPT);
 
         return Res.success(orderList);
     }
@@ -88,7 +88,12 @@ public class DeliveryController {
         if(orderNo == null){
             return Res.errorMsg("订单号参数错误");
         }
-        int result = orderService.updateStatusByOrderNo(orderNo, Const.OrderStatus.DELIVERY_ACCEPT);
+        Delivery delivery = deliveryService.getInfo(UserUtils.getDeliveryId());
+        if(ObjectUtil.notEqual("1",delivery.getStatus())) {
+            return Res.errorMsg("请先切换开工状态");
+        }
+        int result = orderService.update(Order.builder().orderNo(orderNo)
+                .status(Const.OrderStatus.DELIVERY_ACCEPT).deliveryId(UserUtils.getDeliveryId()).build());
         if(result == 0){
             return Res.errorMsg("确认接单失败");
         }

@@ -1,10 +1,6 @@
 package com.sell.modules.store.dto;
 
-import io.swagger.models.auth.In;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-
-import javax.ws.rs.DefaultValue;
 import java.io.Serializable;
 
 /**
@@ -17,7 +13,8 @@ public class QueryCommentDTO implements Serializable {
 
     private static final long serialVersionUID = 4230409002628279977L;
 
-    private Integer  shopId;
+    private Integer shopId;
+    private Integer userId;
 
     private String scoreType;
 

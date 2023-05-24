@@ -46,7 +46,6 @@ public class OrderController {
     @PostMapping("create")
     @ApiOperation("用户提交创建订单")
     public Res<String> create(@RequestBody Order order) throws Exception{
-        System.out.println(order);
         //生成订单号
         Long orderNo = Const.generateOrderNo();
         List<OrderItem> orderItemList = new ArrayList<>();
@@ -56,7 +55,8 @@ public class OrderController {
             JSONObject o= jsonArray.getJSONObject(i);
             OrderItem orderItem = new OrderItem();
             orderItem.setProductName(o.getString("name"));
-            orderItem.setProductImg(o.getString("logoImg"));
+            orderItem.setProductId(o.getInt("productId"));
+            //orderItem.setProductImg(o.getString("logoImg"));
             orderItem.setNumber(o.getInt("num"));
             orderItem.setSellPrice(new BigDecimal(o.getString("sellPrice")));
             orderItem.setShopId(order.getShopId());
@@ -92,12 +92,19 @@ public class OrderController {
             return Res.errorMsg("订单状态修改失败");
         }
         //webSocket消息推送通知商家
-        webSocket.sendOneMessage(order.getShopId().toString(), "您有一条新的Lin sell订单了");
+        //webSocket.sendOneMessage(order.getShopId().toString(), "您有一条新的Lin sell订单了");
         return Res.successMsg("订单创建成功");
     }
     @GetMapping("list_user")
     public Res<PageInfo<UserOrderVo>> listOfUser(String orderNo,String pageNum){
-        PageInfo<UserOrderVo> orderList = orderService.getUserOrderList(UserUtils.getUserId(),orderNo,pageNum);
+        PageInfo<UserOrderVo> orderList = orderService.getUserOrderList(UserUtils.getUserId(),null,orderNo,pageNum);
+        return Res.success(orderList);
+    }
+
+    @GetMapping("listDelivery")
+    @ApiOperation("获取骑手页面我的订单")
+    public Res<PageInfo<UserOrderVo>> listDelivery(String orderNo,String pageNum){
+        PageInfo<UserOrderVo> orderList = orderService.getUserOrderList(null,UserUtils.getDeliveryId(),orderNo,pageNum);
         return Res.success(orderList);
     }
     @GetMapping("detail")

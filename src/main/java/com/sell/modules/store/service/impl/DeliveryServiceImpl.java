@@ -1,15 +1,24 @@
 package com.sell.modules.store.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
+import com.sell.common.Res;
+import com.sell.common.ResponseCode;
 import com.sell.modules.store.dao.DeliveryMapper;
 import com.sell.modules.store.dao.OrderMapper;
+import com.sell.modules.store.dto.QueryDTO;
 import com.sell.modules.store.entity.Delivery;
 import com.sell.modules.store.entity.Order;
 import com.sell.modules.store.service.DeliveryService;
+import com.sell.modules.sys.dao.UserMapper;
+import com.sell.modules.sys.entity.User;
+import com.sell.modules.sys.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @author linyuc
@@ -21,6 +30,8 @@ public class DeliveryServiceImpl implements DeliveryService {
     private DeliveryMapper deliveryMapper;
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private UserService userService;
 
     /**
      * 指派订单给骑手,匹配出相应的骑手，修改order表
@@ -60,12 +71,21 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
-    public boolean update(Delivery delivery) {
-        int result = deliveryMapper.updateByPrimaryKeySelective(delivery);
-        if(result == 1){
-            return true;
+    public int update(Delivery delivery) {
+        return deliveryMapper.updateByPrimaryKeySelective(delivery);
+    }
+
+    @Override
+    public Res<Integer> save(Delivery delivery) {
+        delivery.setPassword("123456");
+        //先添加账号信息
+        Res<Integer> res = userService.insertRegister(delivery.getUsername(), delivery.getMobile(), delivery.getPassword(),3);
+        if(res.getCode() == ResponseCode.ERROR.getCode()){
+            return res;
         }
-        return false;
+        delivery.setUserId(res.getData());
+        deliveryMapper.insertSelective(delivery);
+        return Res.successMsg("添加骑手账号成功");
     }
 
     @Override
@@ -75,5 +95,21 @@ public class DeliveryServiceImpl implements DeliveryService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public PageInfo<Delivery> getDeliveryList(QueryDTO dto) {
+        Const.initPage(dto.getCurrent(),dto.getSize());
+        List<Delivery> list = deliveryMapper.selectDeliveryList(dto);
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public int deleteBatch(String ids) {
+        List<Integer> list = deliveryMapper.selectUserIdByDeliveryId(ids);
+        String userIds = list.stream().map(String::valueOf).collect(Collectors.joining(","));
+        // 删除用户表对应用户
+        userService.deleteBatch(userIds);
+        return deliveryMapper.deleteBatch(ids);
     }
 }

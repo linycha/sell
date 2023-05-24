@@ -12,7 +12,7 @@ import java.util.Date;
  * @date 2020/01/20 09:40
  */
 @Data
-@JsonIgnoreProperties({"userId","createTime","updateTime","delFlag"})
+@JsonIgnoreProperties({"updateTime","delFlag"})
 public class Shop {
     private Integer id;
 
@@ -28,7 +28,7 @@ public class Shop {
 
     private String address;
 
-    private String categoryId;
+    private Integer categoryId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "GMT+8")
     @DateTimeFormat(pattern = "HH:mm")
@@ -65,9 +65,16 @@ public class Shop {
 
     private String delFlag;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date updateTime;
+
     private String categoryName;
+
+    private String username;
+
+    private String password;
 
 }

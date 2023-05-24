@@ -12,9 +12,11 @@ import java.io.Serializable;
 public class QueryOrderDTO implements Serializable {
     private static final long serialVersionUID = -1984202400099317589L;
 
-    private Integer orderNo;
+    private Long orderNo;
 
     private Integer shopId;
+
+    private Long mobile;
 
     private String status;
 

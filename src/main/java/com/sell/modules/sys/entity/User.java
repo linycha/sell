@@ -1,5 +1,6 @@
 package com.sell.modules.sys.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.Lists;
 import lombok.*;
@@ -18,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonIgnoreProperties({"openId","password","sex","createTime","updateTime"})
+@JsonIgnoreProperties({"openId","password","sex","updateTime"})
 public class User implements Serializable {
     private static final long serialVersionUID = 7321352169002894594L;
     private Integer id;
@@ -39,8 +40,10 @@ public class User implements Serializable {
 
     private String status;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date updateTime;
 
     private String[] roles;

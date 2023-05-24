@@ -144,16 +144,7 @@
         monthly_sales,
       </if>
       <if test="status != null" >
-        status,
-      </if>
-      <if test="delFlag != null" >
-        del_flag,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
+        status
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -224,16 +215,7 @@
         #{monthlySales,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=CHAR},
-      </if>
-      <if test="delFlag != null" >
-        #{delFlag,jdbcType=CHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        #{status,jdbcType=CHAR}
       </if>
     </trim>
   </insert>
@@ -345,7 +327,7 @@
   <select id="selectShopList" parameterType="map" resultType="com.sell.modules.store.vo.ShopVo">
     select id, name, logo_img, address, tags,send_cost, delivery_cost, delivery_time, score, monthly_sales
     from sell_shop
-    where status = '1'
+    where del_flag = 0 and status = '1'
       <if test="name != null and name != ''">
        and name like "%"#{name}"%"
       </if>
@@ -366,16 +348,49 @@
     where user_id = #{userId}
   </select>
   <select id="selectShopCount" parameterType="integer" resultType="com.sell.modules.store.dto.ShopCountDTO">
-    select count(1) orderTotal,sum(pay_money) salesTotal,count(distinct user_id) customerTotal,
-           (select count(1) productTotal from sell_product where shop_id = #{shopId} ) productTotal
+    select count(1) orderTotal,sum(pay_money) salesTotal,
+    count(distinct user_id) customerTotal,
+           (select count(1) productTotal from sell_product where shop_id = #{shopId} and del_flag= 0 ) productTotal
            from sell_order where shop_id = #{shopId}
+    and status not in ('70', '71')
   </select>
   <select id="getLastYearCount" parameterType="integer" resultType="com.sell.modules.store.dto.ShopCountDTO">
     select count(id) orderTotal,count(DISTINCT user_id) customerTotal,
            DATE_FORMAT(create_time, '%Y%m') month,sum(pay_money) salesTotal
     from sell_order
     where shop_id = #{shopId} and DATE_FORMAT(create_time, '%Y%m') >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 12 MONTH), '%Y%m')
+    and status not in ('70', '71')
     group by DATE_FORMAT(create_time, '%Y%m') order by create_time desc
   </select>
 
+  <select id="selectAdminShopList" resultType="com.sell.modules.store.entity.Shop">
+    select s.id, s.logo_img, s.user_id, s.name, s.mobile, s.category_id, s.notice, s.score, s.status, s.create_time,
+      u.username, c.name categoryName
+    from sell_shop s
+    left join sys_user u on u.id = s.user_id
+    left join sell_shop_category c on c.id = s.category_id
+    where s.del_flag = 0
+    <if test="name != null and name != ''">
+      and s.name like "%"#{name}"%"
+    </if>
+    <if test="status != null and status != ''">
+      and s.status = #{status}
+    </if>
+    order by s.create_time desc
+    </select>
+
+  <select id="selectUserIdByShopId" resultType="java.lang.Integer">
+    select user_id from sell_shop where del_flag = 0
+    and id in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="_parameter.split(',')">
+      #{item}
+    </foreach>
+  </select>
+  <update id="deleteBatch" parameterType="string">
+    update sell_shop set del_flag = 1
+    where id in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="_parameter.split(',')">
+      #{item}
+    </foreach>
+  </update>
 </mapper>

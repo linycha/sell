@@ -3,15 +3,16 @@ package com.sell.modules.store.controller;
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
 import com.sell.common.Res;
-import com.sell.common.utils.FTPUtil;
-import com.sell.common.utils.PropertiesUtil;
+import com.sell.common.utils.FileUploadUtil;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.dto.QueryOrderDTO;
 import com.sell.modules.store.dto.ShopCountDTO;
-import com.sell.modules.store.entity.Delivery;
 import com.sell.modules.store.entity.Order;
 import com.sell.modules.store.entity.Shop;
-import com.sell.modules.store.service.*;
+import com.sell.modules.store.service.DeliveryService;
+import com.sell.modules.store.service.OrderService;
+import com.sell.modules.store.service.OrderStatusService;
+import com.sell.modules.store.service.ShopService;
 import com.sell.modules.store.vo.NewOrderVo;
 import com.sell.modules.store.vo.ShopVo;
 import com.sell.modules.sys.security.WebSocket;
@@ -19,12 +20,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import javax.servlet.http.HttpServletRequest;
-import java.net.URL;
+
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class ShopController {
     @Autowired
     private WebSocket webSocket;
     @Autowired
-    private FTPUtil ftpUtil;
+    private FileUploadUtil fileUploadUtil;
     /**
      * 用户端-搜索店铺列表
      */
@@ -57,12 +57,6 @@ public class ShopController {
     public Res<PageInfo<ShopVo>> list(String name, Integer categoryId, @RequestParam(defaultValue = "0") Integer sortType,
                                       @RequestParam(defaultValue = "1")Integer pageNum){
         PageInfo<ShopVo> shopList = shopService.getShopList(name,categoryId,sortType,pageNum);
-        if(shopList == null){
-            return Res.errorMsg("该分类下暂无相应店铺");
-        }
-        if(shopList.getTotal() == 0 ){
-            return Res.errorMsg("未找到相应店铺");
-        }
         return Res.success(shopList);
     }
     @GetMapping("info")
@@ -97,22 +91,16 @@ public class ShopController {
     }
     @PostMapping("update_logo")
     @ApiOperation("商家端-修改店铺logo")
-    public Res<String> upload(MultipartFile file,
-                      HttpServletRequest request){
-        String path = request.getSession().getServletContext().getRealPath("upload");
+    public Res<String> upload(MultipartFile file){
         Shop shop = new Shop();
         shop.setId(UserUtils.getShopId());
         String url;
         try {
-            String fileName = ftpUtil.uploadFile(file,path,Const.FTP_PATH_SHOP);
-            if(fileName == null){
-                return Res.errorMsg("上传图片失败");
-            }
-            url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTP_PATH_SHOP+"/"+fileName;
+            url = fileUploadUtil.uploadFile(file);
             shop.setLogoImg(url);
-        }catch (Exception e){
-            log.info(e.getMessage());
-            return Res.errorMsg("ftp上传图片出现异常");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Res.errorMsg("上传文件失败");
         }
         int result = shopService.updateSelective(shop);
         if(result == 0){
@@ -153,11 +141,11 @@ public class ShopController {
             return Res.errorMsg("订单号参数错误");
         }
         //分派订单给骑手,匹配最佳骑手
-        Delivery delivery = deliveryService.getBest();
+        //Delivery delivery = deliveryService.getBest();
         Order order = new Order();
         order.setOrderNo(orderNo);
-        order.setDeliveryId(delivery.getId());
-        order.setDeliveryName(delivery.getTrueName());
+/*        order.setDeliveryId(delivery.getId());
+        order.setDeliveryName(delivery.getTrueName());*/
         order.setStatus(Const.OrderStatus.SHOP_ACCEPT);
         int result = orderService.update(order);
         if(result == 0){
@@ -170,7 +158,7 @@ public class ShopController {
         }
         String userId = orderService.getUserId(orderNo);
         //把消息推送给骑手和用户
-        webSocket.sendOneMessage(delivery.getId().toString(),"您有一条新的Lin sell订单了");
+        //webSocket.sendOneMessage(delivery.getId().toString(),"您有一条新的Lin sell订单了");
         webSocket.sendOneMessage(userId,"您有一条订单已被商家接单");
         return Res.successMsg("商家确认接单成功，已派单给相应的骑手");
     }

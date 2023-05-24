@@ -1,13 +1,13 @@
 package com.sell.modules.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sell.modules.sys.entity.Permission;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +16,9 @@ import java.util.List;
  * @date 2020/03/01 00:35
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Order implements Serializable {
     private static final long serialVersionUID = 3515425295792740287L;
     private Integer id;

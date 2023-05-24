@@ -1,7 +1,10 @@
 package com.sell.modules.sys.service;
 
+import com.github.pagehelper.PageInfo;
 import com.sell.common.Res;
+import com.sell.modules.store.dto.QueryDTO;
 import com.sell.modules.store.entity.Feedback;
+import com.sell.modules.store.entity.ProductCategory;
 import com.sell.modules.sys.dto.PasswordDTO;
 import com.sell.modules.sys.entity.User;
 
@@ -10,7 +13,10 @@ import com.sell.modules.sys.entity.User;
  * @date 2019/12/18 15:15
  */
 public interface UserService {
-    Res<String> insertRegister(String username,String phone,String password);
+    /**
+     * 注册添加账号
+     */
+    Res<Integer> insertRegister(String username,String phone,String password, Integer roleId);
     Res<String> updateMobile(User user);
 
     /**
@@ -33,4 +39,15 @@ public interface UserService {
 
     Res<String> updateUsername(User user);
 
+    /**
+     * 查询普通用户列表
+     * @param dto
+     * @return
+     */
+    PageInfo<User> getUserList(QueryDTO dto);
+    /**
+     * 批量假删
+     * @param ids
+     */
+    int deleteBatch(String ids);
 }

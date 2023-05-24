@@ -3,8 +3,7 @@ package com.sell.modules.store.controller;
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
 import com.sell.common.Res;
-import com.sell.common.utils.FTPUtil;
-import com.sell.common.utils.PropertiesUtil;
+import com.sell.common.utils.FileUploadUtil;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.dto.QueryCommentDTO;
 import com.sell.modules.store.entity.OrderComment;
@@ -15,11 +14,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
@@ -38,21 +36,19 @@ public class OrderCommentController {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private FTPUtil ftpUtil;
+    private FileUploadUtil fileUploadUtil;
 
     @PostMapping("save")
     @ApiOperation("用户提交保存评价信息")
-    public Res<String> save(OrderComment orderComment, HttpServletRequest request){
+    public Res<String> save(OrderComment orderComment){
         orderComment.setUserId(UserUtils.getUserId());
         if(orderComment.getFile() != null){
-            String path = request.getSession().getServletContext().getRealPath("upload");
             try {
-                String fileName = ftpUtil.uploadFile(orderComment.getFile(),path, Const.FTP_PATH_COMMENT);
-                String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTP_PATH_COMMENT+"/"+fileName;
-                orderComment.setImages(url);
-            }catch (Exception e){
-                log.info(e.getMessage());
-                return Res.errorMsg("上传评价图片出现异常");
+                String newFileName = fileUploadUtil.uploadFile(orderComment.getFile());
+                orderComment.setImages(newFileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return Res.errorMsg("上传文件失败");
             }
         }
         BigDecimal score = new BigDecimal(orderComment.getScores());
@@ -69,7 +65,6 @@ public class OrderCommentController {
         if(!b2){
             return Res.errorMsg("评价失败");
         }
-        System.out.println("评价成功");
         return Res.successMsg("评价成功");
     }
 
@@ -79,7 +74,19 @@ public class OrderCommentController {
     @GetMapping("list")
     @ApiOperation("商家发起查询自己的订单评价列表")
     public Res<PageInfo<OrderComment>> list(QueryCommentDTO dto){
-        dto.setShopId(UserUtils.getShopId());
+        if(dto.getShopId() == null) {
+            dto.setShopId(UserUtils.getShopId());
+        }
+        return Res.success(orderCommentService.list(dto));
+    }
+
+    /**
+     * 用户查询自己的订单评价列表
+     */
+    @GetMapping("listUser")
+    @ApiOperation("商家发起查询自己的订单评价列表")
+    public Res<PageInfo<OrderComment>> listUser(QueryCommentDTO dto){
+        dto.setUserId(UserUtils.getUserId());
         return Res.success(orderCommentService.list(dto));
     }
 

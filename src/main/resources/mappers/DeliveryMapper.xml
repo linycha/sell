@@ -43,9 +43,6 @@
   <insert id="insertSelective" parameterType="com.sell.modules.store.entity.Delivery" >
     insert into sell_delivery
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="userId != null" >
         user_id,
       </if>
@@ -71,16 +68,10 @@
         total_task_num,
       </if>
       <if test="status != null" >
-        status,
-      </if>
-      <if test="addTime != null" >
-        add_time,
+        status
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
-      </if>
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
       </if>
@@ -106,10 +97,7 @@
         #{totalTaskNum,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="addTime != null" >
-        #{addTime,jdbcType=TIMESTAMP},
+        #{status,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>
@@ -142,9 +130,6 @@
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="addTime != null" >
-        add_time = #{addTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -185,4 +170,34 @@
     total_task_num = total_task_num+1
      where user_id = #{userId}
   </update>
+
+  <update id="deleteBatch" parameterType="string">
+    update sell_delivery set del_flag = 1
+    where id in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="_parameter.split(',')">
+      #{item}
+    </foreach>
+  </update>
+
+  <select id="selectDeliveryList" resultType="com.sell.modules.store.entity.Delivery">
+    select d.id, d.user_id, d.true_name, d.mobile, d.score, d.status, u.username, d.create_time
+    from sell_delivery d
+    left join sys_user u on u.id = d.user_id
+    where d.del_flag = 0
+    <if test="username != null and username != ''">
+      and u.username like "%"#{username}"%"
+    </if>
+    <if test="status != null and status != ''">
+      and u.status = #{status}
+    </if>
+    order by d.create_time desc
+  </select>
+
+  <select id="selectUserIdByDeliveryId" resultType="java.lang.Integer">
+    select user_id from sell_delivery where del_flag = 0
+    and id in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="_parameter.split(',')">
+      #{item}
+    </foreach>
+  </select>
 </mapper>

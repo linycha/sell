@@ -2,8 +2,7 @@ package com.sell.modules.sys.controller;
 
 import com.sell.common.Const;
 import com.sell.common.Res;
-import com.sell.common.utils.FTPUtil;
-import com.sell.common.utils.PropertiesUtil;
+import com.sell.common.utils.FileUploadUtil;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.store.service.OrderService;
@@ -16,12 +15,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * @author linyuc
@@ -42,7 +40,7 @@ public class UserController {
     @Autowired
     private WebSocket webSocket;
     @Autowired
-    private FTPUtil ftpUtil;
+    private FileUploadUtil fileUploadUtil;
 
     /**
      * 获取用户个人信息
@@ -58,33 +56,23 @@ public class UserController {
     }
     @PutMapping("update_head")
     @ApiOperation("修改个人头像")
-    public Res<String> updateHead(MultipartFile file, HttpServletRequest request){
+    public Res<String> updateHead(MultipartFile file) throws IOException {
         if(file == null){
             return Res.errorMsg("上传头像为空");
         }
-        String path = request.getSession().getServletContext().getRealPath("upload");
         User user = new User();
         user.setId(UserUtils.getUserId());
-        try {
-            String fileName = ftpUtil.uploadFile(file,path,Const.FTP_PATH_USER);
-            if(fileName == null){
-                return Res.errorMsg("ftp上传图片出现失败");
-            }
-            String url = PropertiesUtil.getProperty("ftp.prefix")+Const.FTP_PATH_USER+"/"+fileName;
-            user.setHeadImg(url);
-        }catch (Exception e){
-            log.info(e.getMessage());
-            return Res.errorMsg("ftp上传图片出现异常");
-        }
+        String url = fileUploadUtil.uploadFile(file);
+        user.setHeadImg(url);
         int result = userService.update(user);
-        if(result == 0){
-            return Res.errorMsg("修改头像失败");
+        if(result > 0){
+            return Res.errorMsg("修改头像成功");
         }
-        return Res.successMsg("修改头像成功");
+        return Res.successMsg("修改头像失败");
     }
     @PutMapping("update_mobile")
     @ApiOperation("修改手机号")
-    public Res<String> updateMobile(String mobile){
+    public Res<String> updateMobile(@RequestBody String mobile){
         User user = new User();
         user.setId(UserUtils.getUser().getId());
         user.setMobile(mobile);

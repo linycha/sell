@@ -7,6 +7,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.BeanUtils;
 
 /**
+ * 获取当前登录用户信息工具类
  * @author linyuc
  * @date 2020/1/15 20:25
  */

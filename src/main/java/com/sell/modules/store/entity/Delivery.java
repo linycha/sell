@@ -1,5 +1,6 @@
 package com.sell.modules.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,4 +35,11 @@ public class Delivery {
     private String status;
 
     private Date addTime;
+
+    private String username;
+
+    private String password;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
+    private Date createTime;
 }

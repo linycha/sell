@@ -75,6 +75,7 @@ public class ProductCategoryController {
         }
         return Res.errorMsg("修改失败");
     }
+
     @DeleteMapping("delete")
     @RequiresRoles("business")
     @ApiOperation("删除商品分类")

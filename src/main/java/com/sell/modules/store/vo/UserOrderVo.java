@@ -25,6 +25,7 @@ public class UserOrderVo implements Serializable {
     private BigDecimal payMoney;
     private Date completeTime;
     private String cartStr;
+    private String username;
     //扩展用
     private String completeTimeStr;
     private List<Cart> carts = new ArrayList<>();

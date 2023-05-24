@@ -1,5 +1,6 @@
 package com.sell.modules.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-@JsonIgnoreProperties({"parentId","sort","delFlag","createTime","updateTime"})
+@JsonIgnoreProperties({"parentId","sort","delFlag"})
 public class ShopCategory {
     private Integer id;
 
@@ -26,8 +27,10 @@ public class ShopCategory {
 
     private Integer delFlag;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
     private Date updateTime;
     //返回给前端的
     private String text;

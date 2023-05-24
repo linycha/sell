@@ -1,18 +1,22 @@
 package com.sell.modules.sys.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
 import com.sell.common.Res;
 import com.sell.common.utils.CheckUtil;
+import com.sell.common.utils.UserUtils;
+import com.sell.modules.store.dto.QueryDTO;
 import com.sell.modules.store.entity.Feedback;
 import com.sell.modules.sys.dao.UserMapper;
 import com.sell.modules.sys.dto.PasswordDTO;
 import com.sell.modules.sys.entity.Role;
 import com.sell.modules.sys.entity.User;
 import com.sell.modules.sys.service.UserService;
-import com.sell.common.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 /**
@@ -25,7 +29,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public Res<String> insertRegister(String username,String mobile,String password){
+    public Res<Integer> insertRegister(String username,String mobile,String password, Integer roleId){
         User user = new User();
         int i = userMapper.checkUsername(username);
         if(i == 1){
@@ -48,14 +52,17 @@ public class UserServiceImpl implements UserService {
         if(result == 0) {
             return Res.errorMsg("注册失败");
         }
-        //添加普通用户的权限
-        userMapper.insertCustomerRole(user.getId());
-        return Res.successMsg("注册成功");
+        //添加账号的权限
+        userMapper.insertUserRole(user.getId(), roleId);
+        return Res.success(user.getId());
     }
     @Override
     public Res<String> updateMobile(User user){
+        if(!CheckUtil.isMobile(user.getMobile())){
+            return Res.errorMsg("手机号格式错误");
+        }
         int result = userMapper.checkMobile(user.getMobile());
-        if(result != 1){
+        if(result > 0){
             return Res.errorMsg("手机号已存在");
         }
         result = userMapper.updateByPrimaryKeySelective(user);
@@ -145,6 +152,10 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public int update(User user){
+        //密码加密
+        if(StringUtils.isNotBlank(user.getPassword())){
+            user.setPassword(UserUtils.hashTwo(user.getPassword()));
+        }
         return userMapper.updateByPrimaryKeySelective(user);
     }
 
@@ -164,6 +175,18 @@ public class UserServiceImpl implements UserService {
             return Res.errorMsg("修改用户名失败");
         }
         return Res.successMsg("修改用户名成功");
+    }
+
+    @Override
+    public PageInfo<User> getUserList(QueryDTO dto) {
+        Const.initPage(dto.getCurrent(),dto.getSize());
+        List<User> list = userMapper.selectUserList(dto);
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public int deleteBatch(String ids) {
+        return userMapper.deleteBatch(ids);
     }
 
 }

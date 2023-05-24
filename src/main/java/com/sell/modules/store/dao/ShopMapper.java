@@ -1,5 +1,6 @@
 package com.sell.modules.store.dao;
 
+import com.sell.modules.store.dto.QueryDTO;
 import com.sell.modules.store.dto.ShopCountDTO;
 import com.sell.modules.store.entity.Shop;
 
@@ -41,4 +42,14 @@ public interface ShopMapper {
      * @return
      */
     List<ShopCountDTO> getLastYearCount(Integer shopId);
+
+    List<Shop> selectAdminShopList(QueryDTO dto);
+
+    List<Integer> selectUserIdByShopId(String ids);
+    /**
+     * 批量假删
+     * @param ids
+     * @return
+     */
+    int deleteBatch(String ids);
 }

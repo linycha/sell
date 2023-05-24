@@ -27,12 +27,21 @@ public class LoginController {
     private UserService userService;
 
     @GetMapping("login")
-    public Res<Map<String,Object>> login(String username, String password){
+    public Res<Map<String,Object>> login(String username, String password, String role){
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
         Subject subject = SecurityUtils.getSubject();
         Map<String,Object> info = new HashMap<>();
         try {
             subject.login(token);
+            if(!UserUtils.getRole().equals(role)){
+                subject.logout();
+                return Res.errorMsg("该账号角色与所登录角色不符！");
+            }
+/*            //校验是否是商家账号
+            if(Const.USER_ROLE_ADMIN.equals(UserUtils.getRole()) || Const.USER_ROLE_BUSINESS.equals(UserUtils.getRole())){
+                subject.logout();
+                return Res.errorMsg("该账号不是普通用户/骑手账号");
+            }*/
             info.put("token",subject.getSession().getId());
             info.put("userId",UserUtils.getUserId());
             return Res.success("登录成功", info);
@@ -49,7 +58,7 @@ public class LoginController {
     }
 
     /**
-     * 商家登录
+     * 商家登录接口
      */
     @GetMapping("business_login")
     public Res<Map<String,Object>> shopLogin(String username, String password){
@@ -59,9 +68,9 @@ public class LoginController {
         try {
             subject.login(token);
             //校验是否是商家账号
-            if(!Const.USER_ROLE_BUSINESS.equals(UserUtils.getRole())){
+            if(Const.USER_ROLE_DELIVERY.equals(UserUtils.getRole()) || Const.USER_ROLE_CUSTOMER.equals(UserUtils.getRole())){
                 subject.logout();
-                return Res.errorMsg("该账号不是商家账号");
+                return Res.errorMsg("该账号不是商家/管理员账号");
             }
             info.put("token",subject.getSession().getId());
             info.put("shopId",UserUtils.getShopId());
@@ -78,7 +87,7 @@ public class LoginController {
         }
     }
     /**
-     * 骑手登录
+     * 骑手登录接口
      */
     @GetMapping("delivery_login")
     public Res<Map<String,Object>> deliveryLogin(String username, String password){
@@ -108,8 +117,8 @@ public class LoginController {
     }
 
     @PostMapping("register")
-    public Res<String> register(String username, String mobile, String password){
-        return userService.insertRegister(username,mobile,password);
+    public Res<Integer> register(String username, String mobile, String password){
+        return userService.insertRegister(username,mobile,password,1);
     }
 
     @GetMapping("/to_login")

@@ -1,18 +1,20 @@
 package com.sell.modules.store.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
 import com.sell.common.Res;
+import com.sell.common.ResponseCode;
 import com.sell.common.utils.UserUtils;
 import com.sell.modules.store.dao.ShopCategoryMapper;
 import com.sell.modules.store.dao.ShopMapper;
+import com.sell.modules.store.dto.QueryDTO;
 import com.sell.modules.store.dto.ShopCountDTO;
 import com.sell.modules.store.entity.Shop;
-import com.sell.modules.store.entity.ShopCategory;
 import com.sell.modules.store.service.ShopService;
 import com.sell.modules.store.vo.ShopVo;
-import org.apache.commons.lang3.StringUtils;
+import com.sell.modules.sys.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,29 +33,22 @@ public class ShopServiceImpl implements ShopService {
     private ShopMapper shopMapper;
     @Autowired
     private ShopCategoryMapper shopCategoryMapper;
+    @Autowired
+    private UserService userService;
 
     @Override
     public PageInfo<ShopVo> getShopList(String name, Integer categoryId, Integer sortType,Integer pageNum){
         String sort = Const.ShopList.ORDER_BY.get(sortType);
         //判断是否是顶级分类，如果是查找它的二级分类放到categoryIds里
         List<Integer> categoryIds = new ArrayList<>();
-        List<ShopVo> shopList = new ArrayList<>();
         if(categoryId != null){
-            ShopCategory shopCategory = shopCategoryMapper.selectByPrimaryKey(categoryId);
-            if(shopCategory.getParentId().equals(Const.CATEGORY_PARENT_ID)){
-                categoryIds = shopCategoryMapper.selectCategoryList(categoryId);
-                if(categoryIds.size() == 0){
-                    return null;
-                }
-            }else{
-                categoryIds.add(categoryId);
-            }
-        }else{
+            categoryIds.add(categoryId);
+        }else {
             categoryIds = null;
         }
         //给予选择的分页大小和分类
         PageHelper.startPage(pageNum,Const.PAGE_DEFAULT_SIZE2);
-        shopList = shopMapper.selectShopList(name, categoryIds, sort);
+        List<ShopVo> shopList = shopMapper.selectShopList(name, categoryIds, sort);
         return new PageInfo<>(shopList);
     }
     @Override
@@ -89,6 +84,37 @@ public class ShopServiceImpl implements ShopService {
         }
         return list;
     }
+
+    @Override
+    public PageInfo<Shop> queryShopList(QueryDTO dto) {
+        Const.initPage(dto.getCurrent(),dto.getSize());
+        List<Shop> list = shopMapper.selectAdminShopList(dto);
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public int deleteBatch(String ids) {
+        List<Integer> list = shopMapper.selectUserIdByShopId(ids);
+        String userIds = list.stream().map(String::valueOf).collect(Collectors.joining(","));
+        // 删除用户表对应用户
+        userService.deleteBatch(userIds);
+        return shopMapper.deleteBatch(ids);
+    }
+    @Override
+    public Res<Integer> save(Shop shop) {
+        shop.setPassword("123456");
+        //先添加账号信息
+        Res<Integer> res = userService.insertRegister(shop.getUsername(), shop.getMobile(), shop.getPassword(),2);
+        if(res.getCode() == ResponseCode.ERROR.getCode()){
+            return res;
+        }
+        shop.setUserId(res.getData());
+        shop.setOpeningTime(DateUtil.parseTime("00:00:00"));
+        shop.setClosingTime(DateUtil.parseTime("23:59:59"));
+        shopMapper.insertSelective(shop);
+        return Res.successMsg("添加商家店铺成功");
+    }
+
     List<String> getLastSevMonth(){
         List<String> strings = new ArrayList<>();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMM");

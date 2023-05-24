@@ -1,5 +1,6 @@
 package com.sell.modules.sys.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionContext;
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
@@ -16,6 +17,7 @@ import java.io.Serializable;
  * @author linyuc
  * @date 2020/1/1 21:18
  */
+@Slf4j
 public class MySessionManager extends DefaultWebSessionManager {
 
     private static final String AUTHORIZATION = "token";
@@ -29,14 +31,13 @@ public class MySessionManager extends DefaultWebSessionManager {
         //从请求头获取token
         String token = WebUtils.toHttp(request).getHeader(AUTHORIZATION);
         if(token != null){
-            System.out.println("token准备中,传过来的token值为："+token);
+            log.info("token准备中,传过来的token值为："+token);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, ShiroHttpServletRequest.COOKIE_SESSION_ID_SOURCE);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, token);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
             return token;
         }else{
-            System.out.println("token from request header is null");
-            //return null;
+            log.info("请求头里的token不能为空！");
             return super.getSessionId(request,response);
         }
 

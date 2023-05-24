@@ -15,7 +15,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * FTP工具类
+ * FTP文件上传工具类
  * @author linyuc
  * @date 2019/12/20 13:45
  */

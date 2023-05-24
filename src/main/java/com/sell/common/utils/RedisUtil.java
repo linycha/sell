@@ -57,7 +57,6 @@ public class RedisUtil {
         try {
             return redisTemplate.hasKey(key);
         } catch (Exception e) {
-            System.out.println("aaaaa");
             e.printStackTrace();
             return false;
         }

@@ -1,8 +1,8 @@
 package com.sell.modules.store.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageInfo;
 import com.sell.common.Const;
-import com.sell.common.utils.DateTimeUtil;
 import com.sell.modules.store.dao.OrderMapper;
 import com.sell.modules.store.dto.QueryOrderDTO;
 import com.sell.modules.store.entity.Order;
@@ -62,24 +62,22 @@ public class OrderServiceImpl implements OrderService {
      * 查询用户自己的订单列表
      */
     @Override
-    public PageInfo<UserOrderVo> getUserOrderList(Integer userId, String orderNo, String pageNum) {
+    public PageInfo<UserOrderVo> getUserOrderList(Integer userId,Integer deliveryId, String orderNo, String pageNum) {
         //先不分页
         /*int page = Const.PAGE_DEFAULT_NUM;
         if(!StringUtils.isBlank(pageNum)){
             page = Integer.parseInt(pageNum);
         }
         PageHelper.startPage(page,Const.PAGE_DEFAULT_SIZE2);*/
-        List<UserOrderVo> orderList = orderMapper.selectUserOrderList(userId,orderNo);
+        List<UserOrderVo> orderList = orderMapper.selectUserOrderList(userId,deliveryId,orderNo);
         //处理得到的商品信息和数量拼接成String字符串
         for(UserOrderVo order : orderList){
-            System.out.println(order.toString());
-            String str = "";
+            StringBuilder str = new StringBuilder();
             for(Cart cart : order.getCarts()){
-                str += cart.getName()+ "×" + cart.getNum()+",";
+                str.append(cart.getName()).append("×").append(cart.getNum()).append(",");
             }
-            order.setCartStr(str);
-            order.setCompleteTimeStr(DateTimeUtil.dateToStr(order.getCompleteTime()));
-            order.setCarts(null);
+            order.setCartStr(str.toString());
+            order.setCompleteTimeStr(DateUtil.formatDateTime(order.getCompleteTime()));
         }
         return new PageInfo<>(orderList);
     }

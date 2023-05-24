@@ -1,17 +1,8 @@
 package com.sell.modules.store.service.impl;
 
-import com.google.common.collect.Lists;
-import com.sell.common.utils.FTPUtil;
 import com.sell.modules.store.service.FileService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
 
 /**
  * @author linyuc

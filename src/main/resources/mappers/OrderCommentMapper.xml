@@ -169,20 +169,26 @@
            content, images, score, c.status, reply, is_anonymity, c.create_time
     from sell_order_comment c
     left join sys_user u on u.id = c.user_id
-    where shop_id = #{shopId} and c.del_flag = 0
+    where c.del_flag = 0
+    <if test="shopId != null" >
+      and c.shop_id = #{shopId}
+    </if>
+    <if test="userId != null" >
+      and c.user_id = #{userId}
+    </if>
     <if test="isAnonymity != null and isAnonymity != ''" >
       and is_anonymity = #{isAnonymity}
     </if>
     <if test="status != null and status != '' " >
       and c.status = #{status}
     </if>
-    <if test="scoreType == 0" >
+    <if test="scoreType != null and scoreType !='' and scoreType =='0'.toString()" >
       and score between 4 and 5
     </if>
-    <if test="scoreType == 1" >
+    <if test="scoreType != null and scoreType !='' and scoreType =='1'.toString()" >
       and score between 2.5 and 4
     </if>
-    <if test="scoreType == 2" >
+    <if test="scoreType != null and scoreType !='' and scoreType =='2'.toString()" >
       and score between 1 and 2.5
     </if>
     order by c.create_time desc
