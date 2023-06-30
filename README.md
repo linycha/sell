@@ -22,7 +22,7 @@
 **移动用户端主要界面：**    
 ![输入图片说明](src/main/resources/templates/images/%E7%94%A8%E6%88%B7%E7%AB%AF.png)
 ### 项目说明：
-本项目后端代码已全部开源，后端开发者可直接拉取下载代码，
+本项目后端代码已全部开源，后端开发者可直接拉取下载代码，沟通联系开发者：qq 1058298031
 如有疑问可沟通交流！
 ![输入图片说明](src/main/resources/templates/images/555.png)
 ![输入图片说明](src/main/resources/templates/images/%E7%94%A8%E6%88%B7%E7%AB%AF3.png)
